@@ -8,6 +8,6 @@ export const Spacer = ({ children }) => {
 const styles = StyleSheet.create({
   spacer: {
     marginVertical: 10,
-    marginHorizontal: 15,
+    marginHorizontal: 25,
   },
 });
