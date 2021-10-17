@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { Input } from "react-native-elements";
+import { Icon, Input } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { GradientButton } from "../../components/GradientButton";
 import colors from "../../constants/colors";
@@ -57,7 +57,7 @@ const SignInScreen = ({ navigation }) => {
         <View style={{ marginHorizontal: screenWidth * 0.04 }}>
           <GradientButton
             text="Sign In"
-            onPress={() => navigation.navigate("SignIn")}
+            onPress={() => navigation.navigate("MainFlow")}
           />
           <TouchableOpacity onPress={() => navigation.navigate("Forget")}>
             <Text style={styles.text}>Forgot your Password?</Text>

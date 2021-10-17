@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { Icon, Input } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Entypo } from "@expo/vector-icons";
 
 import { GradientButton } from "../../components/GradientButton";
 import colors from "../../constants/colors";
@@ -17,7 +16,7 @@ import colors from "../../constants/colors";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }) => {
   const [secure, setSecure] = useState(true);
 
   return (
@@ -69,8 +68,8 @@ const SignUpScreen = () => {
         </View>
         <View style={{ marginHorizontal: screenWidth * 0.04 }}>
           <GradientButton
-            text="Sign In"
-            onPress={() => navigation.navigate("SignIn")}
+            text="Sign Up"
+            onPress={() => navigation.navigate("MainFlow")}
           />
           <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
             <Text style={styles.text}>Already have an Account?</Text>

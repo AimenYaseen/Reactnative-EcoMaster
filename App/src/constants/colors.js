@@ -12,4 +12,6 @@ export default {
   freshGreen: "#B1D953",
   blue: "#8CC0E8",
   lightBlue: "#F5FAFD",
+  Blue: "#E1EFFF",
+  shadow: "#7F5DF0",
 };

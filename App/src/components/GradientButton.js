@@ -18,7 +18,7 @@ export const GradientButton = ({ text, onPress }) => {
         end={{ x: 1, y: 1 }}
         locations={[0.1, 0.9]}
         colors={[startColor, endColor]}
-        style={styles.buttonG}
+        style={[styles.buttonG, styles.shadow]}
       >
         <Text style={styles.buttonTextG}>{text}</Text>
       </LinearGradient>
@@ -28,7 +28,7 @@ export const GradientButton = ({ text, onPress }) => {
 
 export const SolidButton = ({ text, onPress }) => {
   return (
-    <TouchableOpacity style={styles.buttonS} onPress={onPress}>
+    <TouchableOpacity style={[styles.buttonS, styles.shadow]} onPress={onPress}>
       <Text style={styles.buttonTextS}>{text}</Text>
     </TouchableOpacity>
   );
@@ -36,7 +36,7 @@ export const SolidButton = ({ text, onPress }) => {
 
 export const OutlineButton = ({ text, onPress }) => {
   return (
-    <TouchableOpacity style={styles.buttonO} onPress={onPress}>
+    <TouchableOpacity style={[styles.buttonO, styles.shadow]} onPress={onPress}>
       <Text style={styles.buttonTextO}>{text}</Text>
     </TouchableOpacity>
   );
@@ -63,14 +63,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 11,
-    shadowColor: "#111111",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   buttonTextS: {
     color: "#FFFFFF",
@@ -88,17 +80,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.secondary,
     borderWidth: 1,
-    shadowColor: "#111111",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   buttonTextO: {
     color: colors.secondary,
     fontSize: 19,
+  },
+  shadow: {
+    shadowColor: colors.shadow,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 3.5,
+    elevation: 5,
   },
 });
