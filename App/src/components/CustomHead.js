@@ -8,7 +8,7 @@ export const UpperBorder = ({ text, image }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
-      <Avatar rounded source={image} size="medium" />
+      <Avatar rounded source={image} size="small" />
     </View>
   );
 };
@@ -26,7 +26,7 @@ export const Head = ({ text, color }) => {
       }}
       containerStyle={{
         backgroundColor: color,
-        height: 70,
+        height: 90,
       }}
     />
   );
@@ -34,14 +34,14 @@ export const Head = ({ text, color }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     height: 70,
     paddingHorizontal: 15,
     paddingVertical: 15,
-    //backgroundColor: colors.Blue,
+    backgroundColor: colors.lightBlue,
   },
   text: {
     color: colors.black,
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 30,
     fontWeight: "bold",
-    paddingBottom: 15,
+    paddingBottom: 10,
   },
 });

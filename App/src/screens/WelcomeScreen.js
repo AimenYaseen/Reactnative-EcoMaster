@@ -21,29 +21,34 @@ const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor={colors.lightBlue} />
-      <View style={styles.headView}>
-        <Text h2 style={styles.header}>
-          Eco Master
-        </Text>
-        <Text style={styles.subHead}>Enjoy the Experience</Text>
-      </View>
-      <View style={styles.button}>
-        <Spacer>
-          <GradientButton
-            text="Sign In"
-            onPress={() => navigation.navigate("SignIn")}
-          />
-        </Spacer>
-        <Spacer>
-          <OutlineButton
-            text="Sign Up"
-            onPress={() => navigation.navigate("SignUp")}
-          />
-        </Spacer>
-        <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
-          <Text style={styles.text}>Terms of Services</Text>
-        </TouchableOpacity>
-      </View>
+      <ImageBackground
+        style={styles.background}
+        source={require("../assets/images/Ganna.jpeg")}
+      >
+        <View style={styles.headView}>
+          <Text h2 style={styles.header}>
+            Eco Master
+          </Text>
+          <Text style={styles.subHead}>Enjoy the Experience</Text>
+        </View>
+        <View style={styles.button}>
+          <Spacer>
+            <GradientButton
+              text="Sign In"
+              onPress={() => navigation.navigate("SignIn")}
+            />
+          </Spacer>
+          <Spacer>
+            <OutlineButton
+              text="Sign Up"
+              onPress={() => navigation.navigate("SignUp")}
+            />
+          </Spacer>
+          <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
+            <Text style={styles.text}>Terms of Services</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -51,8 +56,8 @@ const WelcomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     backgroundColor: colors.lightBlue,
   },
   background: {
@@ -63,7 +68,7 @@ const styles = StyleSheet.create({
   },
   header: {
     textAlign: "center",
-    paddingTop: 100,
+    paddingTop: 80,
     color: colors.secondary,
   },
   subHead: {

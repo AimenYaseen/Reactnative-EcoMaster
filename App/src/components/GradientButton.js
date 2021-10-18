@@ -1,5 +1,6 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
+import { TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { Text, Icon } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 
 import colors from "../constants/colors";
@@ -11,7 +12,7 @@ export const GradientButton = ({ text, onPress }) => {
   const endColor = colors.secondary;
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <LinearGradient
         // Button Linear Gradient
         start={{ x: 0, y: 0 }}
@@ -38,6 +39,25 @@ export const OutlineButton = ({ text, onPress }) => {
   return (
     <TouchableOpacity style={[styles.buttonO, styles.shadow]} onPress={onPress}>
       <Text style={styles.buttonTextO}>{text}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export const BlockButton = ({ text, subText, iconName, type, onPress }) => {
+  return (
+    <TouchableOpacity style={styles.block} onPress={onPress}>
+      <Icon
+        reverse
+        raised
+        name={iconName}
+        type={type}
+        color={colors.secondary}
+        size={20}
+      />
+      <Text h5 style={styles.buttonTextB}>
+        {text}
+      </Text>
+      <Text style={styles.buttonTextSub}>{subText}</Text>
     </TouchableOpacity>
   );
 };
@@ -86,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 19,
   },
   shadow: {
-    shadowColor: colors.shadow,
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -94,5 +114,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.75,
     shadowRadius: 3.5,
     elevation: 5,
+  },
+  block: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: screenWidth * 0.35,
+    width: screenWidth * 0.45,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "transparent",
+    shadowColor: colors.shadow,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    // shadowOpacity: 0.75,
+    // shadowRadius: 3.5,
+    elevation: 5,
+  },
+  buttonTextB: {
+    fontWeight: "700",
+  },
+  buttonTextSub: {
+    fontSize: 12,
+    fontStyle: "italic",
+    color: colors.gray,
   },
 });

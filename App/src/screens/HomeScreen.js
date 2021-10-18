@@ -3,10 +3,10 @@ import { View, ScrollView, StatusBar, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { KeyboardSpacer } from "../components/KeyboardSpacer";
-import { UpperBorder, Head } from "../components/CustomHead";
 import colors from "../constants/colors";
+import { BlockButton } from "../components/GradientButton";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [scrollable, setScrollable] = useState(false);
 
   return (
@@ -16,7 +16,49 @@ const HomeScreen = () => {
           scrollEnabled={scrollable}
           showsVerticalScrollIndicator={false}
         >
-          <Text>Home Screen</Text>
+          <View style={styles.subContainer}>
+            <BlockButton
+              type="font-awesome-5"
+              iconName="tasks"
+              text="Habit Tracker"
+              subText="start your journey"
+              onPress={() => navigation.navigate("Habit")}
+            />
+            <BlockButton
+              type="material-icons"
+              iconName="dashboard-customize"
+              text="Custom Habit"
+              subText="subText"
+            />
+          </View>
+          <View style={styles.subContainer}>
+            <BlockButton
+              type="font-awesome"
+              iconName="user"
+              text="My Profile"
+              subText="subText"
+            />
+            <BlockButton
+              type="font-awesome-5"
+              iconName="tasks"
+              text="text"
+              subText="subText"
+            />
+          </View>
+          <View style={styles.subContainer}>
+            <BlockButton
+              type="font-awesome-5"
+              iconName="tasks"
+              text="text"
+              subText="subText"
+            />
+            <BlockButton
+              type="font-awesome-5"
+              iconName="tasks"
+              text="text"
+              subText="subText"
+            />
+          </View>
           <KeyboardSpacer
             Toggle={(isKeyboardVisible) => setScrollable(isKeyboardVisible)}
           />
@@ -30,6 +72,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.lightBlue,
+  },
+  subContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginBottom: 20,
   },
 });
 
