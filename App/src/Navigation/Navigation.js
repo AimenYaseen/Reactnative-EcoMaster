@@ -1,22 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import WelcomeScreen from "../screens/WelcomeScreen";
-import HomeScreen from "../screens/HomeScreen";
-import SignUpScreen from "../screens/UserRegistration/SignUpScreen";
-import SignInScreen from "../screens/UserRegistration/SignInScreen";
-import ForgetPasswordScreen from "../screens/UserRegistration/ForgetPasswordScreen";
-import TermsOfServices from "../screens/TermsOfServices";
+import { TopTabScreen } from "./TopTabBar";
+import { StackScreen } from "./NativeStack";
 import ProfileScreen from "../screens/ProfileScreen";
-import HabitTrackerScreen from "../screens/HabitTrackerScreen";
-import EcoMap from "../screens/EcoMap";
-import { Head, UpperBorder } from "../components/CustomHead";
-import colors from "../constants/colors";
-import FeedScreen from "../screens/FeedScreen";
+import { HabitTabScreen } from "./BottomTabBar";
 
 const MainStack = createStackNavigator();
 const MainStackScreen = () => {
@@ -32,77 +21,9 @@ const MainStackScreen = () => {
         component={TopTabScreen}
         options={{ headerShown: false }}
       />
+      <MainStack.Screen name="Profile" component={ProfileScreen} />
+      <MainStack.Screen name="Habit" component={HabitTabScreen} />
     </MainStack.Navigator>
-  );
-};
-
-const Stack = createNativeStackNavigator();
-const StackScreen = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Terms" component={TermsOfServices} />
-      <Stack.Screen name="Forget" component={ForgetPasswordScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="Habit" component={HabitTabScreen} />
-    </Stack.Navigator>
-  );
-};
-
-const TopTab = createMaterialTopTabNavigator();
-const TopTabScreen = () => {
-  return (
-    <Fragment>
-      <Head text="Eco Master" color={colors.secondary} />
-      <UpperBorder
-        text="Browser"
-        image={require("../assets/images/leaves.jpeg")}
-      />
-      <TopTab.Navigator>
-        <TopTab.Screen
-          name="Feeds"
-          component={FeedScreen}
-          options={{ headerShown: false }}
-        />
-        <TopTab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-      </TopTab.Navigator>
-    </Fragment>
-  );
-};
-
-const HabitTab = createMaterialBottomTabNavigator();
-const HabitTabScreen = () => {
-  return (
-    <HabitTab.Navigator>
-      <HabitTab.Screen
-        name="EcoMap"
-        component={EcoMap}
-        options={{ headerShown: false }}
-      />
-      <HabitTab.Screen
-        name="HabitTracker"
-        component={HabitTrackerScreen}
-        options={{ headerShown: false }}
-      />
-    </HabitTab.Navigator>
   );
 };
 
