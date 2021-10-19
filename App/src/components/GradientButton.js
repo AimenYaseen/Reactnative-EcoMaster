@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { TouchableOpacity, StyleSheet, Dimensions, View } from "react-native";
 import { Text, Icon } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -58,6 +58,26 @@ export const BlockButton = ({ text, subText, iconName, type, onPress }) => {
         {text}
       </Text>
       <Text style={styles.buttonTextSub}>{subText}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export const TabBarButton = ({ children, onPress }) => {
+  return (
+    <TouchableOpacity
+      style={[styles.tabButton, styles.shadow]}
+      onPress={onPress}
+    >
+      <View
+        style={{
+          width: 70,
+          height: 70,
+          borderRadius: 35,
+          backgroundColor: colors.primary,
+        }}
+      >
+        {children}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -141,5 +161,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontStyle: "italic",
     color: colors.gray,
+  },
+  tabButton: {
+    top: -30,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

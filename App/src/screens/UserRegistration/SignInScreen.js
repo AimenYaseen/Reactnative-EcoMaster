@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     //alignItems: "center",
     justifyContent: "center",
     // paddingTop: screenHeight * 0.2,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.white,
   },
   headerText: {
     //textAlign: "center",

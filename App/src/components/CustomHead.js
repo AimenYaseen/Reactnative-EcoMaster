@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     height: 70,
     paddingHorizontal: 15,
     paddingVertical: 15,
-    backgroundColor: colors.lightBlue,
+    backgroundColor: colors.white,
   },
   text: {
     color: colors.black,
