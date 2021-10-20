@@ -29,6 +29,7 @@ const HomeScreen = ({ navigation }) => {
               iconName="dashboard-customize"
               text="Custom Habit"
               subText="subText"
+              onPress={() => navigation.navigate("Custom")}
             />
           </View>
           <View style={styles.subContainer}>

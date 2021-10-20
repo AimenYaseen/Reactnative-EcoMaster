@@ -6,6 +6,7 @@ import { TopTabScreen } from "./TopTabBar";
 import { StackScreen } from "./NativeStack";
 import ProfileScreen from "../screens/ProfileScreen";
 import { HabitTabScreen } from "./BottomTabBar";
+import { CustomTabScreen } from "./BottomTabBar";
 
 const MainStack = createStackNavigator();
 const MainStackScreen = () => {
@@ -23,6 +24,7 @@ const MainStackScreen = () => {
       />
       <MainStack.Screen name="Profile" component={ProfileScreen} />
       <MainStack.Screen name="Habit" component={HabitTabScreen} />
+      <MainStack.Screen name="Custom" component={CustomTabScreen} />
     </MainStack.Navigator>
   );
 };
