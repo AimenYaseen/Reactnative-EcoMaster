@@ -7,19 +7,19 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { Icon, Input } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { GradientButton } from "../../components/GradientButton";
+import { SimpleInput, IconInput } from "../../components/CustomInput";
 import colors from "../../constants/colors";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const SignUpScreen = ({ navigation }) => {
-  const [secure, setSecure] = useState(true);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("password");
+  const [username, setUsername] = useState("");
 
   return (
     <KeyboardAwareScrollView
@@ -28,44 +28,26 @@ const SignUpScreen = ({ navigation }) => {
       }}
       keyboardShouldPersistTaps="always"
     >
-      <StatusBar barStyle="dark-content" backgroundColor={colors.secondary} />
+      <StatusBar hidden />
       <View style={styles.container}>
-        <Text style={styles.headerText}>Sign Up</Text>
+        <Text style={styles.headerText}>Create Account</Text>
         <View style={styles.input}>
-          <Input
+          <SimpleInput
             label="Username"
-            labelStyle={{ color: colors.black }}
             placeholder="Abc"
-            placeholderTextColor={colors.gray}
-            autoCorrect={false}
-            autoComplete="off"
+            onChangeText={(text) => setUsername(text)}
           />
-          <Input
+          <SimpleInput
             label="Email"
-            labelStyle={{ color: colors.black }}
             placeholder="abc@example.com"
-            placeholderTextColor={colors.gray}
-            autoCorrect={false}
-            autoCapitalize="none"
-            autoComplete="off"
+            onChangeText={(text) => setEmail(text)}
           />
-          <Input
-            secureTextEntry={secure ? true : false}
+          <IconInput
             label="Password"
-            labelStyle={{ color: colors.black }}
-            value="password"
-            autoCorrect={false}
-            autoCapitalize="none"
-            autoComplete="off"
-            rightIcon={
-              <Icon
-                name="eye"
-                type="entypo"
-                color={colors.gray}
-                size={15}
-                onPress={() => (secure ? setSecure(false) : setSecure(true))}
-              />
-            }
+            value={password}
+            name="eye"
+            type="entypo"
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
         <View style={{ marginHorizontal: screenWidth * 0.04 }}>
@@ -74,7 +56,7 @@ const SignUpScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("MainFlow")}
           />
           <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-            <Text style={styles.text}>Already have an Account?</Text>
+            <Text style={styles.text}>Already have an account?</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -91,11 +73,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   headerText: {
-    //textAlign: "center",
-    margin: 15,
-    fontSize: 50,
+    textAlign: "center",
+    margin: 20,
+    fontSize: 45,
     fontWeight: "bold",
-    color: colors.secondary2,
+    color: colors.green,
   },
   text: {
     marginTop: 20,

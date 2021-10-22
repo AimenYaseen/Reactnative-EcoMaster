@@ -22,42 +22,40 @@ const HomeScreen = ({ navigation }) => {
         style={styles.background}
         source={require("../assets/images/background.jpeg")}
       >
-        <ScrollView>
-          <View style={styles.subContainer}>
-            <BlockButton
-              type="font-awesome-5"
-              iconName="tasks"
-              text="Habit Tracker"
-              subText="start your journey"
-              onPress={() => navigation.navigate("Habit")}
-            />
-            <BlockButton
-              type="material-icons"
-              iconName="dashboard-customize"
-              text="Custom Habit"
-              subText="subText"
-              onPress={() => navigation.navigate("Custom")}
-            />
-          </View>
-          <View style={styles.subContainer}>
-            <BlockButton
-              type="font-awesome"
-              iconName="user"
-              text="My Profile"
-              subText="subText"
-            />
-            <BlockButton
-              type="font-awesome-5"
-              iconName="tasks"
-              text="Community"
-              subText="subText"
-            />
-          </View>
-
-          <KeyboardSpacer
-            Toggle={(isKeyboardVisible) => setScrollable(isKeyboardVisible)}
+        <View style={styles.subContainer}>
+          <BlockButton
+            type="font-awesome-5"
+            iconName="tasks"
+            text="Habit Tracker"
+            // subText="start your journey"
+            onPress={() => navigation.navigate("Habit")}
           />
-        </ScrollView>
+          <BlockButton
+            type="material-icons"
+            iconName="dashboard-customize"
+            text="Custom Habit"
+            // subText="subText"
+            onPress={() => navigation.navigate("Custom")}
+          />
+        </View>
+        <View style={styles.subContainer}>
+          <BlockButton
+            type="font-awesome"
+            iconName="user"
+            text="My Profile"
+            // subText="subText"
+          />
+          <BlockButton
+            type="font-awesome"
+            iconName="group"
+            text="Community"
+            // subText="subText"
+          />
+        </View>
+
+        <KeyboardSpacer
+          Toggle={(isKeyboardVisible) => setScrollable(isKeyboardVisible)}
+        />
       </ImageBackground>
     </View>
   );
@@ -68,11 +66,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     //justifyContent: "center",
-    //alignItems: "center",
+    // alignItems: "center",
   },
   background: {
     flex: 1,
-    //alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
     resizeMode: "contain",
   },

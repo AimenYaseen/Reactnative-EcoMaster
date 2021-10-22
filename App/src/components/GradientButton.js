@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   buttonG: {
     padding: 10,
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 35,
   },
   buttonTextG: {
     backgroundColor: "transparent",
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 35,
     borderColor: colors.secondary,
     borderWidth: 1,
   },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     // shadowOpacity: 0.75,
     // shadowRadius: 3.5,
-    elevation: 5,
+    elevation: 10,
   },
   buttonTextB: {
     fontWeight: "700",
