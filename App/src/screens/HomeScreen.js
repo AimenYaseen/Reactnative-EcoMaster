@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, ScrollView, StatusBar, Text, StyleSheet } from "react-native";
+import {
+  View,
+  ScrollView,
+  StatusBar,
+  Text,
+  StyleSheet,
+  ImageBackground,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { KeyboardSpacer } from "../components/KeyboardSpacer";
@@ -11,11 +18,11 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView>
-        <ScrollView
-          scrollEnabled={scrollable}
-          showsVerticalScrollIndicator={false}
-        >
+      <ImageBackground
+        style={styles.background}
+        source={require("../assets/images/background.jpeg")}
+      >
+        <ScrollView>
           <View style={styles.subContainer}>
             <BlockButton
               type="font-awesome-5"
@@ -42,29 +49,16 @@ const HomeScreen = ({ navigation }) => {
             <BlockButton
               type="font-awesome-5"
               iconName="tasks"
-              text="text"
+              text="Community"
               subText="subText"
             />
           </View>
-          <View style={styles.subContainer}>
-            <BlockButton
-              type="font-awesome-5"
-              iconName="tasks"
-              text="text"
-              subText="subText"
-            />
-            <BlockButton
-              type="font-awesome-5"
-              iconName="tasks"
-              text="text"
-              subText="subText"
-            />
-          </View>
+
           <KeyboardSpacer
             Toggle={(isKeyboardVisible) => setScrollable(isKeyboardVisible)}
           />
         </ScrollView>
-      </SafeAreaView>
+      </ImageBackground>
     </View>
   );
 };
@@ -73,6 +67,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+    //justifyContent: "center",
+    //alignItems: "center",
+  },
+  background: {
+    flex: 1,
+    //alignItems: "center",
+    justifyContent: "center",
+    resizeMode: "contain",
   },
   subContainer: {
     flexDirection: "row",

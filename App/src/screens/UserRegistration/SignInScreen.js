@@ -16,6 +16,10 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const SignInScreen = ({ navigation }) => {
+  const [secure, setSecure] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{

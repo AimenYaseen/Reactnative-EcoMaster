@@ -1,7 +1,13 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Feather,
+  Octicons,
+} from "@expo/vector-icons";
 import { Image, StyleSheet, View, Text } from "react-native";
+//import ViewOverflow from "react-native-view-overflow";
 import { Icon } from "react-native-elements";
 
 import HabitTrackerScreen from "../screens/HabitTracker/HabitTrackerScreen";
@@ -16,7 +22,15 @@ export const HabitTabScreen = () => {
   return (
     <HabitTab.Navigator
       barStyle={{
-        ...styles.bottomBar,
+        backgroundColor: colors.secondary,
+        position: "absolute",
+        bottom: 25,
+        marginHorizontal: 20,
+        borderRadius: 15,
+        height: 60,
+        elevation: 0,
+        justifyContent: "center",
+        paddingHorizontal: 5,
         ...styles.shadow,
       }}
       activeColor={colors.white}
@@ -28,10 +42,10 @@ export const HabitTabScreen = () => {
         name="EcoMap"
         component={EcoMap}
         options={{
-          tabBarLabel: "EcoMap",
+          tabBarLabel: <Text style={styles.label}>Eco Map</Text>,
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
-              name="home"
+              name="google-maps"
               color={focused ? colors.white : colors.gray}
               size={26}
             />
@@ -42,10 +56,10 @@ export const HabitTabScreen = () => {
         name="HabitTracker"
         component={HabitTrackerScreen}
         options={{
-          tabBarLabel: <Text style={{ fontSize: 12 }}>HabitTracker</Text>,
+          tabBarLabel: <Text style={styles.label}>Habit Tracker</Text>,
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="home"
+            <MaterialIcons
+              name="add-task"
               color={focused ? colors.white : colors.gray}
               size={26}
             />
@@ -65,7 +79,7 @@ export const CustomTabScreen = () => {
         ...styles.shadow,
       }}
       activeColor={colors.secondary}
-      inactiveColor={colors.gray}
+      inactiveColor={colors.gray2}
       shifting={true}
       // labeled={false}
     >
@@ -73,11 +87,11 @@ export const CustomTabScreen = () => {
         name="Sugessions"
         component={SuggestionsScreen}
         options={{
-          tabBarLabel: "Sugessions",
+          tabBarLabel: <Text style={styles.label}>Suggestions</Text>,
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="home"
-              color={focused ? colors.secondary : colors.gray}
+            <MaterialIcons
+              name="auto-awesome-motion"
+              color={focused ? colors.secondary : colors.gray2}
               size={26}
             />
           ),
@@ -87,19 +101,18 @@ export const CustomTabScreen = () => {
         name="CreateHabit"
         component={CreateHabitScreen}
         options={{
-          shifting: false,
           tabBarLabel: null,
           tabBarIcon: ({ focused }) => (
             <Icon
               reverse
               raised
-              name="home"
-              type="material-community-icons"
+              name="plus"
+              type="font-awesome-5"
               color={colors.secondary}
-              size={30}
+              size={20}
               containerStyle={{
-                //  position: "absolute",
-                top: -60,
+                // position: "absolute",
+                top: -15,
                 justifyContent: "center",
                 alignItems: "center",
                 ...styles.shadow,
@@ -112,11 +125,11 @@ export const CustomTabScreen = () => {
         name="Activity"
         component={ActivityScreen}
         options={{
-          tabBarLabel: <Text style={{ fontSize: 12 }}>Activity</Text>,
+          tabBarLabel: <Text style={styles.label}>Activity</Text>,
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="home"
-              color={focused ? colors.secondary : colors.gray}
+            <Feather
+              name="activity"
+              color={focused ? colors.secondary : colors.gray2}
               size={26}
             />
           ),
@@ -141,11 +154,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     position: "absolute",
     bottom: 25,
-    left: 20,
-    right: 20,
+    marginHorizontal: 25,
     elevation: 0,
-    borderRadius: 5,
-    height: 60,
+    borderRadius: 15,
+    height: 70,
     justifyContent: "center",
+    paddingHorizontal: 5,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: "bold",
   },
 });

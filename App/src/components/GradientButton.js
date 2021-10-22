@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "transparent",
+    backgroundColor: colors.white,
     shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
@@ -141,10 +142,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontStyle: "italic",
     color: colors.gray,
-  },
-  tabButton: {
-    top: -30,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

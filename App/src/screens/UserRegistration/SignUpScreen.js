@@ -18,6 +18,8 @@ const screenHeight = Dimensions.get("window").height;
 
 const SignUpScreen = ({ navigation }) => {
   const [secure, setSecure] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <KeyboardAwareScrollView
