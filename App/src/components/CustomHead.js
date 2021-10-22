@@ -19,6 +19,7 @@ export const Head = ({ text, color }) => {
       statusBarProps={{
         barStyle: "light-content",
         backgroundColor: color,
+        hidden: false,
       }}
       centerComponent={{
         text: text,
@@ -52,6 +53,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 30,
     fontWeight: "bold",
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
 });

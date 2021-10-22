@@ -82,6 +82,7 @@ export const CustomTabScreen = () => {
       inactiveColor={colors.gray2}
       shifting={true}
       // labeled={false}
+      initialRouteName="CreateHabit"
     >
       <CustomTab.Screen
         name="Sugessions"
