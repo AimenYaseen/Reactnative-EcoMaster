@@ -1,0 +1,20 @@
+ <Icon
+              reverse
+              raised
+              name="home"
+              type="material-community-icons"
+              color={colors.secondary}
+              size={30}
+              containerStyle={{
+                //  position: "absolute",
+                top: -60,
+                justifyContent: "center",
+                alignItems: "center",
+                ...styles.shadow,
+              }}
+            />
+
+                      <ScrollView
+            scrollEnabled={scrollable}
+            showsVerticalScrollIndicator={false}
+          >
