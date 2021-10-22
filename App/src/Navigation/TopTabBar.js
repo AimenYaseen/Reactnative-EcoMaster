@@ -18,15 +18,18 @@ export const TopTabScreen = () => {
       />
       <TopTab.Navigator
         screenOptions={{
+          headerShown: false,
           tabBarLabelStyle: {
-            fontSize: 16,
+            fontSize: 14,
             //color: colors.secondary,
             fontWeight: "bold",
+            paddingLeft: 5,
             //marginHorizontal: 20,
           },
           tabBarItemStyle: {
             // width: 120,
             height: 55,
+            flexDirection: "row",
             //marginHorizontal: 20,
           },
           tabBarIndicatorStyle: {
@@ -36,7 +39,7 @@ export const TopTabScreen = () => {
             borderRadius: 2,
             //  marginLeft: 20,
           },
-          tabBarShowLabel: false,
+          // tabBarShowLabel: false,
           tabBarActiveTintColor: colors.secondary,
           tabBarInactiveTintColor: colors.gray2,
           tabBarStyle: {
@@ -49,11 +52,12 @@ export const TopTabScreen = () => {
           name="Feeds"
           component={FeedScreen}
           options={{
+            // tabBarLabel: "Activity",
             tabBarIcon: ({ focused }) => (
               <Entypo
                 name="network"
                 color={focused ? colors.secondary : colors.gray2}
-                size={26}
+                size={22}
               />
             ),
           }}
@@ -62,11 +66,12 @@ export const TopTabScreen = () => {
           name="Home"
           component={HomeScreen}
           options={{
+            // tabBarLabel: "HOME",
             tabBarIcon: ({ focused }) => (
               <Ionicons
                 name="home"
                 color={focused ? colors.secondary : colors.gray2}
-                size={26}
+                size={22}
               />
             ),
           }}

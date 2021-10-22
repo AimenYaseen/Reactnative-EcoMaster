@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  ScrollView,
-  StatusBar,
-  Text,
-  StyleSheet,
-  ImageBackground,
-} from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import colors from "../constants/colors";
 import { BlockButton } from "../components/GradientButton";
 

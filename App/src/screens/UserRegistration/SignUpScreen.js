@@ -6,6 +6,7 @@ import {
   StatusBar,
   Dimensions,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -24,41 +25,47 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
-        flex: 1,
+        flexGrow: 1,
       }}
+      showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="always"
     >
-      <StatusBar hidden />
+      <StatusBar barStyle="light-content" backgroundColor={colors.secondary} />
       <View style={styles.container}>
-        <Text style={styles.headerText}>Create Account</Text>
-        <View style={styles.input}>
-          <SimpleInput
-            label="Username"
-            placeholder="Abc"
-            onChangeText={(text) => setUsername(text)}
-          />
-          <SimpleInput
-            label="Email"
-            placeholder="abc@example.com"
-            onChangeText={(text) => setEmail(text)}
-          />
-          <IconInput
-            label="Password"
-            value={password}
-            name="eye"
-            type="entypo"
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
-        <View style={{ marginHorizontal: screenWidth * 0.04 }}>
-          <GradientButton
-            text="Sign Up"
-            onPress={() => navigation.navigate("MainFlow")}
-          />
-          <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-            <Text style={styles.text}>Already have an account?</Text>
-          </TouchableOpacity>
-        </View>
+        <ImageBackground
+          style={styles.background}
+          source={require("../../assets/images/selfprint2.jpeg")}
+        >
+          <Text style={styles.headerText}>Create Account</Text>
+          <View style={styles.input}>
+            <SimpleInput
+              label="Username"
+              placeholder="Abc"
+              onChangeText={(text) => setUsername(text)}
+            />
+            <SimpleInput
+              label="Email"
+              placeholder="abc@example.com"
+              onChangeText={(text) => setEmail(text)}
+            />
+            <IconInput
+              label="Password"
+              value={password}
+              name="eye"
+              type="entypo"
+              onChangeText={(text) => setPassword(text)}
+            />
+          </View>
+          <View style={{ marginHorizontal: screenWidth * 0.04 }}>
+            <GradientButton
+              text="Sign Up"
+              onPress={() => navigation.navigate("MainFlow")}
+            />
+            <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+              <Text style={styles.text}>Already have an account?</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -67,10 +74,14 @@ const SignUpScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //alignItems: "center",
-    justifyContent: "center",
-    // paddingTop: screenHeight * 0.2,
+    // justifyContent: "center",
     backgroundColor: colors.white,
+  },
+  background: {
+    //paddingTop: screenHeight * 0.15,
+    flex: 1,
+    justifyContent: "center",
+    resizeMode: "contain",
   },
   headerText: {
     textAlign: "center",
@@ -84,6 +95,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 14,
     color: colors.gray,
+    marginBottom: 10,
   },
   input: {
     marginHorizontal: screenWidth * 0.02,

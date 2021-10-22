@@ -21,6 +21,7 @@ const HabitTab = createMaterialBottomTabNavigator();
 export const HabitTabScreen = () => {
   return (
     <HabitTab.Navigator
+      // screenOptions={{ headerShown: false }}
       barStyle={{
         backgroundColor: colors.secondary,
         position: "absolute",
@@ -102,14 +103,14 @@ export const CustomTabScreen = () => {
         name="CreateHabit"
         component={CreateHabitScreen}
         options={{
-          tabBarLabel: null,
+          tabBarLabel: false,
           tabBarIcon: ({ focused }) => (
             <Icon
               reverse
               raised
               name="plus"
               type="font-awesome-5"
-              color={colors.secondary}
+              color={focused ? colors.secondary : colors.gray2}
               size={20}
               containerStyle={{
                 // position: "absolute",
@@ -134,6 +135,7 @@ export const CustomTabScreen = () => {
               size={26}
             />
           ),
+          headerShown: false,
         }}
       />
     </CustomTab.Navigator>

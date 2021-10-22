@@ -22,9 +22,21 @@ const MainStackScreen = () => {
         component={TopTabScreen}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen name="Profile" component={ProfileScreen} />
-      <MainStack.Screen name="Habit" component={HabitTabScreen} />
-      <MainStack.Screen name="Custom" component={CustomTabScreen} />
+      <MainStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="Habit"
+        component={HabitTabScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="Custom"
+        component={CustomTabScreen}
+        options={{ headerShown: false }}
+      />
     </MainStack.Navigator>
   );
 };

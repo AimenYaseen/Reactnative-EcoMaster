@@ -8,8 +8,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { Button, Text } from "react-native-elements";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "react-native-elements";
 
 import colors from "../constants/colors";
 import { Spacer } from "../components/Spacer";
