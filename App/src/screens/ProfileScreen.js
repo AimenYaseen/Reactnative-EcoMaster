@@ -7,7 +7,7 @@ import colors from "../constants/colors";
 
 const ProfileScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
+    <>
       <LeftHead
         text="Profile"
         color={colors.secondary}
@@ -15,13 +15,18 @@ const ProfileScreen = ({ navigation }) => {
         icon="arrow-back-ios"
         onPress={() => navigation.navigate("MainFlow")}
       />
-      <ImageBackground
-        style={styles.background}
-        source={require("../assets/images/selfprint.jpeg")}
-      >
-        <Avatar rounded />
-      </ImageBackground>
-    </View>
+      <View style={styles.container}>
+        <Avatar
+          rounded
+          source={require("../assets/images/cherry.jpeg")}
+          size={120}
+          containerStyle={{ top: 30 }}
+          //placeholderContent={}
+        >
+          <Avatar.Accessory name="edit-2" type="feather" size={20} />
+        </Avatar>
+      </View>
+    </>
   );
 };
 
@@ -30,12 +35,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     //justifyContent: "center",
-    // alignItems: "center",
+    alignItems: "center",
   },
   background: {
     flex: 1,
     justifyContent: "center",
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
 });
 
