@@ -4,7 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { TopTabScreen } from "./TopTabBar";
 import { StackScreen } from "./NativeStack";
-import ProfileScreen from "../screens/ProfileScreen";
+import ProfileScreen from "../screens/Profile/ProfileScreen";
+import EditProfile from "../screens/Profile/EditProfile";
 import { HabitTabScreen } from "./BottomTabBar";
 import { CustomTabScreen } from "./BottomTabBar";
 
@@ -25,6 +26,11 @@ const MainStackScreen = () => {
       <MainStack.Screen
         name="Profile"
         component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={{ headerShown: false }}
       />
       <MainStack.Screen

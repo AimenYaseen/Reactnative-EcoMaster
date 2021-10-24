@@ -1,18 +1,27 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { Icon } from "react-native-elements";
 
-import { LeftHead } from "../../components/CustomHead";
+import { CustomHead } from "../../components/CustomHead";
 import colors from "../../constants/colors";
 
 const EcoMap = ({ navigation }) => {
   return (
     <View>
-      <LeftHead
+      <CustomHead
         text="Eco Map"
         color={colors.secondary}
-        iconColor={colors.white}
-        icon="arrow-back-ios"
-        onPress={() => navigation.navigate("MainFlow")}
+        centerColor={colors.white}
+        leftIcon={() => (
+          <Icon
+            name="md-caret-back"
+            type="ionicon"
+            size={30}
+            onPress={() => navigation.navigate("MainFlow")}
+            color={colors.white}
+          />
+        )}
+        rightIcon={null}
       />
       <Text>Eco Map</Text>
     </View>

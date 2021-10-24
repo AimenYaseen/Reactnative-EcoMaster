@@ -20,7 +20,8 @@ const screenHeight = Dimensions.get("window").height;
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("password");
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
 
   return (
     <KeyboardAwareScrollView
@@ -39,11 +40,6 @@ const SignUpScreen = ({ navigation }) => {
           <Text style={styles.headerText}>Create Account</Text>
           <View style={styles.input}>
             <SimpleInput
-              label="Username"
-              placeholder="Abc"
-              onChangeText={(text) => setUsername(text)}
-            />
-            <SimpleInput
               label="Email"
               placeholder="abc@example.com"
               onChangeText={(text) => setEmail(text)}
@@ -54,6 +50,16 @@ const SignUpScreen = ({ navigation }) => {
               name="eye"
               type="entypo"
               onChangeText={(text) => setPassword(text)}
+            />
+            <SimpleInput
+              label="First Name"
+              placeholder="first"
+              onChangeText={(text) => setFirstname(text)}
+            />
+            <SimpleInput
+              label="Last Name"
+              placeholder="last"
+              onChangeText={(text) => setLastname(text)}
             />
           </View>
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
@@ -85,7 +91,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     textAlign: "center",
-    margin: 20,
+    // marginHorizontal: screenWidth * 0.02,
+    marginBottom: screenHeight * 0.08,
     fontSize: 45,
     fontWeight: "bold",
     color: colors.green,

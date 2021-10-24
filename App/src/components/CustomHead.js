@@ -34,7 +34,13 @@ export const Head = ({ text, color }) => {
   );
 };
 
-export const LeftHead = ({ text, color, icon, onPress, iconColor }) => {
+export const CustomHead = ({
+  text,
+  color,
+  leftIcon,
+  rightIcon,
+  centerColor,
+}) => {
   return (
     <Header
       statusBarProps={{
@@ -42,23 +48,22 @@ export const LeftHead = ({ text, color, icon, onPress, iconColor }) => {
         backgroundColor: colors.secondary,
         hidden: false,
       }}
-      leftComponent={{
-        icon: icon,
-        color: iconColor,
-        onPress: onPress,
-        size: 26,
-      }}
+      leftComponent={leftIcon}
+      rightComponent={rightIcon}
       centerComponent={{
         text: text,
-        style: [styles.header, { fontSize: 25, color: iconColor }],
+        style: [styles.header, { fontSize: 25, color: centerColor }],
       }}
       containerStyle={{
         backgroundColor: color,
-        // height: height ? height : 80,
+        justifyContent: "space-around",
+        // elevation: 1,
       }}
       leftContainerStyle={{
         justifyContent: "center",
-        marginLeft: 8,
+      }}
+      rightContainerStyle={{
+        justifyContent: "center",
       }}
     />
   );

@@ -26,6 +26,7 @@ const SignInScreen = ({ navigation }) => {
       contentContainerStyle={{
         flexGrow: 1,
       }}
+      showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="always"
     >
       <StatusBar barStyle="light-content" backgroundColor={colors.secondary} />
