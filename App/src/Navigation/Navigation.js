@@ -8,13 +8,19 @@ import ProfileScreen from "../screens/Profile/ProfileScreen";
 import EditProfile from "../screens/Profile/EditProfile";
 import { HabitTabScreen } from "./BottomTabBar";
 import { CustomTabScreen } from "./BottomTabBar";
+import SplashScreen from "../screens/SplashScreen";
 
 const MainStack = createStackNavigator();
 const MainStackScreen = () => {
   return (
     <MainStack.Navigator>
       <MainStack.Screen
-        name="StackScreen"
+        name="Splash"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="AuthFlow"
         component={StackScreen}
         options={{ headerShown: false }}
       />
