@@ -10,16 +10,18 @@ import { Avatar, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { CustomHead } from "../../components/CustomHead";
-import { SimpleInput, IconInput } from "../../components/CustomInput";
+import { GradientButton } from "../../components/GradientButton";
 import colors from "../../constants/colors";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("password");
+  const firstName = "Aimen";
+  const lastName = "Yaseen";
+  const email = "aimenyaseen6@gmail.com";
+  const country = "Pakistan, Sahiwal";
+  const bio = "bsdskfjskfejn skhds kdduedh";
 
   return (
     <>
@@ -52,7 +54,69 @@ const ProfileScreen = ({ navigation }) => {
             size={140}
             containerStyle={styles.avatar}
           />
-          <View style={styles.input}></View>
+          <View>
+            <Text style={[styles.text, { color: "black" }]}>
+              {firstName} {lastName}
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Icon
+                type="entypo"
+                name="location-pin"
+                color={colors.secondary}
+                size={18}
+              />
+              <Text style={{ padding: 5 }}>{country}</Text>
+            </View>
+            <Text
+              style={{ textAlign: "center", marginBottom: screenHeight * 0.06 }}
+            >
+              {bio}
+            </Text>
+          </View>
+          <View style={[styles.email, styles.shadow]}>
+            <Text style={{ fontWeight: "bold", fontSize: 16 }}>Email</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Icon
+                type="material-icons"
+                name="email"
+                color={colors.secondary}
+                size={20}
+              />
+              <Text style={{ paddingHorizontal: 10 }}>{email}</Text>
+            </View>
+          </View>
+          <View
+            style={[
+              styles.email,
+              styles.shadow,
+              {
+                height: screenHeight * 0.07,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <Text>Change Password?</Text>
+            <Icon
+              type="entypo"
+              name="chevron-right"
+              color={colors.secondary}
+              size={26}
+            />
+          </View>
+          <View style={styles.button}>
+            <GradientButton
+              text="Sign Up"
+              onPress={() => navigation.navigate("MainFlow")}
+            />
+          </View>
         </View>
       </KeyboardAwareScrollView>
     </>
@@ -74,7 +138,21 @@ const styles = StyleSheet.create({
   avatar: {
     top: screenHeight * 0.05,
     alignSelf: "center",
-    marginBottom: screenHeight * 0.1,
+    marginBottom: screenHeight * 0.07,
+  },
+  email: {
+    marginHorizontal: screenWidth * 0.03,
+    marginBottom: screenHeight * 0.02,
+    height: screenHeight * 0.08,
+    width: screenWidth * 0.95,
+    backgroundColor: "white",
+    borderColor: "transparent",
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 10,
+    justifyContent: "center",
+  },
+  shadow: {
     shadowColor: colors.black,
     shadowOffset: {
       width: 0,
@@ -82,16 +160,17 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.75,
     shadowRadius: 3.5,
-    elevation: 10,
+    elevation: 5,
   },
-  input: {
-    marginHorizontal: screenWidth * 0.03,
-  },
-  iconContainer: { marginRight: 20, bottom: 5 },
   text: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 22,
     color: colors.white,
+    textAlign: "center",
+  },
+  button: {
+    paddingVertical: screenWidth * 0.12,
+    paddingHorizontal: screenWidth * 0.3,
   },
 });
 

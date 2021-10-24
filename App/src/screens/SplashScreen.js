@@ -40,7 +40,7 @@ export default SplashScreen = () => {
       end={{ x: 1, y: 1 }}
       style={([styles.container], { paddingTop: insets.top })}
     >
-      <StatusBar barStyle="light-content" backgroundColor="transparent" />
+      <StatusBar barStyle="light-content" />
       <View style={{ flexDirection: "row" }}>
         <Image
           source={require("../assets/images/colorful.jpeg")}
