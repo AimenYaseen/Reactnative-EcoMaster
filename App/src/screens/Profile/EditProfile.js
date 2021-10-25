@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import * as ImagePicker from "expo-image-picker";
 
 import { CustomHead } from "../../components/CustomHead";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
@@ -19,11 +20,11 @@ const screenHeight = Dimensions.get("window").height;
 const ProfileScreen = ({ navigation }) => {
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("password");
   const [country, setCountry] = useState("");
   const [bio, setBio] = useState("");
   const [gender, setGender] = useState("");
+
+  const [image, setImage] = useState(null);
 
   const rightIcon = () => (
     <Icon
@@ -44,6 +45,20 @@ const ProfileScreen = ({ navigation }) => {
       color={colors.secondary}
     />
   );
+
+  let defaultImage = require("../../assets/images/default.jpg");
+  let openImagePickerAsync = async () => {
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    setImage(pickerResult.uri);
+  };
 
   return (
     <ImageBackground
@@ -68,7 +83,8 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.container}>
           <Avatar
             rounded
-            source={require("../../assets/images/cherry.jpeg")}
+            source={image ? { uri: image } : defaultImage}
+            // icon={{ name: "user", type: "font-awesome" }}
             size={140}
             containerStyle={styles.avatar}
             //placeholderContent={}
@@ -79,6 +95,7 @@ const ProfileScreen = ({ navigation }) => {
               name="edit-2"
               type="feather"
               size={24}
+              onPress={openImagePickerAsync}
               color={colors.secondary}
               containerStyle={styles.iconContainer}
             />

@@ -5,6 +5,7 @@ import { Icon, Input } from "react-native-elements";
 import colors from "../constants/colors";
 
 const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 export const SimpleInput = ({ label, placeholder, onChangeText }) => {
   const [focus, setFocus] = useState(false);
@@ -65,52 +66,70 @@ export const IconInput = ({ label, value, onChangeText, name, type }) => {
   );
 };
 
-export const ProfileInput = ({ label, placeholder, onChangeText, color }) => {
+export const OverlayInput = ({ label, onChangeText }) => {
+  const [secure, setSecure] = useState(true);
   const [focus, setFocus] = useState(false);
 
   return (
     <>
-      <Input
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        //label={label}
-        // labelStyle={{ color: colors.black }}
-        placeholder={placeholder}
-        placeholderTextColor={colors.gray}
-        leftIcon={{
-          type: "material-icons",
-          name: "email",
-          color: colors.gray2,
+      <Text
+        style={{
+          fontWeight: "bold",
+          fontSize: 16,
+          marginLeft: 18,
+          marginBottom: 5,
+          alignSelf: "flex-start",
         }}
-        inputContainerStyle={{
-          backgroundColor: color,
-          borderColor: focus ? colors.secondary : null,
-          borderWidth: focus ? 2 : 0,
-          borderBottomWidth: focus ? 2 : 0,
-          paddingHorizontal: 5,
-          borderRadius: 10,
-          height: 50,
-          ...colors.shadow,
-        }}
-        onChangeText={onChangeText}
-        autoCorrect={false}
-        autoCapitalize="none"
-        autoComplete="off"
-      />
+      >
+        {label}
+      </Text>
+      <View style={styles.input}>
+        <Input
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          secureTextEntry={secure ? true : false}
+          label={null}
+          value="password"
+          onChangeText={onChangeText}
+          rightIcon={
+            <Icon
+              name="eye"
+              type="entypo"
+              color={secure ? colors.gray : colors.secondary}
+              size={15}
+              onPress={() => (secure ? setSecure(false) : setSecure(true))}
+            />
+          }
+          inputContainerStyle={{
+            //borderWidth: 1,
+            borderColor: focus ? colors.secondary : colors.gray,
+            borderBottomWidth: focus ? 1.5 : null,
+            borderWidth: focus ? 1.5 : null,
+            height: screenHeight * 0.06,
+            width: screenWidth * 0.8,
+            alignSelf: "center",
+            borderRadius: 10,
+            padding: 10,
+          }}
+          autoCorrect={false}
+          autoCapitalize="none"
+          autoComplete="off"
+        />
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
-    height: screenWidth * 0.35,
-    width: screenWidth * 0.45,
+    marginBottom: screenHeight * 0.02,
+    height: screenHeight * 0.06,
+    width: screenWidth * 0.8,
+    padding: null,
+    backgroundColor: "white",
+    borderColor: "transparent",
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "transparent",
-    backgroundColor: colors.white,
-  },
-  shadow: {
     shadowColor: colors.black,
     shadowOffset: {
       width: 0,

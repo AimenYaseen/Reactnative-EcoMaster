@@ -14,8 +14,8 @@ const ActivityScreen = ({ navigation }) => {
         centerColor={colors.secondary}
         leftIcon={() => (
           <Icon
-            name="md-caret-back"
-            type="ionicon"
+            name="chevron-left"
+            type="entypo"
             size={30}
             onPress={() => navigation.navigate("MainFlow")}
             color={colors.secondary}

@@ -26,8 +26,16 @@ export const StackScreen = () => {
         component={SignInScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Terms" component={TermsOfServices} />
-      <Stack.Screen name="Forget" component={ForgetPasswordScreen} />
+      <Stack.Screen
+        name="Terms"
+        component={TermsOfServices}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Forget"
+        component={ForgetPasswordScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

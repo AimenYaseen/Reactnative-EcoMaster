@@ -11,12 +11,19 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { CustomHead } from "../../components/CustomHead";
 import { GradientButton } from "../../components/GradientButton";
+import {
+  ConfirmationOverlay,
+  PasswordOverlay,
+} from "../../components/CustomOverlay";
 import colors from "../../constants/colors";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
+  const [pVisible, setPVisible] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+
   const firstName = "Aimen";
   const lastName = "Yaseen";
   const email = "aimenyaseen6@gmail.com";
@@ -109,14 +116,23 @@ const ProfileScreen = ({ navigation }) => {
               name="chevron-right"
               color={colors.secondary}
               size={26}
+              onPress={() => setPVisible(true)}
             />
           </View>
+          <PasswordOverlay
+            visible={pVisible}
+            onBackdropPress={() => setPVisible(false)}
+          />
           <View style={styles.button}>
-            <GradientButton
-              text="Sign Up"
-              onPress={() => navigation.navigate("MainFlow")}
-            />
+            <GradientButton text="Sign Out" onPress={() => setConfirm(true)} />
           </View>
+          <ConfirmationOverlay
+            visible={confirm}
+            onBackdropPress={() => setConfirm(false)}
+            onPress={() => navigation.navigate("AuthFlow")}
+            onPressCancel={() => setConfirm(false)}
+            msg="Are you sure?"
+          />
         </View>
       </KeyboardAwareScrollView>
     </>
@@ -167,6 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: colors.white,
     textAlign: "center",
+    //paddingLeft: 2,
   },
   button: {
     paddingVertical: screenWidth * 0.12,
