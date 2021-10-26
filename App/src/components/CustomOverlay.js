@@ -10,7 +10,7 @@ import { GradientButton } from "./GradientButton";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const PasswordOverlay = ({ visible, onBackdropPress }) => {
+export const PasswordOverlay = ({ visible, onBackdropPress, text }) => {
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
 
@@ -34,7 +34,7 @@ export const PasswordOverlay = ({ visible, onBackdropPress }) => {
             color: colors.secondary,
           }}
         >
-          Change Password
+          {text}
         </Text>
         <OverlayInput
           label="Current"

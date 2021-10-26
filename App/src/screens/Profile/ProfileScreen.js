@@ -122,6 +122,7 @@ const ProfileScreen = ({ navigation }) => {
           <PasswordOverlay
             visible={pVisible}
             onBackdropPress={() => setPVisible(false)}
+            text="Change Password"
           />
           <View style={styles.button}>
             <GradientButton text="Sign Out" onPress={() => setConfirm(true)} />

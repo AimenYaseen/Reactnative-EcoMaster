@@ -8,7 +8,7 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <ImageBackground
         style={styles.background}
-        source={require("../assets/images/flower.jpeg")}
+        source={require("../assets/images/colorful.jpeg")}
       >
         <View style={styles.subContainer}>
           <BlockButton

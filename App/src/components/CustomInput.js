@@ -66,6 +66,44 @@ export const IconInput = ({ label, value, onChangeText, name, type }) => {
   );
 };
 
+export const LeftIconInput = ({
+  label,
+  placeholder,
+  onChangeText,
+  name,
+  type,
+}) => {
+  const [focus, setFocus] = useState(false);
+
+  return (
+    <Input
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      label={label}
+      labelStyle={{ color: colors.black }}
+      placeholder={placeholder}
+      onChangeText={onChangeText}
+      leftIcon={
+        <Icon
+          name={name}
+          type={type}
+          color={focus ? colors.secondary : colors.gray}
+          size={20}
+          iconStyle={{ marginHorizontal: 5 }}
+        />
+      }
+      inputContainerStyle={{
+        borderBottomColor: focus ? colors.secondary : colors.gray,
+        borderBottomWidth: focus ? 1.5 : 1,
+        marginHorizontal: screenWidth * 0.02,
+      }}
+      autoCorrect={false}
+      autoCapitalize="none"
+      autoComplete="off"
+    />
+  );
+};
+
 export const OverlayInput = ({ label, onChangeText }) => {
   const [secure, setSecure] = useState(true);
   const [focus, setFocus] = useState(false);
