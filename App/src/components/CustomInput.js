@@ -81,6 +81,7 @@ export const LeftIconInput = ({
       onBlur={() => setFocus(false)}
       label={label}
       labelStyle={{ color: colors.black }}
+      inputStyle={{ color: colors.white }}
       placeholder={placeholder}
       onChangeText={onChangeText}
       leftIcon={
@@ -127,7 +128,7 @@ export const OverlayInput = ({ label, onChangeText }) => {
           onBlur={() => setFocus(false)}
           secureTextEntry={secure ? true : false}
           label={null}
-          value="password"
+          placeholder="enter password"
           onChangeText={onChangeText}
           rightIcon={
             <Icon

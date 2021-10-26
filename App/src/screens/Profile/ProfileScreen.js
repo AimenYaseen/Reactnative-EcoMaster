@@ -24,11 +24,14 @@ const ProfileScreen = ({ navigation }) => {
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
-  const firstName = "Aimen";
-  const lastName = "Yaseen";
-  const email = "aimenyaseen6@gmail.com";
-  const country = "Pakistan, Sahiwal";
-  const bio = "bsdskfjskfejn skhds kdduedh";
+  const [firstName, setFirstName] = useState("Aimen");
+  const [lastName, setLastName] = useState("Yaseen");
+  const [email, setEmail] = useState("aimenyaseen6@gmail.com");
+  const [country, setCountry] = useState("Pakistan, Sahiwal");
+  const [bio, setBio] = useState("bsdskfjskfejn skhds kdduedh");
+
+  const [current, setCurrent] = useState("");
+  const [newP, setNewP] = useState("");
 
   return (
     <>
@@ -123,6 +126,11 @@ const ProfileScreen = ({ navigation }) => {
             visible={pVisible}
             onBackdropPress={() => setPVisible(false)}
             text="Change Password"
+            onPress={() => setPVisible(false)}
+            label1="Current"
+            onChangeText1={(text) => setCurrent(text)}
+            label2="New"
+            onChangeText2={(text) => setNewP(text)}
           />
           <View style={styles.button}>
             <GradientButton text="Sign Out" onPress={() => setConfirm(true)} />

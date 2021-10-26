@@ -4,16 +4,15 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
   Feather,
-  Octicons,
 } from "@expo/vector-icons";
 import { Image, StyleSheet, View, Text } from "react-native";
 //import ViewOverflow from "react-native-view-overflow";
 import { Icon } from "react-native-elements";
 
+import { SuggestionTopTabScreen } from "./TopTabBar";
 import HabitTrackerScreen from "../screens/HabitTracker/HabitTrackerScreen";
 import EcoMap from "../screens/HabitTracker/EcoMap";
 import ActivityScreen from "../screens/CustomHabit/ActivityScreen";
-import SuggestionsScreen from "../screens/CustomHabit/SugessionsScreen";
 import CreateHabitScreen from "../screens/CustomHabit/CreateHabitScreen";
 import colors from "../constants/colors";
 
@@ -87,7 +86,7 @@ export const CustomTabScreen = () => {
     >
       <CustomTab.Screen
         name="Sugessions"
-        component={SuggestionsScreen}
+        component={SuggestionTopTabScreen}
         options={{
           tabBarLabel: <Text style={styles.label}>Suggestions</Text>,
           tabBarIcon: ({ focused }) => (

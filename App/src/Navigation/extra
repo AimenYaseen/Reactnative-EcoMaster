@@ -34,3 +34,19 @@
           source={require("../assets/images/logo.png")}
           size={300}
         />
+
+        <CustomHead
+        text="Suggestions"
+        color={colors.secondary}
+        centerColor={colors.white}
+        leftIcon={() => (
+          <Icon
+            name="chevron-left"
+            type="entypo"
+            size={30}
+            onPress={() => navigate("MainFlow")}
+            color={colors.white}
+          />
+        )}
+        rightIcon={null}
+      />

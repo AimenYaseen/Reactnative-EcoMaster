@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Overlay } from "react-native-elements";
 import { Icon } from "react-native-elements/dist/icons/Icon";
@@ -10,10 +10,16 @@ import { GradientButton } from "./GradientButton";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const PasswordOverlay = ({ visible, onBackdropPress, text }) => {
-  const [current, setCurrent] = useState("");
-  const [newP, setNewP] = useState("");
-
+export const PasswordOverlay = ({
+  visible,
+  onBackdropPress,
+  text,
+  onPress,
+  label1,
+  onChangeText1,
+  label2,
+  onChangeText2,
+}) => {
   return (
     <Overlay
       isVisible={visible}
@@ -36,16 +42,10 @@ export const PasswordOverlay = ({ visible, onBackdropPress, text }) => {
         >
           {text}
         </Text>
-        <OverlayInput
-          label="Current"
-          onChangeText={(text) => setCurrent(text)}
-        />
-        <OverlayInput label="New" onChangeText={(text) => setNewP(text)} />
+        <OverlayInput label={label1} onChangeText={onChangeText1} />
+        <OverlayInput label={label2} onChangeText={onChangeText2} />
         <View style={styles.button}>
-          <GradientButton
-            text="Save"
-            onPress={() => navigation.navigate("AuthFlow")}
-          />
+          <GradientButton text="Save" onPress={onPress} />
         </View>
       </View>
     </Overlay>

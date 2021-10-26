@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // alignItems: "center",
     justifyContent: "center",
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
   subContainer: {
     flexDirection: "row",
