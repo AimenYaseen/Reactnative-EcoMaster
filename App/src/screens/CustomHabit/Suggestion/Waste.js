@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function Waste() {
+export default Waste = () => {
   return (
     <View>
       <Text>Waste</Text>
     </View>
   );
-}
+};

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const Shopping = () => {
+export default Shopping = () => {
   return (
     <View>
       <Text>Shopping</Text>
@@ -9,6 +9,6 @@ const Shopping = () => {
   );
 };
 
-export default Shopping;
+//export default Shopping;
 
 const styles = StyleSheet.create({});

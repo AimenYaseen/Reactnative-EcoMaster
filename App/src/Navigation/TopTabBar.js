@@ -1,4 +1,6 @@
 import React, { Fragment } from "react";
+import { Text } from "react-native";
+import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -7,6 +9,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Head, UpperBorder, CustomHead } from "../components/CustomHead";
 import HomeScreen from "../screens/HomeScreen";
 import FeedScreen from "../screens/FeedScreen";
+
+import colors from "../constants/colors";
+
 import Habits from "../screens/CustomHabit/Suggestion/Habits";
 import Energy from "../screens/CustomHabit/Suggestion/Energy";
 import Water from "../screens/CustomHabit/Suggestion/Water";
@@ -15,8 +20,6 @@ import Transportation from "../screens/CustomHabit/Suggestion/Transportation";
 import FoodAndDrink from "../screens/CustomHabit/Suggestion/FoodAndDrink";
 import Shopping from "../screens/CustomHabit/Suggestion/Shopping";
 import Outdoors from "../screens/CustomHabit/Suggestion/Outdoors";
-
-import colors from "../constants/colors";
 
 const TopTab = createMaterialTopTabNavigator();
 export const TopTabScreen = () => {
@@ -120,17 +123,19 @@ export const SuggestionTopTabScreen = () => {
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "bold",
-            paddingLeft: 5,
+            width: "auto",
+            paddingHorizontal: 5,
           },
           tabBarItemStyle: {
-            height: 55,
-            flexDirection: "row",
+            height: 45,
+            width: "auto",
           },
           tabBarIndicatorStyle: {
             backgroundColor: colors.secondary,
             height: 3,
             borderRadius: 2,
           },
+          tabBarScrollEnabled: true,
           tabBarActiveTintColor: colors.secondary,
           tabBarInactiveTintColor: colors.gray2,
           tabBarStyle: {
@@ -140,32 +145,76 @@ export const SuggestionTopTabScreen = () => {
         }}
       >
         <SuggestionTopTab.Screen
-          name="Feeds"
-          component={FeedScreen}
-          options={{
-            // tabBarLabel: "Activity",
-            tabBarIcon: ({ focused }) => (
-              <Entypo
-                name="network"
-                color={focused ? colors.secondary : colors.gray2}
-                size={22}
-              />
-            ),
-          }}
+          name="Habit"
+          component={Habits}
+          options={
+            {
+              // tabBarLabel: "Activity",
+            }
+          }
         />
         <SuggestionTopTab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            // tabBarLabel: "HOME",
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name="home"
-                color={focused ? colors.secondary : colors.gray2}
-                size={22}
-              />
-            ),
-          }}
+          name="Energy"
+          component={Energy}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Water"
+          component={Water}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Waste"
+          component={Waste}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Transportaton"
+          component={Transportation}
+          options={
+            {
+              // tabBarLabel: "Transportation",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Food & Drink"
+          component={FoodAndDrink}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Shopping"
+          component={Shopping}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Outdoors"
+          component={Outdoors}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
         />
       </SuggestionTopTab.Navigator>
     </Fragment>

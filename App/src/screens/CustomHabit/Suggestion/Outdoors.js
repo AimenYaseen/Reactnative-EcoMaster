@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const Outdoors = () => {
+export default Outdoors = () => {
   return (
     <View>
       <Text>Outdoors</Text>
@@ -9,6 +9,6 @@ const Outdoors = () => {
   );
 };
 
-export default Outdoors;
+//export default Outdoors;
 
 const styles = StyleSheet.create({});
