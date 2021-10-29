@@ -35,10 +35,12 @@ const HabitTrackerScreen = ({ navigation }) => {
       />
       {console.log(habits)}
       <FlatList
+        showsHorizontalScrollIndicator={false}
+        horizontal
         data={habits}
-        //initialNumToRender={habits.length}
+        initialNumToRender={habits.length}
         keyExtractor={(item) => {
-          return item.id;
+          return item.id.toString();
         }}
         renderItem={({ item }) => {
           return (
@@ -48,7 +50,6 @@ const HabitTrackerScreen = ({ navigation }) => {
                 flex: 1,
               }}
             >
-              {console.log(habits)}
               <HabitCard
                 title={item.title}
                 description={item.description}

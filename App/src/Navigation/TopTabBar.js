@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { Text } from "react-native";
 import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo, Ionicons } from "@expo/vector-icons";
@@ -192,24 +191,6 @@ export const SuggestionTopTabScreen = () => {
         <SuggestionTopTab.Screen
           name="Food & Drink"
           component={FoodAndDrink}
-          options={
-            {
-              // tabBarLabel: "HOME",
-            }
-          }
-        />
-        <SuggestionTopTab.Screen
-          name="Shopping"
-          component={Shopping}
-          options={
-            {
-              // tabBarLabel: "HOME",
-            }
-          }
-        />
-        <SuggestionTopTab.Screen
-          name="Outdoors"
-          component={Outdoors}
           options={
             {
               // tabBarLabel: "HOME",

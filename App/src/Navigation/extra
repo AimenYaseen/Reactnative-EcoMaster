@@ -50,3 +50,22 @@
         )}
         rightIcon={null}
       />
+
+      <SuggestionTopTab.Screen
+          name="Shopping"
+          component={Shopping}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />
+        <SuggestionTopTab.Screen
+          name="Outdoors"
+          component={Outdoors}
+          options={
+            {
+              // tabBarLabel: "HOME",
+            }
+          }
+        />

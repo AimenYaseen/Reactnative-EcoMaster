@@ -53,6 +53,7 @@ export const HabitCard = ({ title, description, duration }) => {
             style={{ borderRadius: 5, height: screenHeight * 0.4 }}
           >
             <View style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={styles.dTitle}>Description</Text>
               <Text style={styles.description}>{description}</Text>
             </View>
           </Card.Image>
@@ -140,12 +141,23 @@ const styles = StyleSheet.create({
   habitContainer: {
     borderRadius: 10,
     height: screenHeight * 0.8,
+    width: screenWidth * 0.92,
     // alignItems: "center",
+  },
+  dTitle: {
+    color: colors.white,
+    fontSize: 20,
+    fontWeight: "bold",
+    //alignSelf: "center",
+    marginVertical: 5,
+    paddingLeft: 15,
   },
   description: {
     color: colors.white,
     alignSelf: "center",
     textAlignVertical: "center",
+    paddingHorizontal: 15,
+    fontSize: 15,
     //borderWidth: 1,
   },
   duration: {
