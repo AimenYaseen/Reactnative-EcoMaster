@@ -1,9 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import { HabitCard } from "../../components/CustomCard";
 
 import { CustomHead } from "../../components/CustomHead";
+import { habits } from "../../data/habits";
 import colors from "../../constants/colors";
 
 const screenHeight = Dimensions.get("screen").height;
@@ -26,12 +33,32 @@ const HabitTrackerScreen = ({ navigation }) => {
         )}
         rightIcon={null}
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ maxHeight: screenHeight }}
-      >
-        <HabitCard />
-      </ScrollView>
+      {console.log(habits)}
+      <FlatList
+        data={habits}
+        //initialNumToRender={habits.length}
+        keyExtractor={(item) => {
+          return item.id;
+        }}
+        renderItem={({ item }) => {
+          return (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{
+                flex: 1,
+              }}
+            >
+              {console.log(habits)}
+              <HabitCard
+                title={item.title}
+                description={item.description}
+                duration={item.duration}
+              />
+              <View style={{ height: screenHeight * 0.2 }} />
+            </ScrollView>
+          );
+        }}
+      />
     </View>
   );
 };

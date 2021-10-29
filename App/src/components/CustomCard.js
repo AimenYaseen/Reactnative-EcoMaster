@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  Button,
-  ScrollView,
-} from "react-native";
-import { Tile, Card, Icon } from "react-native-elements";
+import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { Tile, Card, Icon, Button } from "react-native-elements";
 
 import colors from "../constants/colors";
 
@@ -40,44 +33,106 @@ export const TileCard = ({ image, title, caption }) => {
   );
 };
 
-export const HabitCard = () => {
+export const HabitCard = ({ title, description, duration }) => {
   return (
-    <Card containerStyle={[styles.habitContainer, styles.shadow]}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Card.Title>HELLO WORLD</Card.Title>
-        <Card.Divider />
+    <>
+      <Card containerStyle={[styles.habitContainer, styles.shadow]}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Card.Title
+            style={{
+              fontSize: 20,
+              //fontFamily: "arial"
+            }}
+          >
+            {title}
+          </Card.Title>
+          <Card.Divider />
 
-        <Card.Image
-          source={require("../assets/images/leave.jpeg")}
-          style={{ borderRadius: 5, height: screenHeight * 0.4 }}
-        >
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <Text style={styles.description}>Description</Text>
+          <Card.Image
+            source={require("../assets/images/leave.jpeg")}
+            style={{ borderRadius: 5, height: screenHeight * 0.4 }}
+          >
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={styles.description}>{description}</Text>
+            </View>
+          </Card.Image>
+          <View style={[styles.duration, styles.shadow]}>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Icon
+                type="entypo"
+                name="time-slot"
+                color={colors.secondary}
+                size={20}
+              />
+              <Text style={{ paddingHorizontal: 10 }}>
+                Duration : {duration} Days
+              </Text>
+            </View>
           </View>
-        </Card.Image>
-        <View style={[styles.duration, styles.shadow]}>
-          <View style={{ flexDirection: "row" }}>
-            <Icon
-              type="material-icons"
-              name="email"
-              color={colors.secondary}
-              size={20}
+          <Button
+            type="clear"
+            title="Learn More"
+            titleStyle={{ color: colors.secondary, fontWeight: "bold" }}
+            containerStyle={{ marginTop: 10 }}
+          />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginVertical: 15,
+            }}
+          >
+            <Button
+              type="solid"
+              title="Select"
+              raised
+              buttonStyle={{
+                width: screenWidth * 0.25,
+                borderTopRightRadius: 25,
+                borderBottomRightRadius: 25,
+                backgroundColor: colors.mustard,
+              }}
+              containerStyle={{
+                borderTopRightRadius: 25,
+                borderBottomRightRadius: 25,
+              }}
             />
-            <Text style={{ paddingHorizontal: 10 }}>Duration : </Text>
+            <Button
+              type="solid"
+              title="Skip"
+              raised
+              buttonStyle={{
+                width: screenWidth * 0.25,
+                borderTopLeftRadius: 25,
+                borderBottomLeftRadius: 25,
+                backgroundColor: colors.mauve,
+              }}
+              containerStyle={{
+                borderTopLeftRadius: 25,
+                borderBottomLeftRadius: 25,
+              }}
+            />
           </View>
-        </View>
-        <Button
-          icon={<Icon name="code" color="#ffffff" />}
-          buttonStyle={{
-            borderRadius: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            marginBottom: 0,
-          }}
-          title="VIEW NOW"
-        />
-      </ScrollView>
-    </Card>
+        </ScrollView>
+      </Card>
+      <Button
+        raised
+        type="solid"
+        title="Share"
+        containerStyle={{
+          marginTop: 20,
+          alignSelf: "flex-end",
+          marginRight: 15,
+          borderRadius: 30,
+        }}
+        buttonStyle={{
+          width: screenWidth * 0.25,
+          borderRadius: 30,
+          backgroundColor: colors.blue,
+        }}
+      />
+    </>
   );
 };
 
@@ -101,7 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "transparent",
     borderWidth: 1,
-    padding: 15,
+    paddingHorizontal: 10,
     borderRadius: 10,
     justifyContent: "center",
     alignSelf: "center",

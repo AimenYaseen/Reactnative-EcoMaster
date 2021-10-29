@@ -15,4 +15,6 @@ export default {
   lightBlue: "#F5FAFD",
   Blue: "#E1EFFF",
   shadow: "#7F5DF0",
+  mustard: "#E3A500",
+  mauve: "#B180A2",
 };
