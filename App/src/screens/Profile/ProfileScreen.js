@@ -24,11 +24,11 @@ const ProfileScreen = ({ navigation }) => {
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
-  const [firstName, setFirstName] = useState("Aimen");
-  const [lastName, setLastName] = useState("Yaseen");
-  const [email, setEmail] = useState("aimenyaseen6@gmail.com");
-  const [country, setCountry] = useState("Pakistan, Sahiwal");
-  const [bio, setBio] = useState("bsdskfjskfejn skhds kdduedh");
+  const [firstName, setFirstName] = useState("Name");
+  const [lastName, setLastName] = useState("SurName");
+  const [email, setEmail] = useState("abc@example.com");
+  const [country, setCountry] = useState("Country, City");
+  const [bio, setBio] = useState("Your Short Info");
 
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
