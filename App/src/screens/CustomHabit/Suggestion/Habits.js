@@ -20,17 +20,12 @@ export default Habits = () => {
         source={require("../../../assets/images/edit.jpeg")}
       >
         <FlatList
+          contentContainerStyle={{ paddingBottom: screenHeight * 0.2 }}
           showsVerticalScrollIndicator={false}
           data={habitList}
           initialNumToRender={habitList.length}
           keyExtractor={(item) => {
             return item.id.toString();
-          }}
-          onEndReachedThreshold={0.5}
-          onEndReached={({ distanceFromEnd }) => {
-            if (distanceFromEnd < 0) return;
-            <View style={{ height: screenHeight * 0.2 }} />;
-            // this._onEndReachedThreshold();
           }}
           renderItem={({ item }) => {
             return (

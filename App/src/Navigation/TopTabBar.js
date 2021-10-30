@@ -62,7 +62,7 @@ export const TopTabScreen = () => {
         }}
       >
         <TopTab.Screen
-          name="Feeds"
+          name="News"
           component={FeedScreen}
           options={{
             // tabBarLabel: "Activity",

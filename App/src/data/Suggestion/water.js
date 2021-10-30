@@ -1,7 +1,7 @@
 export const water = [
   {
     id: 1,
-    title: "",
+    title: "Drink 8 Glass Per Day",
     caption: "",
   },
   {

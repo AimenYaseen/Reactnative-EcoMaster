@@ -33,8 +33,8 @@ const HabitTrackerScreen = ({ navigation }) => {
         )}
         rightIcon={null}
       />
-      {console.log(habits)}
       <FlatList
+        //removeClippedSubviews
         showsHorizontalScrollIndicator={false}
         horizontal
         data={habits}
@@ -44,19 +44,13 @@ const HabitTrackerScreen = ({ navigation }) => {
         }}
         renderItem={({ item }) => {
           return (
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={{
-                flex: 1,
-              }}
-            >
-              <HabitCard
-                title={item.title}
-                description={item.description}
-                duration={item.duration}
-              />
-              <View style={{ height: screenHeight * 0.2 }} />
-            </ScrollView>
+            <HabitCard
+              title={item.title}
+              description={item.description}
+              duration={item.duration}
+              steps={item.steps}
+              image={item.image}
+            />
           );
         }}
       />

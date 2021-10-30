@@ -24,13 +24,13 @@ export const HabitTabScreen = () => {
       barStyle={{
         backgroundColor: colors.secondary,
         position: "absolute",
-        // bottom: 25,
-        //marginHorizontal: 20,
-        //borderRadius: 15,
-        height: 50,
+        //bottom: 3,
+        marginHorizontal: 10,
+        borderRadius: 10,
+        height: 55,
         elevation: 0,
         justifyContent: "center",
-        // paddingHorizontal: 5,
+        paddingHorizontal: 5,
         ...styles.shadow,
       }}
       activeColor={colors.white}
