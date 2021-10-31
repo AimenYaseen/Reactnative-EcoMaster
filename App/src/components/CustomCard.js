@@ -20,14 +20,10 @@ export const TileCard = ({ image, title, caption }) => {
         height={screenHeight * 0.3}
         imageContainerStyle={{
           borderRadius: 7,
-          //  borderBottomRightRadius: 5,
-          // borderTopRightRadius: 5,
-          // paddingRight: 54,
         }}
-        imageProps={{ resizeMode: "cover" }}
         containerStyle={{
           marginTop: 10,
-          //borderRadius: 10,
+          alignSelf: "center",
         }}
       />
     </>

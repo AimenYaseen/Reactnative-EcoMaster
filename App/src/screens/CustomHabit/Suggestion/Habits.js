@@ -46,11 +46,7 @@ export default Habits = () => {
 
 const styles = StyleSheet.create({
   background: {
-    //paddingTop: screenHeight * 0.1,
     flex: 1,
-    //height: screenHeight * 1.1,
-    //justifyContent: "center",
     resizeMode: "contain",
-    paddingHorizontal: 10,
   },
 });
