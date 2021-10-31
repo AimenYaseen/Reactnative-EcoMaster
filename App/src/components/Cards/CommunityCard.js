@@ -4,9 +4,9 @@ import { Card, ListItem, Button, Icon } from "react-native-elements";
 
 import colors from "../../constants/colors";
 
-export const CommunityCard = ({ item, activeLike, activeComment }) => {
+export const CommunityCard = ({ item }) => {
   const likeIcon = item.liked ? "heart" : "heart-outline";
-  const likeIconColor = item.liked ? "#2e64e5" : "#333";
+  const likeIconColor = item.liked ? colors.like : colors.gray4;
 
   let likeText;
   let commentText;
@@ -46,7 +46,7 @@ export const CommunityCard = ({ item, activeLike, activeComment }) => {
         <TouchableOpacity
           style={[
             styles.interaction,
-            { backgroundColor: item.liked ? "#2e64e515" : "transparent" },
+            { backgroundColor: item.liked ? colors.select : "transparent" },
           ]}
         >
           <Icon
@@ -70,7 +70,7 @@ export const CommunityCard = ({ item, activeLike, activeComment }) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#f8f8f8",
+    backgroundColor: colors.whiteSmoke,
     // width: "100%",
     marginBottom: 5,
     borderRadius: 10,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   postTime: {
     fontSize: 12,
-    color: "#666",
+    color: colors.gray3,
   },
   postText: { fontSize: 14, paddingHorizontal: 12 },
   postImage: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   interactionText: {
     fontSize: 13,
     fontWeight: "bold",
-    color: "#333",
+    color: colors.gray4,
     marginTop: 4,
     marginLeft: 5,
   },
