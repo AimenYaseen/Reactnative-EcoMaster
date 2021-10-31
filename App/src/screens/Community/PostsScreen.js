@@ -1,17 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Dimensions, View } from "react-native";
 import { Icon } from "react-native-elements";
 import { CommunityCard } from "../../components/Cards/CommunityCard";
 
 import { CustomHead } from "../../components/CustomHead";
+import { Posts } from "../../data/posts";
 import colors from "../../constants/colors";
+
+const screenHeight = Dimensions.get("screen").height;
 
 const PostsScreen = ({ navigation }) => {
   return (
-    <View>
+    <>
       <CustomHead
         text="Community"
-        color="transparent"
+        color="white"
         centerColor={colors.secondary}
         leftIcon={() => (
           <Icon
@@ -32,11 +35,34 @@ const PostsScreen = ({ navigation }) => {
           />
         )}
       />
-      <CommunityCard image={require("../../assets/images/colorful.jpeg")} />
-    </View>
+      <View style={styles.container}>
+        <FlatList
+          contentContainerStyle={{
+            padding: 0,
+            paddingBottom: screenHeight * 0.1,
+          }}
+          showsVerticalScrollIndicator={false}
+          initialNumToRender={Posts.length}
+          data={Posts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <CommunityCard item={item} activeLike={true} />
+          )}
+        />
+      </View>
+    </>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // justifyContent: "center",
+    alignItems: "center",
+    //padding: 0,
+    //paddingHorizontal: 10,
+    backgroundColor: colors.white,
+  },
+});
 
 export default PostsScreen;
