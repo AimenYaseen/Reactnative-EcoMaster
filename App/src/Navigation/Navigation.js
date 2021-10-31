@@ -9,6 +9,8 @@ import EditProfile from "../screens/Profile/EditProfile";
 import { HabitTabScreen } from "./BottomTabBar";
 import { CustomTabScreen } from "./BottomTabBar";
 import SplashScreen from "../screens/SplashScreen";
+import PostsScreen from "../screens/Community/PostsScreen";
+import AddPost from "../screens/Community/AddPost";
 
 const MainStack = createStackNavigator();
 const MainStackScreen = () => {
@@ -37,6 +39,16 @@ const MainStackScreen = () => {
       <MainStack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="Post"
+        component={PostsScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="AddPost"
+        component={AddPost}
         options={{ headerShown: false }}
       />
       <MainStack.Screen

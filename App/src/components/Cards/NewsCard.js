@@ -20,6 +20,7 @@ export const NewsCard = ({ image, title, caption }) => {
         imageContainerStyle={{
           borderRadius: 10,
           borderWidth: 2,
+          borderColor: colors.secondary,
         }}
         containerStyle={{
           alignSelf: "center",
@@ -29,12 +30,12 @@ export const NewsCard = ({ image, title, caption }) => {
         }}
         titleStyle={{
           // color: "black",
-          backgroundColor: "black",
+          backgroundColor: colors.secondary,
           paddingHorizontal: 10,
           borderRadius: 5,
         }}
         captionStyle={{
-          backgroundColor: "black",
+          backgroundColor: colors.secondary,
           padding: 10,
           borderRadius: 5,
         }}

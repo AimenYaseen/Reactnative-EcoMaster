@@ -38,6 +38,7 @@ const HomeScreen = ({ navigation }) => {
             type="font-awesome"
             iconName="group"
             text="Community"
+            onPress={() => navigation.navigate("Post")}
             // subText="subText"
           />
         </View>

@@ -46,7 +46,7 @@ const ProfileScreen = ({ navigation }) => {
     />
   );
 
-  let defaultImage = require("../../assets/images/default.jpg");
+  let defaultImage = require("../../assets/images/default/default-user.jpeg");
   let openImagePickerAsync = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();

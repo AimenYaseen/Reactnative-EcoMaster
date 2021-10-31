@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: "center",
     alignItems: "center",
+    height: screenHeight,
   },
   text: {
     color: colors.gray,
