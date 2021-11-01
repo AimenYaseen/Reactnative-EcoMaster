@@ -69,3 +69,41 @@
             }
           }
         />
+
+
+<SpeedDial
+          isOpen={open}
+          icon={{ name: "add", color: "#fff" }}
+          openIcon={{ name: "close", color: "#fff" }}
+          onOpen={() => setOpen(!open)}
+          onClose={() => setOpen(!open)}
+          buttonStyle={{
+            width: 60,
+            height: 60,
+            borderRadius: 30,
+          }}
+          color={colors.secondary}
+        >
+          <SpeedDial.Action
+            icon={{ name: "post-add", color: "#fff" }}
+            title="Add Post"
+            onPress={() => navigation.navigate("AddPost")}
+            buttonStyle={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+            }}
+            color={colors.secondary}
+          />
+          <SpeedDial.Action
+            icon={{ name: "insert-photo", color: "#fff" }}
+            title="Add Photo"
+            onPress={() => console.log("Delete Something")}
+            buttonStyle={{
+              width: 50,
+              height: 50,
+              borderRadius: 25,
+            }}
+            color={colors.secondary}
+          />
+        </SpeedDial>

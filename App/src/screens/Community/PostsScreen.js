@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, StyleSheet, Dimensions, View } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon, FAB, SpeedDial } from "react-native-elements";
 import { CommunityCard } from "../../components/Cards/CommunityCard";
 
 import { CustomHead } from "../../components/CustomHead";
@@ -8,6 +8,7 @@ import { Posts } from "../../data/posts";
 import colors from "../../constants/colors";
 
 const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
 
 const PostsScreen = ({ navigation }) => {
   return (
@@ -49,6 +50,30 @@ const PostsScreen = ({ navigation }) => {
             <CommunityCard item={item} activeLike={true} />
           )}
         />
+        <FAB
+          //raised
+          size="large"
+          title={
+            <Icon
+              name="add"
+              type="ionicons"
+              size={30}
+              onPress={() => navigation.navigate("AddPost")}
+              color={colors.white}
+            />
+          }
+          iconContainerStyle={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          placement="right"
+          color={colors.secondary}
+          buttonStyle={{
+            width: 60,
+            height: 60,
+            borderRadius: 30,
+          }}
+        />
       </View>
     </>
   );
@@ -57,11 +82,14 @@ const PostsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
     alignItems: "center",
-    //padding: 0,
-    //paddingHorizontal: 10,
     backgroundColor: colors.white,
+  },
+  buttonContainer: {
+    margin: screenWidth * 0.1,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -10,7 +10,14 @@ import {
   Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Icon, Avatar, Input, Button } from "react-native-elements";
+import * as ImagePicker from "expo-image-picker";
+import {
+  Icon,
+  Avatar,
+  ListItem,
+  BottomSheet,
+  Button,
+} from "react-native-elements";
 
 import { CustomHead } from "../../components/CustomHead";
 import { GradientButton } from "../../components/GradientButton";
@@ -21,8 +28,36 @@ const screenHeight = Dimensions.get("window").height;
 
 const AddPost = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
+  const [image, setImage] = useState(null);
+  const [post, setPost] = useState("");
+
+  const list = [
+    { title: "Choose Image", onPress: () => openImagePickerAsync() },
+    { title: "Take Picture" },
+    {
+      title: "Cancel",
+      containerStyle: { backgroundColor: "red" },
+      titleStyle: { color: "white" },
+      onPress: () => setVisible(false),
+    },
+  ];
 
   let defaultImage = require("../../assets/images/default/default-img.jpg");
+  let openImagePickerAsync = async () => {
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    });
+    setImage(pickerResult.uri);
+  };
 
   return (
     <>
@@ -45,7 +80,7 @@ const AddPost = ({ navigation }) => {
         contentContainerStyle={{
           flexGrow: 1,
           paddingBottom: 10,
-          backgroundColor: colors.white,
+          backgroundColor: colors.whiteSmoke,
         }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
@@ -65,7 +100,6 @@ const AddPost = ({ navigation }) => {
               source={defaultImage}
               size={50}
               containerStyle={styles.avatar}
-              //placeholderContent={}
             />
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>Name</Text>
           </View>
@@ -73,8 +107,11 @@ const AddPost = ({ navigation }) => {
             style={styles.input}
             placeholder="What's On Your Mind?"
             multiline
-            numberOfLines={5}
+            onChangeText={(text) => setPost(text)}
           />
+          {image ? (
+            <Image source={{ uri: image }} style={styles.image} />
+          ) : null}
           <View
             style={{
               flexDirection: "row",
@@ -105,6 +142,28 @@ const AddPost = ({ navigation }) => {
               }}
             />
           </View>
+          <BottomSheet
+            isVisible={visible}
+            containerStyle={{
+              backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
+            }}
+          >
+            {list.map((l, i) => (
+              <ListItem
+                key={i}
+                containerStyle={l.containerStyle}
+                onPress={l.onPress}
+              >
+                <ListItem.Content>
+                  <ListItem.Title style={l.titleStyle}>
+                    {l.title}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+          </BottomSheet>
         </View>
       </KeyboardAwareScrollView>
     </>
@@ -114,8 +173,6 @@ const AddPost = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //borderWidth: 1,
-    //justifyContent: "center",
     alignItems: "center",
     padding: 20,
     backgroundColor: colors.whiteSmoke,
@@ -140,14 +197,12 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   input: {
-    textAlign: "center",
     padding: 15,
     width: "100%",
-    //height: 100,
+    height: "auto",
     borderRadius: 10,
     fontSize: 24,
     backgroundColor: colors.whiteSmoke,
-    borderWidth: 1,
     borderColor: colors.blue,
   },
   avatar: {
