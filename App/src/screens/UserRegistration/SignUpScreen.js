@@ -65,7 +65,7 @@ const SignUpScreen = ({ navigation }) => {
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
             <GradientButton
               text="Sign Up"
-              onPress={() => navigation.navigate("MainFlow")}
+              onPress={() => navigation.navigate("AppFlow")}
             />
             <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
               <Text style={styles.text}>Already have an account?</Text>

@@ -27,41 +27,54 @@ const MainStackScreen = () => {
         options={{ headerShown: false }}
       />
       <MainStack.Screen
+        name="AppFlow"
+        component={AppStackScreen}
+        options={{ headerShown: false }}
+      />
+    </MainStack.Navigator>
+  );
+};
+
+const AppStack = createStackNavigator();
+const AppStackScreen = () => {
+  return (
+    <AppStack.Navigator>
+      <AppStack.Screen
         name="MainFlow"
         component={TopTabScreen}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen
+      <AppStack.Screen
         name="Profile"
         component={ProfileScreen}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen
+      <AppStack.Screen
         name="EditProfile"
         component={EditProfile}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen
+      <AppStack.Screen
         name="Post"
         component={PostsScreen}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen
+      <AppStack.Screen
         name="AddPost"
         component={AddPost}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen
+      <AppStack.Screen
         name="Habit"
         component={HabitTabScreen}
         options={{ headerShown: false }}
       />
-      <MainStack.Screen
+      <AppStack.Screen
         name="Custom"
         component={CustomTabScreen}
         options={{ headerShown: false }}
       />
-    </MainStack.Navigator>
+    </AppStack.Navigator>
   );
 };
 

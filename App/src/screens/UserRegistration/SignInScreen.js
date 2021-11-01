@@ -53,7 +53,7 @@ const SignInScreen = ({ navigation }) => {
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
             <GradientButton
               text="Sign In"
-              onPress={() => navigation.navigate("MainFlow")}
+              onPress={() => navigation.navigate("AppFlow")}
             />
             <TouchableOpacity onPress={() => navigation.navigate("Forget")}>
               <Text style={styles.text}>Forgot your Password?</Text>

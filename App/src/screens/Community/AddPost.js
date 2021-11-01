@@ -32,8 +32,16 @@ const AddPost = ({ navigation }) => {
   const [post, setPost] = useState("");
 
   const list = [
-    { title: "Choose Image", onPress: () => openImagePickerAsync() },
-    { title: "Take Picture" },
+    {
+      title: "Choose Image",
+      containerStyle: {
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
+        //marginTop: 10,
+      },
+      onPress: () => openImagePickerAsync(),
+    },
+    { title: "Take Picture", onPress: () => openImagePickerCameraAsync() },
     {
       title: "Cancel",
       containerStyle: { backgroundColor: "red" },
@@ -53,6 +61,20 @@ const AddPost = ({ navigation }) => {
     }
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    });
+    setImage(pickerResult.uri);
+  };
+  let openImagePickerCameraAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
@@ -146,8 +168,9 @@ const AddPost = ({ navigation }) => {
             isVisible={visible}
             containerStyle={{
               backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
+              // borderTopRightRadius: 20,
+              //borderTopLeftRadius: 20,
+              //paddingTop: 10,
             }}
           >
             {list.map((l, i) => (
