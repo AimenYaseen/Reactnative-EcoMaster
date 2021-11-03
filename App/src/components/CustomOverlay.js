@@ -125,6 +125,7 @@ export const HabitOverlay = ({ data, visible, onBackdropPress, onPress }) => {
           style={{
             height: 8,
             width: 8,
+            marginTop: 5,
             borderRadius: 4,
             marginRight: 5,
             backgroundColor: colors.secondary,

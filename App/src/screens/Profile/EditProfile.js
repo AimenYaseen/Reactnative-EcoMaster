@@ -6,7 +6,7 @@ import {
   Dimensions,
   ImageBackground,
 } from "react-native";
-import { Avatar, Icon } from "react-native-elements";
+import { Avatar, Icon, ListItem, BottomSheet } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
 
@@ -25,6 +25,26 @@ const ProfileScreen = ({ navigation }) => {
   const [gender, setGender] = useState("");
 
   const [image, setImage] = useState(null);
+  const [visible, setVisible] = useState(false);
+
+  const list = [
+    {
+      title: "Choose Image",
+      containerStyle: {
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
+        //marginTop: 10,
+      },
+      onPress: () => openImagePickerAsync(),
+    },
+    { title: "Take Picture", onPress: () => openImagePickerCameraAsync() },
+    {
+      title: "Cancel",
+      containerStyle: { backgroundColor: "red" },
+      titleStyle: { color: "white" },
+      onPress: () => setVisible(false),
+    },
+  ];
 
   const rightIcon = () => (
     <Icon
@@ -57,6 +77,20 @@ const ProfileScreen = ({ navigation }) => {
     }
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    });
+    setImage(pickerResult.uri);
+  };
+  let openImagePickerCameraAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
@@ -98,7 +132,7 @@ const ProfileScreen = ({ navigation }) => {
               name="edit-2"
               type="feather"
               size={24}
-              onPress={openImagePickerAsync}
+              onPress={() => setVisible(true)}
               color={colors.secondary}
               containerStyle={styles.iconContainer}
             />
@@ -140,6 +174,26 @@ const ProfileScreen = ({ navigation }) => {
               onChangeText={(text) => setGender(text)}
             />
           </View>
+          <BottomSheet
+            isVisible={visible}
+            containerStyle={{
+              backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
+            }}
+          >
+            {list.map((l, i) => (
+              <ListItem
+                key={i}
+                containerStyle={l.containerStyle}
+                onPress={l.onPress}
+              >
+                <ListItem.Content>
+                  <ListItem.Title style={l.titleStyle}>
+                    {l.title}
+                  </ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            ))}
+          </BottomSheet>
         </View>
       </KeyboardAwareScrollView>
     </ImageBackground>
