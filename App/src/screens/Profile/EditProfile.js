@@ -9,6 +9,7 @@ import {
 import { Avatar, Icon, ListItem, BottomSheet } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
+//import ImgToBase64 from 'react-native-image-base64';
 
 import { CustomHead } from "../../components/CustomHead";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
@@ -65,6 +66,10 @@ const ProfileScreen = ({ navigation }) => {
       color={colors.secondary}
     />
   );
+
+  // ImgToBase64.getBase64String('file://youfileurl')
+  // .then(base64String => doSomethingWith(base64String))
+  // .catch(err => doSomethingWith(err));
 
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
   let openImagePickerAsync = async () => {

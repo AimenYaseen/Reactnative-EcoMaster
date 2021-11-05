@@ -2,8 +2,8 @@ import createDataContext from "./createDataContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
-import { auth } from "../Firebase/config";
-import { navigate, replace } from "../Navigation/NavigationRef";
+import { Firebase } from "../Firebase/config";
+import { replace } from "../Navigation/NavigationRef";
 
 const AuthReducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +13,8 @@ const AuthReducer = (state, action) => {
       return { ...state, user: action.payload };
     case "signout":
       return { ...state, user: {} };
+    case "loader":
+      return { ...state, loading: action.payload };
     default:
       return state;
   }
@@ -31,47 +33,85 @@ const automaticSignin = (dispatch) => {
 };
 
 const signup = (dispatch) => {
-  return async ({ email, password, firsName, lastName, home }) => {
+  return async ({ email, password, firstName, lastName }) => {
+    //loader
+    dispatch({ type: "loader", payload: true });
+    //Verification
     if (password === "" || email === "") {
       Alert.alert("Email or Password can't be Empty");
     } else {
-      if (firsName === "" || lastName === "") {
+      if (firstName === "" || lastName === "") {
         Alert.alert("FirstName or LastName can't be Empty");
       } else {
-        await auth
+        // USER SIGNUP
+        await Firebase.auth()
           .createUserWithEmailAndPassword(email, password)
-          .then((userCredentials) => {
+          .then(async (userCredentials) => {
             const user = userCredentials.user;
-            AsyncStorage.setItem("user", user.email);
+            // const userId = Firebase.auth().currentUser.uid;
+            // USER REFERENCE IN REALTIME DATABASE
+            await Firebase.database()
+              .ref("Users/" + user.uid)
+              .set({
+                userId: user.uid,
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                bio: "",
+                country: "",
+                image: "",
+              })
+              .then(() => {
+                //loader
+                dispatch({ type: "loader", payload: false });
+              })
+              .catch((error) => {
+                //loader
+                dispatch({ type: "loader", payload: false });
+                Alert.alert(error.message);
+              });
+            // ASYNC STORAGE
+            await AsyncStorage.setItem("user", user.uid);
             dispatch({ type: "signin", payload: user });
             replace("AppFlow");
           })
-          .catch((error) => Alert.alert(error.message));
+          .catch((error) => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(error.message);
+          });
       }
     }
   };
 };
 const signin = (dispatch) => {
-  return async ({ email, password, home }) => {
-    await auth
+  return async ({ email, password }) => {
+    //loader
+    dispatch({ type: "loader", payload: true });
+    await Firebase.auth()
       .signInWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
+      .then(async (userCredentials) => {
+        //loader
+        dispatch({ type: "loader", payload: false });
         const user = userCredentials.user;
-        AsyncStorage.setItem("user", user.email);
+        await AsyncStorage.setItem("user", user.uid);
         dispatch({ type: "signin", payload: user });
         replace("AppFlow");
       })
       .catch((error) => {
+        //loader
+        dispatch({ type: "loader", payload: false });
         Alert.alert(error.message);
       });
   };
 };
 const signout = (dispatch) => {
   return async () => {
-    await auth
+    await Firebase.auth()
       .signOut()
-      .then(() => {
-        AsyncStorage.removeItem("user");
+      .then(async () => {
+        await AsyncStorage.removeItem("user");
         dispatch({ type: "signout" });
         replace("AuthFlow", { screen: "Welcome" });
       })
@@ -82,5 +122,5 @@ const signout = (dispatch) => {
 export const { Provider, Context } = createDataContext(
   AuthReducer,
   { signin, signup, signout, automaticSignin },
-  { user: {} }
+  { user: {}, loading: false }
 );

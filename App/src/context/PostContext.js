@@ -5,23 +5,27 @@ import { Alert } from "react-native";
 import { Firebase } from "../Firebase/config";
 import { replace } from "../Navigation/NavigationRef";
 
-const UserReducer = (state, action) => {
+const PostReducer = (state, action) => {
   switch (action.type) {
     default:
       return state;
   }
 };
 
-const updateUser = (dispatch) => {
+const getPost = (dispatch) => {
   return () => {};
 };
 
-const getUser = (dispatch) => {
+const addPost = (dispatch) => {
+  return () => {};
+};
+
+const deletePost = (dispatch) => {
   return () => {};
 };
 
 export const { Context, Provider } = createDataContext(
-  UserReducer,
-  { getUser, updateUser },
+  PostReducer,
+  { addPost, deletePost, getPost },
   { loading: false }
 );

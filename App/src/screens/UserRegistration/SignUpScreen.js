@@ -9,6 +9,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import { Context as AuthContext } from "../../context/AuthContext";
 import { GradientButton } from "../../components/GradientButton";
@@ -20,7 +21,6 @@ const screenHeight = Dimensions.get("window").height;
 
 const SignUpScreen = ({ navigation }) => {
   const { state, signup } = useContext(AuthContext);
-  const home = () => navigation.replace("AppFlow");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -82,15 +82,18 @@ const SignUpScreen = ({ navigation }) => {
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
             <GradientButton
               text="Sign Up"
-              onPress={() =>
-                signup({ email, password, firstName, lastName, home })
-              }
+              onPress={() => signup({ email, password, firstName, lastName })}
             />
             <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
               <Text style={styles.text}>Already have an account?</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>
+        <Spinner
+          visible={state.loading}
+          color={colors.secondary}
+          animation="fade"
+        />
       </View>
     </KeyboardAwareScrollView>
   );

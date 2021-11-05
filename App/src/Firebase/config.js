@@ -6,6 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBmZjq9A0cF_8qn_rXCZxGRPh94bPrvFNE",
   authDomain: "ecomaster-74319.firebaseapp.com",
   projectId: "ecomaster-74319",
+  databaseURL: "https://ecomaster-74319-default-rtdb.firebaseio.com",
   storageBucket: "ecomaster-74319.appspot.com",
   messagingSenderId: "832095339438",
   appId: "1:832095339438:web:cec61635704a3d6dfdfe3f",
@@ -19,8 +20,4 @@ if (firebase.apps.length === 0) {
   app = firebase.app();
 }
 
-const auth = firebase.auth();
-const database = firebase.getDatabase(app);
-
-export { auth };
-export { database };
+export const Firebase = firebase;
