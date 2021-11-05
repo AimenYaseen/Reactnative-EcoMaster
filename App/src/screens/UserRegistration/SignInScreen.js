@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import { Context as AuthContext } from "../../context/AuthContext";
 import { GradientButton } from "../../components/GradientButton";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
 import colors from "../../constants/colors";
@@ -18,6 +19,9 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const SignInScreen = ({ navigation }) => {
+  const { state, signin } = useContext(AuthContext);
+  const home = () => navigation.replace("AppFlow");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("password");
 
@@ -29,7 +33,11 @@ const SignInScreen = ({ navigation }) => {
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="always"
     >
-      <StatusBar barStyle="light-content" backgroundColor={colors.secondary} />
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={colors.secondary}
+        hidden={false}
+      />
       <View style={styles.container}>
         <ImageBackground
           style={styles.background}
@@ -39,11 +47,13 @@ const SignInScreen = ({ navigation }) => {
           <View style={styles.input}>
             <SimpleInput
               label="Email"
+              value={email}
               placeholder="abc@example.com"
               onChangeText={(text) => setEmail(text)}
             />
             <IconInput
               label="Password"
+              placeholder="password"
               value={password}
               name="eye"
               type="entypo"
@@ -53,7 +63,7 @@ const SignInScreen = ({ navigation }) => {
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
             <GradientButton
               text="Sign In"
-              onPress={() => navigation.navigate("AppFlow")}
+              onPress={() => signin({ email, password, home })}
             />
             <TouchableOpacity onPress={() => navigation.navigate("Forget")}>
               <Text style={styles.text}>Forgot your Password?</Text>

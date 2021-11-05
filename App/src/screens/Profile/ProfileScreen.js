@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -16,22 +16,26 @@ import {
   PasswordOverlay,
 } from "../../components/CustomOverlay";
 import colors from "../../constants/colors";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
+  const { state, signout } = useContext(AuthContext);
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const email = "abc@example.com";
 
   const [firstName, setFirstName] = useState("Name");
   const [lastName, setLastName] = useState("SurName");
-  const [email, setEmail] = useState("abc@example.com");
   const [country, setCountry] = useState("Country, City");
   const [bio, setBio] = useState("Your Short Info");
 
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
+
+  const authNavigation = () => navigation.navigate("AuthFlow");
 
   return (
     <>
@@ -98,7 +102,9 @@ const ProfileScreen = ({ navigation }) => {
                 color={colors.secondary}
                 size={20}
               />
-              <Text style={{ paddingHorizontal: 10 }}>{email}</Text>
+              <Text style={{ paddingHorizontal: 10 }}>
+                {state.user.email ? state.user.email : email}
+              </Text>
             </View>
           </View>
           <View
@@ -138,7 +144,9 @@ const ProfileScreen = ({ navigation }) => {
           <ConfirmationOverlay
             visible={confirm}
             onBackdropPress={() => setConfirm(false)}
-            onPress={() => navigation.navigate("AuthFlow")}
+            onPress={() => {
+              signout({ authNavigation });
+            }}
             onPressCancel={() => setConfirm(false)}
             msg="Are you sure?"
           />

@@ -23,7 +23,7 @@ export default SplashScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       try {
-        navigate("AuthFlow");
+        navigate("Welcome");
       } catch (error) {
         console.log("Something went wrong", error);
       }

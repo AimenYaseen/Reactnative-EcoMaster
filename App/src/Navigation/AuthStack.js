@@ -6,11 +6,17 @@ import SignUpScreen from "../screens/UserRegistration/SignUpScreen";
 import SignInScreen from "../screens/UserRegistration/SignInScreen";
 import ForgetPasswordScreen from "../screens/UserRegistration/ForgetPasswordScreen";
 import TermsOfServices from "../screens/TermsOfServices";
+import SplashScreen from "../screens/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 export const StackScreen = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="Splash"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}

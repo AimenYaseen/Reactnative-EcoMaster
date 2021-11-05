@@ -7,7 +7,7 @@ import colors from "../constants/colors";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const SimpleInput = ({ label, placeholder, onChangeText }) => {
+export const SimpleInput = ({ label, placeholder, onChangeText, value }) => {
   const [focus, setFocus] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ export const SimpleInput = ({ label, placeholder, onChangeText }) => {
         labelStyle={{ color: colors.black }}
         placeholder={placeholder}
         placeholderTextColor={colors.gray}
+        value={value}
         inputContainerStyle={{
           borderBottomColor: focus ? colors.secondary : colors.gray,
           borderBottomWidth: focus ? 2 : 1,
@@ -33,7 +34,14 @@ export const SimpleInput = ({ label, placeholder, onChangeText }) => {
   );
 };
 
-export const IconInput = ({ label, value, onChangeText, name, type }) => {
+export const IconInput = ({
+  label,
+  placeholder,
+  onChangeText,
+  name,
+  type,
+  value,
+}) => {
   const [secure, setSecure] = useState(true);
   const [focus, setFocus] = useState(false);
 
@@ -44,6 +52,7 @@ export const IconInput = ({ label, value, onChangeText, name, type }) => {
       secureTextEntry={secure ? true : false}
       label={label}
       labelStyle={{ color: colors.black }}
+      placeholder={placeholder}
       value={value}
       onChangeText={onChangeText}
       rightIcon={
