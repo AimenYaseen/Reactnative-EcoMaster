@@ -1,8 +1,9 @@
 import createDataContext from "./createDataContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 import { auth } from "../Firebase/config";
-import { Alert } from "react-native";
+import { navigate, replace } from "../Navigation/NavigationRef";
 
 const AuthReducer = (state, action) => {
   switch (action.type) {
@@ -22,12 +23,10 @@ const automaticSignin = (dispatch) => {
     const user = await AsyncStorage.getItem("user");
     if (user) {
       dispatch({ type: "signin", payload: user });
+      replace("AppFlow");
+    } else {
+      replace("Welcome");
     }
-
-    //navigate("AppFlow")
-    // else
-    //   // navigate("AuthFlow")
-    //
   };
 };
 
@@ -43,10 +42,9 @@ const signup = (dispatch) => {
           .createUserWithEmailAndPassword(email, password)
           .then((userCredentials) => {
             const user = userCredentials.user;
-            AsyncStorage.setItem("user", user);
+            AsyncStorage.setItem("user", user.email);
             dispatch({ type: "signin", payload: user });
-            home();
-            //console.log(user);
+            replace("AppFlow");
           })
           .catch((error) => Alert.alert(error.message));
       }
@@ -59,9 +57,9 @@ const signin = (dispatch) => {
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        AsyncStorage.setItem("user", user);
+        AsyncStorage.setItem("user", user.email);
         dispatch({ type: "signin", payload: user });
-        home();
+        replace("AppFlow");
       })
       .catch((error) => {
         Alert.alert(error.message);
@@ -69,13 +67,13 @@ const signin = (dispatch) => {
   };
 };
 const signout = (dispatch) => {
-  return async ({ authNavigation }) => {
+  return async () => {
     await auth
       .signOut()
       .then(() => {
         AsyncStorage.removeItem("user");
         dispatch({ type: "signout" });
-        authNavigation();
+        replace("AuthFlow", { screen: "Welcome" });
       })
       .catch((error) => Alert.alert(error.message));
   };

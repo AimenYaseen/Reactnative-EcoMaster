@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -6,26 +6,27 @@ import {
   StyleSheet,
   Dimensions,
   StatusBar,
+  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
 
 import colors from "../constants/colors";
+import { Context as AuthContext } from "../context/AuthContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export default SplashScreen = () => {
+  const { automaticSignin } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
-  const { navigate } = useNavigation();
 
   useEffect(() => {
     setTimeout(() => {
       try {
-        navigate("Welcome");
+        automaticSignin();
       } catch (error) {
-        console.log("Something went wrong", error);
+        Alert.alert("Something went wrong", error);
       }
     }, 3000);
   }, []);

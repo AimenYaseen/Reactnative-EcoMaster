@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { StackScreen } from "./AuthStack";
 import { AppStackScreen } from "./AppStack";
+import { navigationRef } from "./NavigationRef";
 
 const MainStack = createStackNavigator();
 const MainStackScreen = () => {
@@ -27,7 +28,7 @@ const MainStackScreen = () => {
 
 export default () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <MainStackScreen />
     </NavigationContainer>
   );

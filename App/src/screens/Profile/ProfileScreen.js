@@ -23,6 +23,7 @@ const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
   const { state, signout } = useContext(AuthContext);
+
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const email = "abc@example.com";
@@ -34,8 +35,6 @@ const ProfileScreen = ({ navigation }) => {
 
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
-
-  const authNavigation = () => navigation.navigate("AuthFlow");
 
   return (
     <>
@@ -145,7 +144,7 @@ const ProfileScreen = ({ navigation }) => {
             visible={confirm}
             onBackdropPress={() => setConfirm(false)}
             onPress={() => {
-              signout({ authNavigation });
+              signout();
             }}
             onPressCancel={() => setConfirm(false)}
             msg="Are you sure?"
