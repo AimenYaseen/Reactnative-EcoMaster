@@ -1,13 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   ImageBackground,
+  InteractionManager,
 } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useFocusEffect } from "@react-navigation/native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomHead } from "../../components/CustomHead";
 import { GradientButton } from "../../components/GradientButton";
@@ -17,27 +20,58 @@ import {
 } from "../../components/CustomOverlay";
 import colors from "../../constants/colors";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as UserContext } from "../../context/UserContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
-  const { state, signout } = useContext(AuthContext);
+  const { signout } = useContext(AuthContext);
+  const {
+    state: { userData, loading },
+    getUser,
+  } = useContext(UserContext);
 
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const email = "abc@example.com";
+  const [email, setEmail] = useState(userData.email);
 
-  const [firstName, setFirstName] = useState("Name");
-  const [lastName, setLastName] = useState("SurName");
-  const [country, setCountry] = useState("Country, City");
-  const [bio, setBio] = useState("Your Short Info");
+  const [firstName, setFirstName] = useState(userData.firstName);
+  const [lastName, setLastName] = useState(userData.lastName);
+  const [country, setCountry] = useState(userData.country);
+  const [bio, setBio] = useState(userData.bio);
 
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
 
+  // useEffect(() => {
+  //   getUser();
+  //   console.log("hello");
+  //   const unsubscribe = navigation.addListener("focus", () => {
+  //     getUser();
+  //     console.log("telo");
+  //   });
+  //   return unsubscribe;
+  // }, [navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("helo");
+      getUser();
+      const task = InteractionManager.runAfterInteractions(() => {
+        console.log("helo");
+        getUser();
+      });
+
+      return () => {
+        task.cancel();
+      };
+    }, [navigation])
+  );
+
   return (
     <>
+      {/* {getUser()} */}
       <CustomHead
         text={null}
         color={colors.secondary}
@@ -84,12 +118,14 @@ const ProfileScreen = ({ navigation }) => {
                 color={colors.secondary}
                 size={18}
               />
-              <Text style={{ padding: 5 }}>{country}</Text>
+              <Text style={{ padding: 5 }}>
+                {country ? country : "Country, City"}
+              </Text>
             </View>
             <Text
               style={{ textAlign: "center", marginBottom: screenHeight * 0.06 }}
             >
-              {bio}
+              {bio ? bio : "Your Short Info"}
             </Text>
           </View>
           <View style={[styles.email, styles.shadow]}>
@@ -101,9 +137,7 @@ const ProfileScreen = ({ navigation }) => {
                 color={colors.secondary}
                 size={20}
               />
-              <Text style={{ paddingHorizontal: 10 }}>
-                {state.user.email ? state.user.email : email}
-              </Text>
+              <Text style={{ paddingHorizontal: 10 }}>{email}</Text>
             </View>
           </View>
           <View
@@ -150,6 +184,7 @@ const ProfileScreen = ({ navigation }) => {
             msg="Are you sure?"
           />
         </View>
+        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </KeyboardAwareScrollView>
     </>
   );

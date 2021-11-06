@@ -137,7 +137,7 @@ export const OverlayInput = ({ label, onChangeText }) => {
           onBlur={() => setFocus(false)}
           secureTextEntry={secure ? true : false}
           label={null}
-          placeholder="enter password"
+          placeholder="Enter Password"
           onChangeText={onChangeText}
           rightIcon={
             <Icon

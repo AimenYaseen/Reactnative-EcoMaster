@@ -1,32 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { Avatar, Icon, ListItem, BottomSheet } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
-//import ImgToBase64 from 'react-native-image-base64';
+import * as FileSystem from "expo-file-system";
+import ImgToBase64 from "react-native-image-base64";
 
 import { CustomHead } from "../../components/CustomHead";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
 import colors from "../../constants/colors";
+import { Context as UserContext } from "../../context/UserContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
-  const [firstName, setFirstname] = useState("");
-  const [lastName, setLastname] = useState("");
-  const [country, setCountry] = useState("");
-  const [bio, setBio] = useState("");
-  const [gender, setGender] = useState("");
+  const {
+    state: { userData },
+    getUser,
+  } = useContext(UserContext);
 
-  const [image, setImage] = useState(null);
+  const [firstName, setFirstname] = useState(userData.firstName);
+  const [lastName, setLastname] = useState(userData.lastName);
+  const [country, setCountry] = useState(userData.country);
+  const [bio, setBio] = useState(userData.bio);
+
+  const [image, setImage] = useState(userData.image);
   const [visible, setVisible] = useState(false);
+
+  let imageString;
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener("focus", () => {
+  //     getUser();
+  //   });
+  //   return unsubscribe;
+  // }, [navigation]);
 
   const list = [
     {
@@ -67,10 +83,6 @@ const ProfileScreen = ({ navigation }) => {
     />
   );
 
-  // ImgToBase64.getBase64String('file://youfileurl')
-  // .then(base64String => doSomethingWith(base64String))
-  // .catch(err => doSomethingWith(err));
-
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
   let openImagePickerAsync = async () => {
     let permissionResult =
@@ -85,6 +97,22 @@ const ProfileScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
+    console.log(pickerResult.uri);
+    // ImgToBase64.getBase64String(pickerResult.uri)
+    //   .then((base64String) => {
+    //     imageString = "data:image/jpeg;base64," + base64String;
+    //     console.log(imageString);
+    //   })
+    //   .catch((err) => {
+    //     setVisible(false);
+    //     Alert.alert(err);
+    //   });
+    const base64String = await FileSystem.readAsStringAsync(pickerResult.uri, {
+      encoding: "base64",
+    });
+    imageString = "data:image/jpeg;base64," + base64String;
+    console.log(imageString);
+    setVisible(false);
     setImage(pickerResult.uri);
   };
   let openImagePickerCameraAsync = async () => {
@@ -99,109 +127,114 @@ const ProfileScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
+    // ImgToBase64.getBase64String(pickerResult.uri)
+    //   .then((base64String) => (imageString = base64String))
+    //   .catch((err) => Alert.alert(err));
+    setVisible(false);
     setImage(pickerResult.uri);
   };
 
   return (
-    <ImageBackground
-      style={styles.background}
-      // source={require("../../assets/images/edit2.jpeg")}
-      blurRadius={2}
-    >
-      <CustomHead
-        // text="Profile"
-        color="transparent"
-        centerColor={null}
-        leftIcon={leftIcon}
-        rightIcon={rightIcon}
-      />
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="always"
+    <>
+      <ImageBackground
+        style={styles.background}
+        // source={require("../../assets/images/edit2.jpeg")}
+        blurRadius={2}
       >
-        <View style={styles.container}>
-          <Avatar
-            rounded
-            source={image ? { uri: image } : defaultImage}
-            // icon={{ name: "user", type: "font-awesome" }}
-            size={140}
-            containerStyle={styles.avatar}
-            //placeholderContent={}
-          >
-            <Avatar.Accessory
-              //solid
-              reverse
-              name="edit-2"
-              type="feather"
-              size={24}
-              onPress={() => setVisible(true)}
-              color={colors.secondary}
-              containerStyle={styles.iconContainer}
-            />
-          </Avatar>
-          <View style={styles.input}>
-            <SimpleInput
-              label="Bio"
-              placeholder="short bio..."
-              onChangeText={(text) => setBio(text)}
-            />
-            <Text
-              style={{
-                color: colors.gray,
-                marginTop: -20,
-                marginHorizontal: 10,
-                marginBottom: 15,
+        <CustomHead
+          // text="Profile"
+          color="transparent"
+          centerColor={null}
+          leftIcon={leftIcon}
+          rightIcon={rightIcon}
+        />
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+        >
+          <View style={styles.container}>
+            <Avatar
+              rounded
+              source={image ? { uri: image } : defaultImage}
+              // icon={{ name: "user", type: "font-awesome" }}
+              size={140}
+              containerStyle={styles.avatar}
+              //placeholderContent={}
+            >
+              <Avatar.Accessory
+                //solid
+                reverse
+                name="edit-2"
+                type="feather"
+                size={24}
+                onPress={() => setVisible(true)}
+                color={colors.secondary}
+                containerStyle={styles.iconContainer}
+              />
+            </Avatar>
+            <View style={styles.input}>
+              <SimpleInput
+                label="Bio"
+                placeholder="short bio..."
+                value={bio}
+                onChangeText={(text) => setBio(text)}
+              />
+              <Text
+                style={{
+                  color: colors.gray,
+                  marginTop: -20,
+                  marginHorizontal: 10,
+                  marginBottom: 15,
+                }}
+              >
+                Your bio is shown on your profile...
+              </Text>
+              <SimpleInput
+                label="First Name"
+                value={firstName}
+                placeholder="first"
+                onChangeText={(text) => setFirstname(text)}
+              />
+              <SimpleInput
+                label="Last Name"
+                placeholder="last"
+                value={lastName}
+                onChangeText={(text) => setLastname(text)}
+              />
+              <SimpleInput
+                label="Country"
+                placeholder="Pakistan, Sahiwal"
+                value={country}
+                onChangeText={(text) => setCountry(text)}
+              />
+            </View>
+            <BottomSheet
+              isVisible={visible}
+              containerStyle={{
+                backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
               }}
             >
-              Your bio is shown on your profile...
-            </Text>
-            <SimpleInput
-              label="First Name"
-              placeholder="first"
-              onChangeText={(text) => setFirstname(text)}
-            />
-            <SimpleInput
-              label="Last Name"
-              placeholder="last"
-              onChangeText={(text) => setLastname(text)}
-            />
-            <SimpleInput
-              label="Country"
-              placeholder="Pakistan, Sahiwal"
-              onChangeText={(text) => setCountry(text)}
-            />
-            <SimpleInput
-              label="Gender"
-              placeholder="Female / Male"
-              onChangeText={(text) => setGender(text)}
-            />
+              {list.map((l, i) => (
+                <ListItem
+                  key={i}
+                  containerStyle={l.containerStyle}
+                  onPress={l.onPress}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={l.titleStyle}>
+                      {l.title}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </BottomSheet>
           </View>
-          <BottomSheet
-            isVisible={visible}
-            containerStyle={{
-              backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
-            }}
-          >
-            {list.map((l, i) => (
-              <ListItem
-                key={i}
-                containerStyle={l.containerStyle}
-                onPress={l.onPress}
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={l.titleStyle}>
-                    {l.title}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </BottomSheet>
-        </View>
-      </KeyboardAwareScrollView>
-    </ImageBackground>
+        </KeyboardAwareScrollView>
+      </ImageBackground>
+    </>
   );
 };
 
@@ -214,13 +247,13 @@ const styles = StyleSheet.create({
   },
   background: {
     flex: 1,
-    //justifyContent: "center",
+    justifyContent: "center",
     resizeMode: "contain",
   },
   avatar: {
     top: screenHeight * 0.03,
     alignSelf: "center",
-    marginBottom: screenHeight * 0.07,
+    marginBottom: screenHeight * 0.1,
     shadowColor: colors.black,
     shadowOffset: {
       width: 0,

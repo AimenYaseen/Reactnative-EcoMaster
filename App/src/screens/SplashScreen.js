@@ -13,18 +13,21 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import colors from "../constants/colors";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as UserContext } from "../context/UserContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export default SplashScreen = () => {
   const { automaticSignin } = useContext(AuthContext);
+  const { getUser } = useContext(UserContext);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
     setTimeout(() => {
       try {
         automaticSignin();
+        getUser();
       } catch (error) {
         Alert.alert("Something went wrong", error);
       }
