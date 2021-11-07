@@ -7,6 +7,8 @@ import { HabitTabScreen } from "./BottomTabBar";
 import { CustomTabScreen } from "./BottomTabBar";
 import PostsScreen from "../screens/Community/PostsScreen";
 import AddPost from "../screens/Community/AddPost";
+import HabitForm from "../screens/CustomHabit/HabitForm";
+
 import { TopTabScreen } from "./TopTabBar";
 
 const AppStack = createNativeStackNavigator();
@@ -41,6 +43,11 @@ export const AppStackScreen = () => {
       <AppStack.Screen
         name="Habit"
         component={HabitTabScreen}
+        options={{ headerShown: false }}
+      />
+      <AppStack.Screen
+        name="HabitForm"
+        component={HabitForm}
         options={{ headerShown: false }}
       />
       <AppStack.Screen

@@ -14,6 +14,7 @@ import HabitTrackerScreen from "../screens/HabitTracker/HabitTrackerScreen";
 import EcoMap from "../screens/HabitTracker/EcoMap";
 import ActivityScreen from "../screens/CustomHabit/ActivityScreen";
 import CreateHabitScreen from "../screens/CustomHabit/CreateHabitScreen";
+
 import colors from "../constants/colors";
 
 const HabitTab = createMaterialBottomTabNavigator();

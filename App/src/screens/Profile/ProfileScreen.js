@@ -34,32 +34,19 @@ const ProfileScreen = ({ navigation }) => {
 
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const [email, setEmail] = useState(userData.email);
-
-  const [firstName, setFirstName] = useState(userData.firstName);
-  const [lastName, setLastName] = useState(userData.lastName);
-  const [country, setCountry] = useState(userData.country);
-  const [bio, setBio] = useState(userData.bio);
+  const email = "abc@example.com";
+  const firstName = "";
+  const lastName = "";
+  const country = "Country, City";
+  const bio = "Your Short Info HERE...";
 
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
 
-  // useEffect(() => {
-  //   getUser();
-  //   console.log("hello");
-  //   const unsubscribe = navigation.addListener("focus", () => {
-  //     getUser();
-  //     console.log("telo");
-  //   });
-  //   return unsubscribe;
-  // }, [navigation]);
-
   useFocusEffect(
     React.useCallback(() => {
-      console.log("helo");
       getUser();
       const task = InteractionManager.runAfterInteractions(() => {
-        console.log("helo");
         getUser();
       });
 
@@ -97,13 +84,18 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.container}>
           <Avatar
             rounded
-            source={require("../../assets/images/cherry.jpeg")}
+            source={
+              userData.image
+                ? { uri: userData.image }
+                : require("../../assets/images/default/default-user.jpeg")
+            }
             size={140}
             containerStyle={styles.avatar}
           />
           <View>
             <Text style={[styles.text, { color: "black" }]}>
-              {firstName} {lastName}
+              {userData.firstName ? `${userData.firstName} ` : firstName}
+              {userData.lastName ? userData.lastName : lastName}
             </Text>
             <View
               style={{
@@ -119,13 +111,13 @@ const ProfileScreen = ({ navigation }) => {
                 size={18}
               />
               <Text style={{ padding: 5 }}>
-                {country ? country : "Country, City"}
+                {userData.country ? userData.country : country}
               </Text>
             </View>
             <Text
               style={{ textAlign: "center", marginBottom: screenHeight * 0.06 }}
             >
-              {bio ? bio : "Your Short Info"}
+              {userData.bio ? userData.bio : bio}
             </Text>
           </View>
           <View style={[styles.email, styles.shadow]}>
@@ -137,7 +129,9 @@ const ProfileScreen = ({ navigation }) => {
                 color={colors.secondary}
                 size={20}
               />
-              <Text style={{ paddingHorizontal: 10 }}>{email}</Text>
+              <Text style={{ paddingHorizontal: 10 }}>
+                {userData.email ? userData.email : email}
+              </Text>
             </View>
           </View>
           <View

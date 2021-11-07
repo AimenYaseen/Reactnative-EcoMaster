@@ -26,15 +26,7 @@ const PostsScreen = ({ navigation }) => {
             color={colors.secondary}
           />
         )}
-        rightIcon={() => (
-          <Icon
-            name="add"
-            type="ionicons"
-            size={36}
-            onPress={() => navigation.navigate("AddPost")}
-            color={colors.secondary}
-          />
-        )}
+        rightIcon={null}
       />
       <View style={styles.container}>
         <FlatList

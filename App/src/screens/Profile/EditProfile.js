@@ -10,8 +10,6 @@ import {
 import { Avatar, Icon, ListItem, BottomSheet } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
-import ImgToBase64 from "react-native-image-base64";
 
 import { CustomHead } from "../../components/CustomHead";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
@@ -23,8 +21,10 @@ const screenHeight = Dimensions.get("window").height;
 
 const ProfileScreen = ({ navigation }) => {
   const {
-    state: { userData },
+    state: { userData, imageUrl },
     getUser,
+    updateUser,
+    uploadImage,
   } = useContext(UserContext);
 
   const [firstName, setFirstname] = useState(userData.firstName);
@@ -35,15 +35,6 @@ const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(userData.image);
   const [visible, setVisible] = useState(false);
 
-  let imageString;
-
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener("focus", () => {
-  //     getUser();
-  //   });
-  //   return unsubscribe;
-  // }, [navigation]);
-
   const list = [
     {
       title: "Choose Image",
@@ -52,9 +43,18 @@ const ProfileScreen = ({ navigation }) => {
         borderTopLeftRadius: 20,
         //marginTop: 10,
       },
-      onPress: () => openImagePickerAsync(),
+      onPress: () => {
+        openImagePickerAsync();
+        setVisible(false);
+      },
     },
-    { title: "Take Picture", onPress: () => openImagePickerCameraAsync() },
+    {
+      title: "Take Picture",
+      onPress: () => {
+        openImagePickerCameraAsync();
+        setVisible(false);
+      },
+    },
     {
       title: "Cancel",
       containerStyle: { backgroundColor: "red" },
@@ -68,7 +68,13 @@ const ProfileScreen = ({ navigation }) => {
       name="check-circle"
       type="material-icons"
       size={30}
-      onPress={() => navigation.navigate("Profile")}
+      onPress={() => {
+        if (image) {
+          updateUser(image, bio, firstName, lastName, country);
+          getUser();
+          navigation.navigate("Profile");
+        }
+      }}
       color={colors.secondary}
     />
   );
@@ -96,24 +102,15 @@ const ProfileScreen = ({ navigation }) => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
     });
-    console.log(pickerResult.uri);
-    // ImgToBase64.getBase64String(pickerResult.uri)
-    //   .then((base64String) => {
-    //     imageString = "data:image/jpeg;base64," + base64String;
-    //     console.log(imageString);
-    //   })
-    //   .catch((err) => {
-    //     setVisible(false);
-    //     Alert.alert(err);
-    //   });
-    const base64String = await FileSystem.readAsStringAsync(pickerResult.uri, {
-      encoding: "base64",
-    });
-    imageString = "data:image/jpeg;base64," + base64String;
-    console.log(imageString);
-    setVisible(false);
-    setImage(pickerResult.uri);
+    if (pickerResult.uri) {
+      uploadImage(pickerResult.uri);
+    }
+    if (imageUrl) {
+      setImage(imageUrl);
+    }
   };
   let openImagePickerCameraAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -127,11 +124,12 @@ const ProfileScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
-    // ImgToBase64.getBase64String(pickerResult.uri)
-    //   .then((base64String) => (imageString = base64String))
-    //   .catch((err) => Alert.alert(err));
-    setVisible(false);
-    setImage(pickerResult.uri);
+    if (pickerResult.uri) {
+      uploadImage(pickerResult.uri);
+    }
+    if (imageUrl) {
+      setImage(imageUrl);
+    }
   };
 
   return (
@@ -253,6 +251,7 @@ const styles = StyleSheet.create({
   avatar: {
     top: screenHeight * 0.03,
     alignSelf: "center",
+    resizeMode: "contain",
     marginBottom: screenHeight * 0.1,
     shadowColor: colors.black,
     shadowOffset: {

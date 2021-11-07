@@ -12,6 +12,7 @@ import { HabitCard } from "../../components/CustomCard";
 import { CustomHead } from "../../components/CustomHead";
 import { habits } from "../../data/habits";
 import colors from "../../constants/colors";
+import { LockCard } from "../../components/Cards/LockCard";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -44,13 +45,16 @@ const HabitTrackerScreen = ({ navigation }) => {
         }}
         renderItem={({ item }) => {
           return (
-            <HabitCard
-              title={item.title}
-              description={item.description}
-              duration={item.duration}
-              steps={item.steps}
-              image={item.image}
-            />
+            <>
+              <HabitCard
+                title={item.title}
+                description={item.description}
+                duration={item.duration}
+                steps={item.steps}
+                image={item.image}
+              />
+              {/* <LockCard /> */}
+            </>
           );
         }}
       />

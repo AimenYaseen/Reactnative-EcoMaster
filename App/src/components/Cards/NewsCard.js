@@ -12,28 +12,29 @@ export const NewsCard = ({ image, title, caption }) => {
     <>
       <Tile
         imageSrc={image}
-        title={title}
+        title={null}
         featured
         caption={caption}
-        width={screenWidth * 0.95}
-        height={screenHeight * 0.3}
+        width={screenWidth * 0.8}
+        height={screenHeight * 0.25}
         imageContainerStyle={{
           borderRadius: 10,
-          borderWidth: 2,
-          borderColor: colors.secondary,
+          //  borderWidth: 2,
+          // borderColor: colors.secondary,
         }}
         containerStyle={{
           alignSelf: "center",
           marginTop: 15,
+          marginRight: 15,
           borderRadius: 10,
           ...styles.shadow,
         }}
-        titleStyle={{
-          // color: "black",
-          backgroundColor: colors.secondary,
-          paddingHorizontal: 10,
-          borderRadius: 5,
-        }}
+        // titleStyle={{
+        //   // color: "black",
+        //   backgroundColor: colors.secondary,
+        //   paddingHorizontal: 10,
+        //   borderRadius: 5,
+        // }}
         captionStyle={{
           backgroundColor: colors.secondary,
           padding: 10,
@@ -53,6 +54,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.75,
     shadowRadius: 3.5,
-    elevation: 5,
+    elevation: 10,
   },
 });

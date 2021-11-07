@@ -75,12 +75,25 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
                 </Text>
               </View>
             </View>
+            <View style={[styles.duration, styles.shadow]}>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                <Icon
+                  type="font-awesome-5"
+                  name="coins"
+                  color={colors.secondary}
+                  size={19}
+                />
+                <Text style={{ paddingHorizontal: 10 }}>
+                  Reward : {10} points
+                </Text>
+              </View>
+            </View>
             <Button
               type="clear"
               title="Learn More"
               titleStyle={{ color: colors.secondary, fontWeight: "bold" }}
               onPress={() => setVisible(true)}
-              containerStyle={{ marginTop: 10 }}
+              containerStyle={{ marginTop: 20 }}
             />
             <HabitOverlay
               data={steps}
@@ -112,7 +125,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
               />
               <Button
                 type="solid"
-                title="Skip"
+                title="Share"
                 raised
                 buttonStyle={{
                   width: screenWidth * 0.25,
@@ -128,22 +141,6 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
             </View>
           </ScrollView>
         </Card>
-        <Button
-          raised
-          type="solid"
-          title="Share"
-          containerStyle={{
-            marginTop: 20,
-            alignSelf: "flex-end",
-            marginRight: 15,
-            borderRadius: 30,
-          }}
-          buttonStyle={{
-            width: screenWidth * 0.25,
-            borderRadius: 30,
-            backgroundColor: colors.blue,
-          }}
-        />
         <View style={{ height: screenHeight * 0.2 }} />
       </ScrollView>
     </>
@@ -153,7 +150,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
 const styles = StyleSheet.create({
   habitContainer: {
     borderRadius: 10,
-    height: screenHeight * 0.8,
+    height: screenHeight * 0.86,
     width: screenWidth * 0.92,
     // alignItems: "center",
   },
@@ -176,7 +173,7 @@ const styles = StyleSheet.create({
   },
   duration: {
     //marginHorizontal: screenWidth * 0.03,
-    marginVertical: screenHeight * 0.02,
+    marginTop: screenHeight * 0.02,
     height: screenHeight * 0.06,
     width: screenWidth * 0.81,
     backgroundColor: "white",

@@ -1,32 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 
 import { NewsCard } from "../components/Cards/NewsCard";
+import NewsList from "../components/News/NewsList";
 import colors from "../constants/colors";
 import { news } from "../data/news";
 
 const screenHeight = Dimensions.get("screen").height;
 
 const FeedScreen = () => {
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Text style={styles.text}> There are no feedbacks yet... </Text>
-    </View>
-  );
-  const renderItem = ({ item }) => {
-    return (
-      <NewsCard title={item.title} caption={item.caption} image={item.image} />
-    );
-  };
-
   return (
-    <FlatList
-      contentContainerStyle={{ paddingBottom: screenHeight * 0.1 }}
-      ListEmptyComponent={listEmpty}
-      data={news}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={renderItem}
-    />
+    <View style={{ flex: 1, paddingTop: 20 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <NewsList title="Do You Know?" result={news} />
+        <NewsList title="Information" result={news} />
+        <NewsList title="Tips" result={news} />
+        <View />
+      </ScrollView>
+    </View>
   );
 };
 
