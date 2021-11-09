@@ -1,9 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
+import { InteractionManager } from "react-native";
 import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { Head, UpperBorder, CustomHead } from "../components/CustomHead";
 import HomeScreen from "../screens/HomeScreen";
@@ -11,23 +13,41 @@ import FeedScreen from "../screens/FeedScreen";
 
 import colors from "../constants/colors";
 
+import { Context as UserContext } from "../context/UserContext";
 import Habits from "../screens/CustomHabit/Suggestion/Habits";
 import Energy from "../screens/CustomHabit/Suggestion/Energy";
 import Water from "../screens/CustomHabit/Suggestion/Water";
 import Waste from "../screens/CustomHabit/Suggestion/Waste";
 import Transportation from "../screens/CustomHabit/Suggestion/Transportation";
 import FoodAndDrink from "../screens/CustomHabit/Suggestion/FoodAndDrink";
-import Shopping from "../screens/CustomHabit/Suggestion/Shopping";
-import Outdoors from "../screens/CustomHabit/Suggestion/Outdoors";
 
 const TopTab = createMaterialTopTabNavigator();
 export const TopTabScreen = () => {
+  const { state, getUser } = useContext(UserContext);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUser();
+      const task = InteractionManager.runAfterInteractions(() => {
+        getUser();
+      });
+
+      return () => {
+        task.cancel();
+      };
+    }, [])
+  );
+
   return (
     <Fragment>
       <Head text="Eco Master" color={colors.secondary} />
       <UpperBorder
         text="Browser"
-        image={require("../assets/images/leaves.jpeg")}
+        image={
+          state.userData.image
+            ? { uri: state.userData.image }
+            : require("../assets/images/default/default-user.jpeg")
+        }
       />
       <TopTab.Navigator
         screenOptions={{

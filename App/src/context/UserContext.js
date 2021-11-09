@@ -28,9 +28,9 @@ const uploadImage = (dispatch) => {
     let fileName = image.substring(image.lastIndexOf("/") + 1);
     // ADD TIMESTAMP TO FILENAME
     const extension = fileName.split(".").pop();
-    // const name = fileName.split(".").slice(0, -1).join(".");
+    const name = fileName.split(".").slice(0, -1).join(".");
     const uid = await AsyncStorage.getItem("user");
-    fileName = uid + "." + extension;
+    fileName = uid + Date.now() + "." + extension;
     let uploadUri;
     try {
       const response = await fetch(image);
@@ -43,18 +43,18 @@ const uploadImage = (dispatch) => {
     const storageRef = Firebase.storage().ref("userImages/").child(fileName);
 
     try {
-      storageRef
+      await storageRef
         .put(uploadUri, {
           contentType: "image/jpeg",
         })
-        .then((snapshot) => {
+        .then(async (snapshot) => {
           dispatch({ type: "loader", payload: false });
-          Alert.alert(
-            "Image Uploaded!",
-            "Your image has been successfully Uploaded"
-          );
-          storageRef.getDownloadURL().then((downloadURL) => {
-            console.log(downloadURL);
+          // Alert.alert(
+          //   "Image Uploaded!",
+          //   "Your image has been successfully Uploaded"
+          // );
+          await storageRef.getDownloadURL().then((downloadURL) => {
+            //console.log(downloadURL);
             dispatch({ type: "setImage", payload: downloadURL });
             // resolve(snapshot);
           });
@@ -71,8 +71,8 @@ const updateUser = (dispatch) => {
     dispatch({ type: "loader", payload: true });
     try {
       const uid = await AsyncStorage.getItem("user");
-      console.log(uid);
-      Firebase.database()
+      // console.log(uid);
+      await Firebase.database()
         .ref("Users/" + uid)
         .update({
           image: imageUrl,
@@ -105,7 +105,7 @@ const getUser = (dispatch) => {
     dispatch({ type: "loader", payload: true });
     try {
       const uid = await AsyncStorage.getItem("user");
-      Firebase.database()
+      await Firebase.database()
         .ref("Users/" + uid)
         .once("value", (snapshot) => {
           dispatch({ type: "loader", payload: false });

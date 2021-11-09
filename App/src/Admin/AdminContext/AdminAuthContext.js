@@ -2,8 +2,8 @@ import createDataContext from "../../context/createDataContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
-import { Firebase } from "../Firebase/config";
-import { replace } from "../Navigation/NavigationRef";
+import { Firebase } from "../../Firebase/config";
+import { replace } from "../../Navigation/NavigationRef";
 
 const AdminAuthReducer = (state, action) => {
   switch (action.type) {
@@ -14,25 +14,16 @@ const AdminAuthReducer = (state, action) => {
   }
 };
 
-const automaticAdminSignin = (dispatch) => {
-  return async () => {
-    const admin = await AsyncStorage.getItem("admin");
-    if (admin) {
-      replace("AdminFlow");
-    } else {
-      replace("AuthFlow", { screen: "Welcome" });
-    }
-  };
-};
-
 const admin_signin = (dispatch) => {
   return async ({ email, password }) => {
+    dispatch({ type: "loader", payload: true });
     if (email === "") {
+      dispatch({ type: "loader", payload: false });
       Alert.alert("ERROR!", "Email can't be Empty");
     } else if (password === "") {
+      dispatch({ type: "loader", payload: false });
       Alert.alert("ERROR!", "Password can't be Empty");
     } else {
-      dispatch({ type: "loader", payload: true });
       try {
         //const uid = await AsyncStorage.getItem("user");
         Firebase.database()
@@ -63,12 +54,12 @@ const admin_signin = (dispatch) => {
 const admin_signout = (dispatch) => {
   return async () => {
     await AsyncStorage.removeItem("admin");
-    replace("AuthFlow", { screen: "Welcome" });
+    replace("AdminAuth");
   };
 };
 
 export const { Provider, Context } = createDataContext(
   AdminAuthReducer,
-  { admin_signin, admin_signout, automaticAdminSignin },
+  { admin_signin, admin_signout },
   { loading: false, adminData: {} }
 );

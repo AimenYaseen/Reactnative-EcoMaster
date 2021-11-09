@@ -12,6 +12,7 @@ import { Avatar, Icon, ListItem, BottomSheet } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomHead } from "../../components/CustomHead";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
@@ -23,7 +24,7 @@ const screenHeight = Dimensions.get("window").height;
 
 const EditScreen = ({ navigation }) => {
   const {
-    state: { userData, imageUrl },
+    state: { userData, imageUrl, loading },
     getUser,
     updateUser,
     uploadImage,
@@ -72,7 +73,10 @@ const EditScreen = ({ navigation }) => {
       size={30}
       onPress={() => {
         if (image) {
-          updateUser(image, bio, firstName, lastName, country);
+          uploadImage(image);
+        }
+        if (imageUrl) {
+          updateUser(imageUrl, bio, firstName, lastName, country);
           getUser();
           navigation.navigate("Profile");
         } else {
@@ -110,12 +114,8 @@ const EditScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
-    console.log(pickerResult);
     if (!pickerResult.cancelled) {
-      uploadImage(pickerResult.uri);
-    }
-    if (imageUrl) {
-      setImage(imageUrl);
+      setImage(pickerResult.uri);
     }
   };
   // IMAGE FROM CAMERA
@@ -131,16 +131,14 @@ const EditScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
-    if (pickerResult.uri) {
-      uploadImage(pickerResult.uri);
-    }
-    if (imageUrl) {
-      setImage(imageUrl);
+    if (!pickerResult.cancelled) {
+      setImage(pickerResult.uri);
     }
   };
 
   return (
     <>
+      {/* {console.log(image)} */}
       <ImageBackground
         style={styles.background}
         // source={require("../../assets/images/edit2.jpeg")}
@@ -237,6 +235,7 @@ const EditScreen = ({ navigation }) => {
               ))}
             </BottomSheet>
           </View>
+          <Spinner visible={loading} color={colors.secondary} animation="fade" />
         </KeyboardAwareScrollView>
       </ImageBackground>
     </>

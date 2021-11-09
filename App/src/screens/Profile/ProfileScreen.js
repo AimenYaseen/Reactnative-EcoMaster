@@ -43,24 +43,21 @@ const ProfileScreen = ({ navigation }) => {
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getUser();
-      const task = InteractionManager.runAfterInteractions(() => {
-        getUser();
-      });
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     getUser();
+  //     const task = InteractionManager.runAfterInteractions(() => {
+  //       getUser();
+  //     });
 
-      return () => {
-        task.cancel();
-      };
-    }, [navigation])
-  );
+  //     return () => {
+  //       task.cancel();
+  //     };
+  //   }, [navigation])
+  // );
 
   return (
     <>
-      {/* {getUser()} */}
-
-      {console.log(userData.image)}
       <CustomHead
         text={null}
         color={colors.secondary}
@@ -87,9 +84,6 @@ const ProfileScreen = ({ navigation }) => {
           <Avatar
             rounded
             source={
-              // {
-              //   uri: "https://firebasestorage.googleapis.com/v0/b/ecomaster-74319.appspot.com/o/userImages%2F7e1c92cf-651b-44e9-a58d-638dddffaeca1636336965776.jpg?alt=media&token=ed815c9f-e747-4762-91ad-9043564c97cc",
-              // }
               userData.image
                 ? { uri: userData.image }
                 : require("../../assets/images/default/default-user.jpeg")

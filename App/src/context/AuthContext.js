@@ -23,11 +23,14 @@ const AuthReducer = (state, action) => {
 const automaticSignin = (dispatch) => {
   return async () => {
     const user = await AsyncStorage.getItem("user");
+    const admin = await AsyncStorage.getItem("admin");
     if (user) {
       dispatch({ type: "signin", payload: user });
       replace("AppFlow");
+    } else if (admin) {
+      replace("AdminFlow");
     } else {
-      replace("Welcome");
+      replace("AuthFlow", { screen: "Welcome" });
     }
   };
 };

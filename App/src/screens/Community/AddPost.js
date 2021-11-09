@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -6,8 +6,6 @@ import {
   View,
   TextInput,
   Dimensions,
-  TouchableOpacity,
-  Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
@@ -20,16 +18,30 @@ import {
 } from "react-native-elements";
 
 import { CustomHead } from "../../components/CustomHead";
-import { GradientButton } from "../../components/GradientButton";
+import Spinner from "react-native-loading-spinner-overlay";
+import { Context as UserContext } from "../../context/UserContext";
+import { Context as PostContext } from "../../context/PostContext";
 import colors from "../../constants/colors";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const AddPost = ({ navigation }) => {
+  const {
+    state: { loading, imageUrl },
+    addPost,
+    uploadPostImage,
+  } = useContext(PostContext);
+  const {
+    state: { userData },
+    getUser,
+  } = useContext(UserContext);
+
   const [visible, setVisible] = useState(false);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [post, setPost] = useState("");
+  const likes = 5;
+  const time = Date.now();
 
   const list = [
     {
@@ -50,7 +62,8 @@ const AddPost = ({ navigation }) => {
     },
   ];
 
-  let defaultImage = require("../../assets/images/default/default-img.jpg");
+  let defaultImage = require("../../assets/images/default/default-user.jpeg");
+  // ________________________LIBRARY_________________________
   let openImagePickerAsync = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -64,8 +77,11 @@ const AddPost = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
-    setImage(pickerResult.uri);
+    if (!pickerResult.cancelled) {
+      setImage(pickerResult.uri);
+    }
   };
+  // _______________________CAMERA____________________________
   let openImagePickerCameraAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -78,7 +94,9 @@ const AddPost = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
-    setImage(pickerResult.uri);
+    if (!pickerResult.cancelled) {
+      setImage(pickerResult.uri);
+    }
   };
 
   return (
@@ -119,11 +137,17 @@ const AddPost = ({ navigation }) => {
           >
             <Avatar
               rounded
-              source={defaultImage}
+              source={
+                userData.image
+                  ? { uri: userData.image }
+                  : require("../../assets/images/default/default-user.jpeg")
+              }
               size={50}
               containerStyle={styles.avatar}
             />
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>Name</Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              {userData.firstName} {userData.lastName}
+            </Text>
           </View>
           <TextInput
             style={styles.input}
@@ -156,6 +180,20 @@ const AddPost = ({ navigation }) => {
               raised
               type="solid"
               title="Add Post"
+              onPress={() => {
+                if (image) {
+                  uploadPostImage(image);
+                }
+                if (imageUrl) {
+                  addPost({ post, image: imageUrl, time, likes });
+                  //getUser();
+                  navigation.navigate("Post");
+                } else {
+                  updateUser({ post, image, time, likes });
+                  getUser();
+                  navigation.navigate("Post");
+                }
+              }}
               containerStyle={styles.buttonContainer}
               buttonStyle={{
                 width: screenWidth * 0.25,
@@ -187,6 +225,11 @@ const AddPost = ({ navigation }) => {
               </ListItem>
             ))}
           </BottomSheet>
+          <Spinner
+            visible={loading}
+            color={colors.secondary}
+            animation="fade"
+          />
         </View>
       </KeyboardAwareScrollView>
     </>

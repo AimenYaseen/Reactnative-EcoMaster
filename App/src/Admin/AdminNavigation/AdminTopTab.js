@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-//import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { replace } from "../../Navigation/NavigationRef";
 
@@ -16,11 +16,13 @@ import AdminEnergy from "../AdminScreens/CustomHabit/Suggestion/AdminEnergy";
 import AdminWater from "../AdminScreens/CustomHabit/Suggestion/AdminWater";
 import AdminTransportation from "../AdminScreens/CustomHabit/Suggestion/AdminTransportation";
 import AdminFoodAndDrink from "../AdminScreens/CustomHabit/Suggestion/AdminFoodAndDrink";
+import { Context as AdminAuthContext } from "../AdminContext/AdminAuthContext";
 
 import colors from "../../constants/colors";
 
 const AdminTopTab = createMaterialTopTabNavigator();
 export const AdminTopTabScreen = () => {
+  const { admin_signout } = useContext(AdminAuthContext);
   return (
     <Fragment>
       <Head text="Eco Master" color={colors.secondary} />
@@ -32,7 +34,9 @@ export const AdminTopTabScreen = () => {
           type: "antdesign",
           color: colors.white,
         }}
-        onPress={() => replace("AdminAuth")}
+        onPress={() => {
+          admin_signout();
+        }}
       />
       <AdminTopTab.Navigator
         screenOptions={{
