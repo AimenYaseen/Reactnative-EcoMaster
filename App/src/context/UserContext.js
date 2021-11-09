@@ -19,32 +19,45 @@ const UserReducer = (state, action) => {
 };
 
 const uploadImage = (dispatch) => {
-  return (image) => {
+  return async (image) => {
     if (image === "") {
       dispatch({ type: "setImage", payload: image });
     }
     dispatch({ type: "loader", payload: true });
-    const uploadUri = image;
-    let fileName = uploadUri.substring(uploadUri.lastIndexOf("/") + 1);
+    // FILENAME
+    let fileName = image.substring(image.lastIndexOf("/") + 1);
     // ADD TIMESTAMP TO FILENAME
     const extension = fileName.split(".").pop();
     const name = fileName.split(".").slice(0, -1).join(".");
     fileName = name + Date.now() + "." + extension;
+    let uploadUri;
+    try {
+      const response = await fetch(image);
+      uploadUri = await response.blob();
+    } catch (error) {
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR", error.message);
+    }
 
     const storageRef = Firebase.storage().ref("userImages/").child(fileName);
 
     try {
-      storageRef.put(uploadUri).then((snapshot) => {
-        dispatch({ type: "loader", payload: false });
-        Alert.alert(
-          "Image Uploaded!",
-          "Your image has been successfully Uploaded"
-        );
-        storageRef.getDownloadURL().then((downloadURL) => {
-          console.log(downloadURL);
-          dispatch({ type: "setImage", payload: downloadURL });
+      storageRef
+        .put(uploadUri, {
+          contentType: "image/jpeg",
+        })
+        .then((snapshot) => {
+          dispatch({ type: "loader", payload: false });
+          Alert.alert(
+            "Image Uploaded!",
+            "Your image has been successfully Uploaded"
+          );
+          storageRef.getDownloadURL().then((downloadURL) => {
+            console.log(downloadURL);
+            dispatch({ type: "setImage", payload: downloadURL });
+            // resolve(snapshot);
+          });
         });
-      });
     } catch (error) {
       dispatch({ type: "loader", payload: false });
       Alert.alert("ERROR", error.message);
@@ -105,6 +118,12 @@ const getUser = (dispatch) => {
     }
   };
 };
+
+// const uri_to_blob = (dispatch) => {
+//    return (uri) => {
+
+//    }
+// }
 
 export const { Provider, Context } = createDataContext(
   UserReducer,

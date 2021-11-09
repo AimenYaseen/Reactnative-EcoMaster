@@ -4,17 +4,21 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { StackScreen } from "./AuthStack";
 import { AppStackScreen } from "./AppStack";
+import { AdminMainStackScreen } from "../Admin/AdminNavigation/RootNavigation";
 import { navigationRef } from "./NavigationRef";
 
 const MainStack = createStackNavigator();
 const MainStackScreen = () => {
-  const [LoggedIn, setLoggedIn] = useState(false);
-
   return (
     <MainStack.Navigator>
       <MainStack.Screen
         name="AuthFlow"
         component={StackScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="AdminFlow"
+        component={AdminMainStackScreen}
         options={{ headerShown: false }}
       />
       <MainStack.Screen
