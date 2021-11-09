@@ -5,9 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // import EditProfile from "../screens/Profile/EditProfile";
 import { AdminHabitTabScreen } from "./AdminBottomTab";
 import { AdminCustomTabScreen } from "./AdminBottomTab";
+import { AdminTopTabScreen } from "./AdminTopTab";
 // import HabitForm from "../screens/CustomHabit/HabitForm";
-
-import { TopTabScreen } from "./TopTabBar";
 
 const AdminAppStack = createNativeStackNavigator();
 export const AdminAppStackScreen = () => {
@@ -15,7 +14,7 @@ export const AdminAppStackScreen = () => {
     <AdminAppStack.Navigator>
       <AdminAppStack.Screen
         name="AdminMainFlow"
-        component={TopTabScreen}
+        component={AdminTopTabScreen}
         options={{ headerShown: false }}
       />
       {/* <AdminAppStack.Screen

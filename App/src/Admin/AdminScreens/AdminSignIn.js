@@ -9,6 +9,8 @@ import {
   ImageBackground,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Context as AdminAuthContext } from "../AdminContext/AdminAuthContext";
+import { Icon } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 
 //import { Context as AuthContext } from "../../context/AuthContext";
@@ -20,7 +22,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const AdminSignIn = ({ navigation }) => {
-  //   const { state, signin } = useContext(AuthContext);
+  const { state, admin_signin } = useContext(AdminAuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("password");
@@ -43,6 +45,21 @@ const AdminSignIn = ({ navigation }) => {
           style={styles.background}
           source={require("../../assets/images/blur.jpeg")}
         >
+          <Icon
+            reverse
+            raised
+            name="arrow-back"
+            type="ionicon"
+            size={20}
+            onPress={() => navigation.goBack()}
+            color={colors.secondary}
+            containerStyle={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              margin: 10,
+            }}
+          />
           <Text style={styles.headerText}>Welcome Back Admin!</Text>
           <View style={styles.input}>
             <SimpleInput
@@ -63,19 +80,8 @@ const AdminSignIn = ({ navigation }) => {
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
             <GradientButton
               text="Sign In"
-              onPress={() => navigation.navigate("AdminFlow")}
+              onPress={() => admin_signin({ email, password })}
             />
-            {/* <TouchableOpacity onPress={() => navigation.navigate("Forget")}>
-              <Text style={styles.text}>Forgot your Password?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-              <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Text style={styles.text}>New Here? </Text>
-                <Text style={[styles.text, { color: colors.secondary }]}>
-                  Signup
-                </Text>
-              </View>
-            </TouchableOpacity> */}
           </View>
         </ImageBackground>
         <Spinner

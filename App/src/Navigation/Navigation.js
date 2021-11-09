@@ -17,7 +17,7 @@ const MainStackScreen = () => {
         options={{ headerShown: false }}
       />
       <MainStack.Screen
-        name="AdminFlow"
+        name="Admin"
         component={AdminMainStackScreen}
         options={{ headerShown: false }}
       />

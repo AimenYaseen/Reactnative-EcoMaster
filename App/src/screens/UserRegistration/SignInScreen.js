@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
+import { Icon } from "react-native-elements";
 
 import { Context as AuthContext } from "../../context/AuthContext";
 import { GradientButton } from "../../components/GradientButton";
@@ -43,6 +44,21 @@ const SignInScreen = ({ navigation }) => {
           style={styles.background}
           source={require("../../assets/images/blur.jpeg")}
         >
+          <Icon
+            reverse
+            raised
+            name="admin-panel-settings"
+            type="material-icons"
+            size={20}
+            onPress={() => navigation.navigate("Admin")}
+            color={colors.secondary}
+            containerStyle={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: 10,
+            }}
+          />
           <Text style={styles.headerText}>Welcome Back!</Text>
           <View style={styles.input}>
             <SimpleInput

@@ -28,8 +28,9 @@ const uploadImage = (dispatch) => {
     let fileName = image.substring(image.lastIndexOf("/") + 1);
     // ADD TIMESTAMP TO FILENAME
     const extension = fileName.split(".").pop();
-    const name = fileName.split(".").slice(0, -1).join(".");
-    fileName = name + Date.now() + "." + extension;
+    // const name = fileName.split(".").slice(0, -1).join(".");
+    const uid = await AsyncStorage.getItem("user");
+    fileName = uid + "." + extension;
     let uploadUri;
     try {
       const response = await fetch(image);

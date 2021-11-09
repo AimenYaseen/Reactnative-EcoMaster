@@ -4,8 +4,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { Entypo, Ionicons } from "@expo/vector-icons";
 //import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { replace } from "../../Navigation/NavigationRef";
 
-import { Head, UpperBorder, CustomHead } from "../components/CustomHead";
+import { Head, UpperBorder, CustomHead } from "../../components/CustomHead";
 
 import AdminFeedScreen from "../AdminScreens/AdminFeedScreen";
 import AdminHomeScreen from "../AdminScreens/AdminHomeScreen";
@@ -24,8 +25,14 @@ export const AdminTopTabScreen = () => {
     <Fragment>
       <Head text="Eco Master" color={colors.secondary} />
       <UpperBorder
-        text="Browser"
-        image={require("../assets/images/leaves.jpeg")}
+        text="Browser (Admin)"
+        image={null}
+        icon={{
+          name: "logout",
+          type: "antdesign",
+          color: colors.white,
+        }}
+        onPress={() => replace("AdminAuth")}
       />
       <AdminTopTab.Navigator
         screenOptions={{
@@ -63,7 +70,7 @@ export const AdminTopTabScreen = () => {
           name="AdminNews"
           component={AdminFeedScreen}
           options={{
-            // tabBarLabel: "Activity",
+            tabBarLabel: "News",
             tabBarIcon: ({ focused }) => (
               <Entypo
                 name="network"
@@ -77,7 +84,7 @@ export const AdminTopTabScreen = () => {
           name="AdminHome"
           component={AdminHomeScreen}
           options={{
-            // tabBarLabel: "HOME",
+            tabBarLabel: "HOME",
             tabBarIcon: ({ focused }) => (
               <Ionicons
                 name="home"

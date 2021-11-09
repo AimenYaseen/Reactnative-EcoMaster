@@ -38,10 +38,10 @@ const signup = (dispatch) => {
     dispatch({ type: "loader", payload: true });
     //Verification
     if (password === "" || email === "") {
-      Alert.alert("Email or Password can't be Empty");
+      Alert.alert("ERROR!", "Email or Password can't be Empty");
     } else {
       if (firstName === "" || lastName === "") {
-        Alert.alert("FirstName or LastName can't be Empty");
+        Alert.alert("ERROR!", "FirstName or LastName can't be Empty");
       } else {
         // USER SIGNUP
         await Firebase.auth()
@@ -69,7 +69,7 @@ const signup = (dispatch) => {
               .catch((error) => {
                 //loader
                 dispatch({ type: "loader", payload: false });
-                Alert.alert(error.message);
+                Alert.alert("ERROR!", error.message);
               });
             // ASYNC STORAGE
             await AsyncStorage.setItem("user", user.uid);
@@ -79,7 +79,7 @@ const signup = (dispatch) => {
           .catch((error) => {
             //loader
             dispatch({ type: "loader", payload: false });
-            Alert.alert(error.message);
+            Alert.alert("ERROR!", error.message);
           });
       }
     }
@@ -102,7 +102,7 @@ const signin = (dispatch) => {
       .catch((error) => {
         //loader
         dispatch({ type: "loader", payload: false });
-        Alert.alert(error.message);
+        Alert.alert("ERROR!", error.message);
       });
   };
 };
@@ -115,7 +115,7 @@ const signout = (dispatch) => {
         dispatch({ type: "signout" });
         replace("AuthFlow", { screen: "Welcome" });
       })
-      .catch((error) => Alert.alert(error.message));
+      .catch((error) => Alert.alert("ERROR!", error.message));
   };
 };
 

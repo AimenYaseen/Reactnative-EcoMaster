@@ -4,11 +4,18 @@ import { Avatar, Header } from "react-native-elements";
 
 import colors from "../constants/colors";
 
-export const UpperBorder = ({ text, image }) => {
+export const UpperBorder = ({ text, image, icon, onPress }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
-      <Avatar rounded source={image} size="small" />
+      <Avatar
+        rounded
+        source={image}
+        icon={icon}
+        onPress={onPress}
+        overlayContainerStyle={{ backgroundColor: colors.secondary }}
+        size="small"
+      />
     </View>
   );
 };

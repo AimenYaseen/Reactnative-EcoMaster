@@ -75,6 +75,10 @@ const EditScreen = ({ navigation }) => {
           updateUser(image, bio, firstName, lastName, country);
           getUser();
           navigation.navigate("Profile");
+        } else {
+          updateUser(image, bio, firstName, lastName, country);
+          getUser();
+          navigation.navigate("Profile");
         }
       }}
       color={colors.secondary}
@@ -109,10 +113,8 @@ const EditScreen = ({ navigation }) => {
     console.log(pickerResult);
     if (!pickerResult.cancelled) {
       uploadImage(pickerResult.uri);
-      console.log(imageUrl);
     }
     if (imageUrl) {
-      console.log(imageUrl);
       setImage(imageUrl);
     }
   };

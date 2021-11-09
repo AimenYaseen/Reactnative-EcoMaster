@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from "react-native";
 
-import { NewsCard } from "../components/Cards/NewsCard";
 import NewsList from "../../components/News/NewsList";
 import colors from "../../constants/colors";
 import { news } from "../../data/news";

@@ -11,11 +11,10 @@ import { Icon } from "react-native-elements";
 
 import { AdminSuggestionTopTabScreen } from "./AdminTopTab";
 import AdminHabitTracker from "../AdminScreens/HabitTracker/AdminHabitTracker";
-import EcoMap from "../screens/HabitTracker/EcoMap";
 import AdminCreateHabit from "../AdminScreens/CustomHabit/AdminCreateHabit";
+import AdminEcoMap from "../AdminScreens/HabitTracker/AdminEcoMap";
 
 import colors from "../../constants/colors";
-import AdminEcoMap from "../AdminScreens/HabitTracker/AdminEcoMap";
 
 const AdminHabitTab = createMaterialBottomTabNavigator();
 export const AdminHabitTabScreen = () => {
