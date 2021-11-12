@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { FlatList, StyleSheet, Dimensions, View } from "react-native";
 import { Icon, FAB, SpeedDial } from "react-native-elements";
 import { CommunityCard } from "../../components/Cards/CommunityCard";
 
 import { CustomHead } from "../../components/CustomHead";
+import Spinner from "react-native-loading-spinner-overlay";
+import { Context as PostContext } from "../../context/PostContext";
 import { Posts } from "../../data/posts";
 import colors from "../../constants/colors";
 
@@ -11,8 +13,18 @@ const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
 const PostsScreen = ({ navigation }) => {
+  const {
+    state: { posts, loading },
+    getPost,
+  } = useContext(PostContext);
+
+  useEffect(() => {
+    getPost();
+  }, []);
+
   return (
     <>
+      {/* {console.log(posts)} */}
       <CustomHead
         text="Community"
         color="white"
@@ -32,12 +44,13 @@ const PostsScreen = ({ navigation }) => {
         <FlatList
           contentContainerStyle={{
             padding: 0,
+            width: screenWidth * 1,
             paddingBottom: screenHeight * 0.1,
           }}
           showsVerticalScrollIndicator={false}
-          initialNumToRender={Posts.length}
-          data={Posts}
-          keyExtractor={(item) => item.id}
+          initialNumToRender={posts.length}
+          data={posts}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <CommunityCard item={item} activeLike={true} />
           )}
@@ -66,6 +79,7 @@ const PostsScreen = ({ navigation }) => {
             borderRadius: 30,
           }}
         />
+        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </View>
     </>
   );

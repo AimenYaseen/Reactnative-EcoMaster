@@ -27,6 +27,7 @@
     "expo-sharing": "~9.2.1",
     "expo-status-bar": "~1.0.4",
     "firebase": "8.2.3",
+    "moment": "^2.29.1",
     "react": "17.0.0",
     "react-dom": "17.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",

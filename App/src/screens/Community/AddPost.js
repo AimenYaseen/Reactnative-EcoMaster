@@ -16,6 +16,7 @@ import {
   BottomSheet,
   Button,
 } from "react-native-elements";
+import { Firebase } from "../../Firebase/config";
 
 import { CustomHead } from "../../components/CustomHead";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -28,20 +29,89 @@ const screenHeight = Dimensions.get("window").height;
 
 const AddPost = ({ navigation }) => {
   const {
-    state: { loading, imageUrl },
+    state: { loading },
     addPost,
-    uploadPostImage,
   } = useContext(PostContext);
   const {
     state: { userData },
-    getUser,
   } = useContext(UserContext);
+  const [uploading, setUploading] = useState(false);
 
   const [visible, setVisible] = useState(false);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const likes = 5;
-  const time = Date.now();
+  let time = new Date().getTime();
+  const userName = userData.firstName + " " + userData.lastName;
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      setPost("");
+      setImage(null);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const uploadImage = async () => {
+    if (image == null) {
+      return null;
+    }
+    const Uri = image;
+    let filename = Uri.substring(Uri.lastIndexOf("/") + 1);
+
+    // Add timestamp to File Name
+    const extension = filename.split(".").pop();
+    const name = filename.split(".").slice(0, -1).join(".");
+    filename = name + Date.now() + "." + extension;
+
+    setUploading(true);
+
+    let uploadUri;
+    try {
+      const response = await fetch(image);
+      uploadUri = await response.blob();
+    } catch (error) {
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR", error.message);
+    }
+
+    const storageRef = Firebase.storage().ref("postImages/").child(filename);
+    const task = storageRef.put(uploadUri, {
+      contentType: "image/jpeg",
+    });
+
+    // Set transferred state
+    task.on("state_changed", (taskSnapshot) => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`
+      );
+
+      console.log(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100
+      );
+    });
+
+    try {
+      await task;
+
+      const url = await storageRef.getDownloadURL();
+
+      setUploading(false);
+
+      return url;
+    } catch (error) {
+      setUploading(false);
+      Alert.alert("ERROR", error.message);
+      return null;
+    }
+  };
+
+  const onSubmitHandle = async () => {
+    const imageUrl = await uploadImage();
+    await addPost(userName, userData.image, post, imageUrl, time, likes);
+  };
 
   const list = [
     {
@@ -51,9 +121,18 @@ const AddPost = ({ navigation }) => {
         borderTopLeftRadius: 20,
         //marginTop: 10,
       },
-      onPress: () => openImagePickerAsync(),
+      onPress: () => {
+        openImagePickerAsync();
+        setVisible(false);
+      },
     },
-    { title: "Take Picture", onPress: () => openImagePickerCameraAsync() },
+    {
+      title: "Take Picture",
+      onPress: () => {
+        openImagePickerCameraAsync();
+        setVisible(false);
+      },
+    },
     {
       title: "Cancel",
       containerStyle: { backgroundColor: "red" },
@@ -75,6 +154,8 @@ const AddPost = ({ navigation }) => {
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      width: 1200,
+      height: 780,
       allowsEditing: true,
     });
     if (!pickerResult.cancelled) {
@@ -92,6 +173,8 @@ const AddPost = ({ navigation }) => {
 
     let pickerResult = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      width: 1200,
+      height: 780,
       allowsEditing: true,
     });
     if (!pickerResult.cancelled) {
@@ -101,6 +184,7 @@ const AddPost = ({ navigation }) => {
 
   return (
     <>
+      {/* {console.log(userData)} */}
       <CustomHead
         text="Create Post"
         color={colors.whiteSmoke}
@@ -137,11 +221,7 @@ const AddPost = ({ navigation }) => {
           >
             <Avatar
               rounded
-              source={
-                userData.image
-                  ? { uri: userData.image }
-                  : require("../../assets/images/default/default-user.jpeg")
-              }
+              source={userData.image ? { uri: userData.image } : defaultImage}
               size={50}
               containerStyle={styles.avatar}
             />
@@ -180,20 +260,7 @@ const AddPost = ({ navigation }) => {
               raised
               type="solid"
               title="Add Post"
-              onPress={() => {
-                if (image) {
-                  uploadPostImage(image);
-                }
-                if (imageUrl) {
-                  addPost({ post, image: imageUrl, time, likes });
-                  //getUser();
-                  navigation.navigate("Post");
-                } else {
-                  updateUser({ post, image, time, likes });
-                  getUser();
-                  navigation.navigate("Post");
-                }
-              }}
+              onPress={onSubmitHandle}
               containerStyle={styles.buttonContainer}
               buttonStyle={{
                 width: screenWidth * 0.25,
@@ -226,7 +293,7 @@ const AddPost = ({ navigation }) => {
             ))}
           </BottomSheet>
           <Spinner
-            visible={loading}
+            visible={loading || uploading}
             color={colors.secondary}
             animation="fade"
           />
@@ -251,9 +318,11 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 250,
     borderRadius: 10,
     alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageText: {
     fontSize: 16,

@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
 import { Firebase } from "../Firebase/config";
-import { replace } from "../Navigation/NavigationRef";
+import { navigate } from "../Navigation/NavigationRef";
 
 const UserReducer = (state, action) => {
   switch (action.type) {
@@ -20,54 +20,53 @@ const UserReducer = (state, action) => {
 
 const uploadImage = (dispatch) => {
   return async (image) => {
-    if (image === "") {
+    if (image == "") {
       dispatch({ type: "setImage", payload: image });
-    }
-    dispatch({ type: "loader", payload: true });
-    // FILENAME
-    let fileName = image.substring(image.lastIndexOf("/") + 1);
-    // ADD TIMESTAMP TO FILENAME
-    const extension = fileName.split(".").pop();
-    const name = fileName.split(".").slice(0, -1).join(".");
-    const uid = await AsyncStorage.getItem("user");
-    fileName = uid + Date.now() + "." + extension;
-    let uploadUri;
-    try {
-      const response = await fetch(image);
-      uploadUri = await response.blob();
-    } catch (error) {
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("ERROR", error.message);
-    }
+    } else {
+      dispatch({ type: "loader", payload: true });
+      // FILENAME
+      let fileName = image.substring(image.lastIndexOf("/") + 1);
+      // ADD TIMESTAMP TO FILENAME
+      const extension = fileName.split(".").pop();
+      const name = fileName.split(".").slice(0, -1).join(".");
+      fileName = name + Date.now() + "." + extension;
+      let uploadUri;
+      try {
+        const response = await fetch(image);
+        uploadUri = await response.blob();
+      } catch (error) {
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR", error.message);
+      }
 
-    const storageRef = Firebase.storage().ref("userImages/").child(fileName);
+      const storageRef = Firebase.storage().ref("userImages/").child(fileName);
 
-    try {
-      await storageRef
-        .put(uploadUri, {
-          contentType: "image/jpeg",
-        })
-        .then(async (snapshot) => {
-          dispatch({ type: "loader", payload: false });
-          // Alert.alert(
-          //   "Image Uploaded!",
-          //   "Your image has been successfully Uploaded"
-          // );
-          await storageRef.getDownloadURL().then((downloadURL) => {
-            //console.log(downloadURL);
-            dispatch({ type: "setImage", payload: downloadURL });
-            // resolve(snapshot);
+      try {
+        await storageRef
+          .put(uploadUri, {
+            contentType: "image/jpeg",
+          })
+          .then(async (snapshot) => {
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(
+              "Image Uploaded!",
+              "Your image has been successfully Uploaded"
+            );
+            await storageRef.getDownloadURL().then((downloadURL) => {
+              console.log(downloadURL);
+              dispatch({ type: "setImage", payload: downloadURL });
+            });
           });
-        });
-    } catch (error) {
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("ERROR", error.message);
+      } catch (error) {
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR", error.message);
+      }
     }
   };
 };
 
 const updateUser = (dispatch) => {
-  return async (imageUrl, userBio, fName, lName, contry) => {
+  return async (imgUrl, userBio, fName, lName, contry) => {
     dispatch({ type: "loader", payload: true });
     try {
       const uid = await AsyncStorage.getItem("user");
@@ -75,7 +74,7 @@ const updateUser = (dispatch) => {
       await Firebase.database()
         .ref("Users/" + uid)
         .update({
-          image: imageUrl,
+          image: imgUrl,
           bio: userBio,
           firstName: fName,
           lastName: lName,
@@ -83,6 +82,7 @@ const updateUser = (dispatch) => {
         });
       dispatch({ type: "loader", payload: false });
       Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
+      navigate("Profile");
     } catch (error) {
       //loader
       dispatch({ type: "loader", payload: false });
@@ -107,9 +107,9 @@ const getUser = (dispatch) => {
       const uid = await AsyncStorage.getItem("user");
       await Firebase.database()
         .ref("Users/" + uid)
-        .once("value", (snapshot) => {
+        .once("value", async (snapshot) => {
           dispatch({ type: "loader", payload: false });
-          const data = snapshot.val();
+          const data = await snapshot.val();
           dispatch({ type: "setData", payload: data });
         });
     } catch (error) {

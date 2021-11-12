@@ -3,85 +3,88 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
 import { Firebase } from "../Firebase/config";
-import { replace } from "../Navigation/NavigationRef";
+import { navigate } from "../Navigation/NavigationRef";
 
 const PostReducer = (state, action) => {
   switch (action.type) {
-    case "setImage":
-      return { ...state, imageUrl: action.payload };
+    case "posts":
+      return { ...state, posts: action.payload };
+    case "loader":
+      return { ...state, loading: action.payload };
     default:
       return state;
   }
 };
 
 const getPost = (dispatch) => {
-  return () => {};
-};
-
-const uploadPostImage = (dispatch) => {
-  return async (image) => {
-    if (image === "") {
-      dispatch({ type: "setImage", payload: image });
-    }
+  return async () => {
     dispatch({ type: "loader", payload: true });
-    // FILENAME
-    let fileName = image.substring(image.lastIndexOf("/") + 1);
-    // ADD TIMESTAMP TO FILENAME
-    const extension = fileName.split(".").pop();
-    const name = fileName.split(".").slice(0, -1).join(".");
-    fileName = name + Date.now() + "." + extension;
-    let uploadUri;
-    try {
-      const response = await fetch(image);
-      uploadUri = await response.blob();
-    } catch (error) {
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("ERROR", error.message);
-    }
-
-    const storageRef = Firebase.storage().ref("postImages/").child(fileName);
-
-    try {
-      storageRef
-        .put(uploadUri, {
-          contentType: "image/jpeg",
-        })
-        .then((snapshot) => {
+    Firebase.database()
+      .ref("Posts/")
+      .orderBy("postTime", "desc")
+      .get()
+      .then((snapshot) => {
+        if (snapshot.exists()) {
           dispatch({ type: "loader", payload: false });
-          Alert.alert(
-            "Image Uploaded!",
-            "Your image has been successfully Uploaded"
-          );
-          storageRef.getDownloadURL().then((downloadURL) => {
-            console.log(downloadURL);
-            dispatch({ type: "setImage", payload: downloadURL });
-            // resolve(snapshot);
+          const postArr = [];
+          snapshot.forEach((element) => {
+            const {
+              postId,
+              userId,
+              userName,
+              userImage,
+              post,
+              postImage,
+              postTime,
+              likes,
+            } = element.val();
+            //pushValues of Object
+            postArr.push({
+              id: postId,
+              userId,
+              userName,
+              userImage,
+              post,
+              postImage,
+              postTime,
+              likes,
+              liked: false,
+            });
           });
-        });
-    } catch (error) {
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("ERROR", error.message);
-    }
+          dispatch({ type: "posts", payload: postArr });
+        } else {
+          dispatch({ type: "loader", payload: false });
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: "loader", payload: false });
+        console.error(error);
+      });
   };
 };
 
 const addPost = (dispatch) => {
-  return async ({ post, image, time, likes }) => {
+  return async (userName, userImage, post, image, time, likes) => {
     dispatch({ type: "loader", payload: true });
     const uid = await AsyncStorage.getItem("user");
     await Firebase.database()
-      .ref("Posts/")
+      .ref("Posts/" + time)
       .set({
+        postId: time,
         userId: uid,
-        post: post,
+        userName,
+        userImage,
+        post,
         postImage: image,
-        postTime: time,
-        likes: likes,
+        postTime: Date.now(),
+        likes: "",
       })
       .then(() => {
         //loader
         dispatch({ type: "loader", payload: false });
         Alert.alert("Post Uploaded!", "Your post has successfully Uploaded");
+        navigate("Post");
       })
       .catch((error) => {
         //loader
@@ -97,6 +100,6 @@ const deletePost = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   PostReducer,
-  { addPost, deletePost, getPost, uploadPostImage },
-  { posts: [], loading: false, imageUrl: "" }
+  { addPost, deletePost, getPost },
+  { posts: [], loading: false }
 );

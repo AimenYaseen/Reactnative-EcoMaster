@@ -28,7 +28,7 @@ const automaticSignin = (dispatch) => {
       dispatch({ type: "signin", payload: user });
       replace("AppFlow");
     } else if (admin) {
-      replace("AdminFlow");
+      replace("Admin", { screen: "AdminFlow" });
     } else {
       replace("AuthFlow", { screen: "Welcome" });
     }

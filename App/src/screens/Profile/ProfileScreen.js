@@ -43,18 +43,18 @@ const ProfileScreen = ({ navigation }) => {
   const [current, setCurrent] = useState("");
   const [newP, setNewP] = useState("");
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     getUser();
-  //     const task = InteractionManager.runAfterInteractions(() => {
-  //       getUser();
-  //     });
+  useFocusEffect(
+    React.useCallback(() => {
+      getUser();
+      const task = () => {
+        getUser();
+      };
 
-  //     return () => {
-  //       task.cancel();
-  //     };
-  //   }, [navigation])
-  // );
+      return () => {
+        task();
+      };
+    }, [navigation])
+  );
 
   return (
     <>

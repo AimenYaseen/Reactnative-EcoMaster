@@ -13,6 +13,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
+import { Firebase } from "../../Firebase/config";
 
 import { CustomHead } from "../../components/CustomHead";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
@@ -24,10 +25,9 @@ const screenHeight = Dimensions.get("window").height;
 
 const EditScreen = ({ navigation }) => {
   const {
-    state: { userData, imageUrl, loading },
+    state: { userData, loading },
     getUser,
     updateUser,
-    uploadImage,
   } = useContext(UserContext);
 
   const [firstName, setFirstname] = useState(userData.firstName);
@@ -35,8 +35,65 @@ const EditScreen = ({ navigation }) => {
   const [country, setCountry] = useState(userData.country);
   const [bio, setBio] = useState(userData.bio);
 
-  const [image, setImage] = useState(userData.image);
+  const [image, setImage] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const uploadImage = async () => {
+    if (image == null) {
+      return null;
+    }
+    const Uri = image;
+    let filename = Uri.substring(Uri.lastIndexOf("/") + 1);
+
+    // Add timestamp to File Name
+    const extension = filename.split(".").pop();
+    const name = filename.split(".").slice(0, -1).join(".");
+    filename = name + Date.now() + "." + extension;
+
+    setUploading(true);
+
+    let uploadUri;
+    try {
+      const response = await fetch(image);
+      uploadUri = await response.blob();
+    } catch (error) {
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR", error.message);
+    }
+
+    const storageRef = Firebase.storage().ref("userImages/").child(filename);
+    const task = storageRef.put(uploadUri, {
+      contentType: "image/jpeg",
+    });
+
+    // Set transferred state
+    task.on("state_changed", (taskSnapshot) => {
+      console.log(
+        `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`
+      );
+
+      console.log(
+        Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
+          100
+      );
+    });
+
+    try {
+      await task;
+
+      const url = await storageRef.getDownloadURL();
+
+      setUploading(false);
+      setImage(null);
+
+      return url;
+    } catch (error) {
+      setUploading(false);
+      Alert.alert("ERROR", error.message);
+      return null;
+    }
+  };
 
   const list = [
     {
@@ -71,19 +128,14 @@ const EditScreen = ({ navigation }) => {
       name="check-circle"
       type="material-icons"
       size={30}
-      onPress={() => {
-        if (image) {
-          uploadImage(image);
+      onPress={async () => {
+        let imgUrl = await uploadImage();
+
+        if (imgUrl === null && userData.image) {
+          imgUrl = userData.image;
         }
-        if (imageUrl) {
-          updateUser(imageUrl, bio, firstName, lastName, country);
-          getUser();
-          navigation.navigate("Profile");
-        } else {
-          updateUser(image, bio, firstName, lastName, country);
-          getUser();
-          navigation.navigate("Profile");
-        }
+
+        await updateUser(imgUrl, bio, firstName, lastName, country);
       }}
       color={colors.secondary}
     />
@@ -112,6 +164,8 @@ const EditScreen = ({ navigation }) => {
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      width: 300,
+      height: 300,
       allowsEditing: true,
     });
     if (!pickerResult.cancelled) {
@@ -130,6 +184,8 @@ const EditScreen = ({ navigation }) => {
     let pickerResult = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      width: 300,
+      height: 300,
     });
     if (!pickerResult.cancelled) {
       setImage(pickerResult.uri);
@@ -161,11 +217,15 @@ const EditScreen = ({ navigation }) => {
           <View style={styles.container}>
             <Avatar
               rounded
-              source={image ? { uri: image } : defaultImage}
-              // icon={{ name: "user", type: "font-awesome" }}
+              source={
+                image
+                  ? { uri: image }
+                  : userData.image
+                  ? { uri: userData.image }
+                  : defaultImage
+              }
               size={140}
               containerStyle={styles.avatar}
-              //placeholderContent={}
             >
               <Avatar.Accessory
                 //solid
@@ -235,7 +295,11 @@ const EditScreen = ({ navigation }) => {
               ))}
             </BottomSheet>
           </View>
-          <Spinner visible={loading} color={colors.secondary} animation="fade" />
+          <Spinner
+            visible={loading || uploading}
+            color={colors.secondary}
+            animation="fade"
+          />
         </KeyboardAwareScrollView>
       </ImageBackground>
     </>
@@ -258,6 +322,8 @@ const styles = StyleSheet.create({
     top: screenHeight * 0.03,
     alignSelf: "center",
     resizeMode: "contain",
+    height: 130,
+    width: 130,
     marginBottom: screenHeight * 0.1,
     shadowColor: colors.black,
     shadowOffset: {

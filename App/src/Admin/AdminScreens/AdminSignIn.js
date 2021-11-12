@@ -51,7 +51,9 @@ const AdminSignIn = ({ navigation }) => {
             name="arrow-back"
             type="ionicon"
             size={20}
-            onPress={() => navigation.goBack()}
+            onPress={() =>
+              navigation.navigate("AuthFlow", { screen: "SignIn" })
+            }
             color={colors.secondary}
             containerStyle={{
               position: "absolute",

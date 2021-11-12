@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
+import moment from "moment";
 
 import colors from "../../constants/colors";
 
@@ -26,19 +27,24 @@ export const CommunityCard = ({ item }) => {
   } else {
     commentText = "Comment";
   }
-
+  let defaultImage = require("../../assets/images/default/default-user.jpeg");
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.userInfo}>
-        <Image source={item.userImg} style={styles.userImg} />
+        <Image
+          source={item.userImage ? { uri: item.userImage } : defaultImage}
+          style={styles.userImg}
+        />
         <View style={styles.userInfoText}>
           <Text style={styles.userName}>{item.userName}</Text>
-          <Text style={styles.postTime}>{item.postTime}</Text>
+          <Text style={styles.postTime}>
+            {moment(item.postTime.toDate()).fromNow()}
+          </Text>
         </View>
       </View>
       <Text style={styles.postText}>{item.post}</Text>
-      {item.postImg ? (
-        <Card.Image source={item.postImg} style={styles.postImage} />
+      {item.postImage ? (
+        <Card.Image source={{ uri: item.postImage }} style={styles.postImage} />
       ) : (
         <Card.Divider style={styles.divider} />
       )}

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { InteractionManager } from "react-native";
 import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -25,18 +25,21 @@ const TopTab = createMaterialTopTabNavigator();
 export const TopTabScreen = () => {
   const { state, getUser } = useContext(UserContext);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getUser();
-      const task = InteractionManager.runAfterInteractions(() => {
-        getUser();
-      });
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     getUser();
+  //     const unsubscribe = () => {
+  //       getUser();
+  //     };
 
-      return () => {
-        task.cancel();
-      };
-    }, [])
-  );
+  //     return () => {
+  //       unsubscribe();
+  //     };
+  //   }, [])
+  // );
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <Fragment>
