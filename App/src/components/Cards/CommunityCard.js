@@ -12,22 +12,13 @@ export const CommunityCard = ({ item }) => {
   const likeIconColor = item.liked ? colors.like : colors.gray4;
 
   let likeText;
-  let commentText;
 
   if (item.likes == 1) {
-    likeText = "1 Like";
+    likeText = " 1 Like";
   } else if (item.likes > 1) {
     likeText = item.likes + " Likes";
   } else {
-    likeText = "Like";
-  }
-
-  if (item.comments == 1) {
-    commentText = "1 Comment";
-  } else if (item.comments > 1) {
-    commentText = item.comments + " Comments";
-  } else {
-    commentText = "Comment";
+    likeText = " Like";
   }
 
   const getUser = async () => {
@@ -89,16 +80,22 @@ export const CommunityCard = ({ item }) => {
           <Icon
             name={likeIcon}
             type="ionicon"
-            size={25}
+            size={22}
             color={likeIconColor}
+            style={{ marginTop: 3 }}
           />
           <Text style={[styles.interactionText, { color: likeIconColor }]}>
             {likeText}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.interaction}>
-          <Icon name="md-chatbubble-outline" type="ionicon" size={25} />
-          <Text style={styles.interactionText}>{commentText}</Text>
+          <Icon
+            name="share-2"
+            type="feather"
+            size={20}
+            style={{ marginTop: 3 }}
+          />
+          <Text style={styles.interactionText}> Share</Text>
         </TouchableOpacity>
       </View>
     </Card>
@@ -161,7 +158,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   interactionText: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "bold",
     color: colors.gray4,
     marginTop: 4,

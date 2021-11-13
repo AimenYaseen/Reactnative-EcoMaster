@@ -67,61 +67,98 @@ const uploadImage = (dispatch) => {
 
 const updateUser = (dispatch) => {
   return async (imgUrl, userBio, fName, lName, contry) => {
-    dispatch({ type: "loader", payload: true });
-    try {
-      const uid = await AsyncStorage.getItem("user");
-      // console.log(uid);
-      await Firebase.database()
-        .ref("Users/" + uid)
-        .update({
-          image: imgUrl,
-          bio: userBio,
-          firstName: fName,
-          lastName: lName,
-          country: contry,
-        });
-      // await Firebase.database()
-      //   .ref("Posts/")
-      //   .orderByChild("userId")
-      //   .equalTo(uid)
-      //   .limitToLast(100)
-      //   .on("value", (snapshot) => {
-      //     if (snapshot.exists()) {
-      //       dispatch({ type: "loader", payload: false });
-      //       console.log(snapshot.val());
-      //       snapshot.forEach(async (element) => {
-      //         const { postId } = element.val();
-      //         try {
-      //           console.log(element.val());
-      //           await Firebase.database()
-      //             .ref("Posts/" + postId)
-      //             .update({
-      //               userImage: imgUrl,
-      //               userName: fName + " " + lName,
-      //             })
-      //             .then(() => console.log("test"));
-      //         } catch (error) {
-      //           console.log("Error updating... posts");
-      //         }
-      //       });
-      //     }
-      //   });
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
-    } catch (error) {
-      //loader
-      dispatch({ type: "loader", payload: false });
-      Alert.alert(error.message);
+    if (fName === "") {
+      Alert.alert("ERROR!", "FirstName or LastName can't be Empty");
+    } else {
+      dispatch({ type: "loader", payload: true });
+      try {
+        const uid = await AsyncStorage.getItem("user");
+        // console.log(uid);
+        await Firebase.database()
+          .ref("Users/" + uid)
+          .update({
+            image: imgUrl,
+            bio: userBio,
+            firstName: fName,
+            lastName: lName,
+            country: contry,
+          });
+        // await Firebase.database()
+        //   .ref("Posts/")
+        //   .orderByChild("userId")
+        //   .equalTo(uid)
+        //   .limitToLast(100)
+        //   .on("value", (snapshot) => {
+        //     if (snapshot.exists()) {
+        //       dispatch({ type: "loader", payload: false });
+        //       console.log(snapshot.val());
+        //       snapshot.forEach(async (element) => {
+        //         const { postId } = element.val();
+        //         try {
+        //           console.log(element.val());
+        //           await Firebase.database()
+        //             .ref("Posts/" + postId)
+        //             .update({
+        //               userImage: imgUrl,
+        //               userName: fName + " " + lName,
+        //             })
+        //             .then(() => console.log("test"));
+        //         } catch (error) {
+        //           console.log("Error updating... posts");
+        //         }
+        //       });
+        //     }
+        //   });
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
+      } catch (error) {
+        //loader
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR!", error.message);
+      }
+      navigate("Profile");
     }
-    navigate("Profile");
   };
 };
 
 const changePassword = (dispatch) => {
-  return async () => {
-    try {
-    } catch (error) {
-      Alert.alert(error.message);
+  return async ({ current, newPassword }) => {
+    const password = await AsyncStorage.getItem("password");
+    //console.log(password.toString());
+    if (current === password) {
+      if (newPassword === "") {
+        Alert.alert(
+          "ERROR!",
+          "You must Enter New Password in order to complete this Operation"
+        );
+      } else {
+        try {
+          //loader
+          dispatch({ type: "loader", payload: true });
+          const user = Firebase.auth().currentUser;
+          user
+            .updatePassword(newPassword)
+            .then(async () => {
+              //loader
+              dispatch({ type: "loader", payload: false });
+              await AsyncStorage.setItem("password", newPassword);
+              Alert.alert("Congratulations!", "Your Password has updated");
+            })
+            .catch((error) => {
+              //loader
+              dispatch({ type: "loader", payload: false });
+              Alert.alert("ERROR!", error.message);
+            });
+        } catch (error) {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert("ERROR!", error.message);
+        }
+      }
+    } else {
+      //loader
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR!", "You Entered Wrong Current Password");
     }
   };
 };
@@ -146,14 +183,8 @@ const getUser = (dispatch) => {
   };
 };
 
-// const uri_to_blob = (dispatch) => {
-//    return (uri) => {
-
-//    }
-// }
-
 export const { Provider, Context } = createDataContext(
   UserReducer,
-  { getUser, updateUser, uploadImage },
-  { userData: {}, loading: false, imageUrl: "" }
+  { getUser, updateUser, uploadImage, changePassword },
+  { userData: {}, loading: false }
 );

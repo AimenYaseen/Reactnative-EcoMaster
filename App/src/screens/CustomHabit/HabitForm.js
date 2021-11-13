@@ -5,7 +5,7 @@ import { Icon } from "react-native-elements";
 import { CustomHead } from "../../components/CustomHead";
 import colors from "../../constants/colors";
 
-const HabitForm = () => {
+const HabitForm = ({ navigation }) => {
   return (
     <>
       <CustomHead

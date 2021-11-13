@@ -59,7 +59,7 @@ const verifyEmail = (dispatch) => {
                 dispatch({ type: "loader", payload: false });
                 Alert.alert(
                   "Email Verification!",
-                  "Verification Link Has been sent to your Email..."
+                  `Verification Link Has been sent to ${email}...`
                 );
               });
             } catch (error) {
@@ -101,7 +101,6 @@ const signup = (dispatch) => {
                 .set({
                   userId: user.uid,
                   email: email,
-                  password: password,
                   firstName: firstName,
                   lastName: lastName,
                   bio: "",
@@ -112,6 +111,7 @@ const signup = (dispatch) => {
                   //loader
                   dispatch({ type: "loader", payload: false });
                   await AsyncStorage.setItem("user", user.uid);
+                  await AsyncStorage.setItem("password", password);
                   dispatch({ type: "signin", payload: user });
                   replace("AppFlow");
                 })
@@ -124,7 +124,7 @@ const signup = (dispatch) => {
               dispatch({ type: "loader", payload: false });
               Alert.alert(
                 "Email Verification ERROR!",
-                "Please Verify Your Email First..."
+                "Please Verify Your Email First using the above link..."
               );
             }
           })
@@ -133,7 +133,7 @@ const signup = (dispatch) => {
             dispatch({ type: "loader", payload: false });
             Alert.alert(
               "Email Verification ERROR!",
-              "Please Verify Your Email First..."
+              "Please Verify Your Email First using the above link..."
             );
           });
       }
@@ -151,6 +151,7 @@ const signin = (dispatch) => {
         dispatch({ type: "loader", payload: false });
         const user = userCredentials.user;
         await AsyncStorage.setItem("user", user.uid);
+        await AsyncStorage.setItem("password", password);
         dispatch({ type: "signin", payload: user });
         replace("AppFlow");
       })
@@ -161,12 +162,30 @@ const signin = (dispatch) => {
       });
   };
 };
+
+const forgotPassword = (dispatch) => {
+  return async ({ email }) => {
+    Firebase.auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        Alert.alert(
+          "Reset Password",
+          `An Email has been sent to ${email}, Follow the link to reset your password`
+        );
+      })
+      .catch((error) => {
+        Alert.alert("ERROR!", error.message);
+      });
+  };
+};
+
 const signout = (dispatch) => {
   return async () => {
     await Firebase.auth()
       .signOut()
       .then(async () => {
         await AsyncStorage.removeItem("user");
+        await AsyncStorage.removeItem("password");
         dispatch({ type: "signout" });
         replace("AuthFlow");
       })
@@ -176,6 +195,6 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   AuthReducer,
-  { signin, signup, signout, automaticSignin, verifyEmail },
+  { signin, signup, signout, automaticSignin, verifyEmail, forgotPassword },
   { user: {}, loading: false }
 );

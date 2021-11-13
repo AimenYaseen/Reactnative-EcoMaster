@@ -44,8 +44,10 @@ export const TopTabScreen = () => {
       <UpperBorder
         text="Browser"
         image={
-          state.userData.image
-            ? { uri: state.userData.image }
+          state.userData
+            ? state.userData.image
+              ? { uri: state.userData.image }
+              : require("../assets/images/default/default-user.jpeg")
             : require("../assets/images/default/default-user.jpeg")
         }
       />

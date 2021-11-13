@@ -1,12 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  ImageBackground,
-  InteractionManager,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFocusEffect } from "@react-navigation/native";
@@ -30,6 +23,7 @@ const ProfileScreen = ({ navigation }) => {
   const {
     state: { userData, loading },
     getUser,
+    changePassword,
   } = useContext(UserContext);
 
   const [pVisible, setPVisible] = useState(false);
@@ -158,7 +152,10 @@ const ProfileScreen = ({ navigation }) => {
             visible={pVisible}
             onBackdropPress={() => setPVisible(false)}
             text="Change Password"
-            onPress={() => setPVisible(false)}
+            onPress={() => {
+              changePassword({ current, newPassword: newP });
+              // setPVisible(false);
+            }}
             label1="Current"
             onChangeText1={(text) => setCurrent(text)}
             label2="New"

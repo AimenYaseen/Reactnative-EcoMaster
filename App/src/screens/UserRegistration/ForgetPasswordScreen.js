@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -15,17 +15,19 @@ import {
   PasswordOverlay,
 } from "../../components/CustomOverlay";
 import { SolidButton } from "../../components/GradientButton";
+import { Context as AuthContext } from "../../context/AuthContext";
 import colors from "../../constants/colors";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const ForgetPasswordScreen = ({ navigation }) => {
+  const { forgotPassword } = useContext(AuthContext);
   const [email, setEmail] = useState("");
-  const [newP, setNewP] = useState("");
-  const [confirmP, setConfirmP] = useState("");
+  // const [newP, setNewP] = useState("");
+  // const [confirmP, setConfirmP] = useState("");
 
-  const [pVisible, setPVisible] = useState(false);
+  // const [pVisible, setPVisible] = useState(false);
 
   return (
     <>
@@ -59,8 +61,11 @@ const ForgetPasswordScreen = ({ navigation }) => {
             name="email"
             type="material-icons"
           />
-          <SolidButton text="Continue" onPress={() => setPVisible(true)} />
-          <PasswordOverlay
+          <SolidButton
+            text="Continue"
+            onPress={() => forgotPassword({ email })}
+          />
+          {/* <PasswordOverlay
             visible={pVisible}
             onBackdropPress={() => setPVisible(false)}
             text="Reset Password"
@@ -69,7 +74,7 @@ const ForgetPasswordScreen = ({ navigation }) => {
             label2="Confirm Password"
             onChangeText2={(text) => setConfirmP(text)}
             label1="New Password"
-          />
+          /> */}
         </View>
       </ImageBackground>
     </>
