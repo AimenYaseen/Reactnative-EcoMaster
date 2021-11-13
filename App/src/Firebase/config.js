@@ -20,4 +20,8 @@ if (firebase.apps.length === 0) {
   app = firebase.app();
 }
 
-export const Firebase = firebase;
+const Firebase = firebase;
+
+Firebase.auth().setPersistence(Firebase.auth.Auth.Persistence.LOCAL);
+
+export { Firebase };

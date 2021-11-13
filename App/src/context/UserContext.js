@@ -80,14 +80,40 @@ const updateUser = (dispatch) => {
           lastName: lName,
           country: contry,
         });
+      // await Firebase.database()
+      //   .ref("Posts/")
+      //   .orderByChild("userId")
+      //   .equalTo(uid)
+      //   .limitToLast(100)
+      //   .on("value", (snapshot) => {
+      //     if (snapshot.exists()) {
+      //       dispatch({ type: "loader", payload: false });
+      //       console.log(snapshot.val());
+      //       snapshot.forEach(async (element) => {
+      //         const { postId } = element.val();
+      //         try {
+      //           console.log(element.val());
+      //           await Firebase.database()
+      //             .ref("Posts/" + postId)
+      //             .update({
+      //               userImage: imgUrl,
+      //               userName: fName + " " + lName,
+      //             })
+      //             .then(() => console.log("test"));
+      //         } catch (error) {
+      //           console.log("Error updating... posts");
+      //         }
+      //       });
+      //     }
+      //   });
       dispatch({ type: "loader", payload: false });
       Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
-      navigate("Profile");
     } catch (error) {
       //loader
       dispatch({ type: "loader", payload: false });
       Alert.alert(error.message);
     }
+    navigate("Profile");
   };
 };
 

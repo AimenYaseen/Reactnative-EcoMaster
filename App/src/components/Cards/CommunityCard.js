@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Firebase } from "../../Firebase/config";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 import moment from "moment";
 
 import colors from "../../constants/colors";
 
 export const CommunityCard = ({ item }) => {
+  const [userData, setUserData] = useState(null);
   const likeIcon = item.liked ? "heart" : "heart-outline";
   const likeIconColor = item.liked ? colors.like : colors.gray4;
 
@@ -27,19 +29,48 @@ export const CommunityCard = ({ item }) => {
   } else {
     commentText = "Comment";
   }
+
+  const getUser = async () => {
+    try {
+      await Firebase.database()
+        .ref("Users/" + item.userId)
+        .once("value", async (snapshot) => {
+          if (snapshot.exists) {
+            const data = await snapshot.val();
+            // console.log(data);
+            setUserData(data);
+          }
+        });
+    } catch (error) {
+      //loader
+      Alert.alert("ERROR!", error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [item]);
+
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.userInfo}>
         <Image
-          source={item.userImage ? { uri: item.userImage } : defaultImage}
+          source={
+            userData
+              ? userData.image
+                ? { uri: userData.image }
+                : defaultImage
+              : defaultImage
+          }
           style={styles.userImg}
         />
         <View style={styles.userInfoText}>
-          <Text style={styles.userName}>{item.userName}</Text>
-          <Text style={styles.postTime}>
-            {moment(item.postTime.toDate()).fromNow()}
+          <Text style={styles.userName}>
+            {userData ? `${userData.firstName} ` : "Test"}
+            {userData ? userData.lastName : "User"}
           </Text>
+          <Text style={styles.postTime}>{moment(item.postTime).fromNow()}</Text>
         </View>
       </View>
       <Text style={styles.postText}>{item.post}</Text>

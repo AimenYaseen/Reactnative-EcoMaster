@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -20,21 +21,12 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const SignUpScreen = ({ navigation }) => {
-  const { state, signup } = useContext(AuthContext);
+  const { state, signup, verifyEmail } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
-
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       navigation.replace("AppFlow");
-  //     }
-  //   });
-  //   return unsubscribe();
-  // }, []);
 
   return (
     <KeyboardAwareScrollView
@@ -80,6 +72,15 @@ const SignUpScreen = ({ navigation }) => {
             />
           </View>
           <View style={{ marginHorizontal: screenWidth * 0.04 }}>
+            <TouchableOpacity
+              onPress={() =>
+                verifyEmail({ email, password, firstName, lastName })
+              }
+            >
+              <Text style={[styles.text, { marginBottom: 20, marginTop: -3 }]}>
+                First Verify Your Email then Sign Up...
+              </Text>
+            </TouchableOpacity>
             <GradientButton
               text="Sign Up"
               onPress={() => signup({ email, password, firstName, lastName })}

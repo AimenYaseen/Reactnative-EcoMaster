@@ -1,12 +1,12 @@
-import React, { useEffect, useContext } from "react";
-import { FlatList, StyleSheet, Dimensions, View } from "react-native";
+import React, { useState, useContext } from "react";
+import { FlatList, StyleSheet, Dimensions, View, Text } from "react-native";
 import { Icon, FAB, SpeedDial } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
 import { CommunityCard } from "../../components/Cards/CommunityCard";
 
 import { CustomHead } from "../../components/CustomHead";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Context as PostContext } from "../../context/PostContext";
-import { Posts } from "../../data/posts";
 import colors from "../../constants/colors";
 
 const screenHeight = Dimensions.get("screen").height;
@@ -18,9 +18,24 @@ const PostsScreen = ({ navigation }) => {
     getPost,
   } = useContext(PostContext);
 
-  useEffect(() => {
-    getPost();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getPost();
+      const task = () => {
+        getPost();
+      };
+
+      return () => {
+        task();
+      };
+    }, [navigation])
+  );
+
+  const listEmpty = () => (
+    <View style={styles.container2}>
+      {/* <Text style={styles.text}> There are no posts yet... </Text> */}
+    </View>
+  );
 
   return (
     <>
@@ -48,11 +63,19 @@ const PostsScreen = ({ navigation }) => {
             paddingBottom: screenHeight * 0.1,
           }}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={listEmpty}
           initialNumToRender={posts.length}
-          data={posts}
+          data={posts.reverse()}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <CommunityCard item={item} activeLike={true} />
+            <>
+              <CommunityCard item={item} activeLike={true} />
+              <Spinner
+                visible={loading}
+                color={colors.secondary}
+                animation="fade"
+              />
+            </>
           )}
         />
         <FAB
@@ -79,7 +102,6 @@ const PostsScreen = ({ navigation }) => {
             borderRadius: 30,
           }}
         />
-        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </View>
     </>
   );
@@ -96,6 +118,21 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: colors.white,
+    justifyContent: "center",
+    alignItems: "center",
+    height: screenHeight * 0.83,
+  },
+  text: {
+    fontSize: 16,
+    fontStyle: "italic",
+    color: colors.gray,
+    alignSelf: "center",
+    textAlign: "center",
+    marginBottom: 80,
   },
 });
 

@@ -42,7 +42,6 @@ const AddPost = ({ navigation }) => {
   const [post, setPost] = useState("");
   const likes = 5;
   let time = new Date().getTime();
-  const userName = userData.firstName + " " + userData.lastName;
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -110,7 +109,7 @@ const AddPost = ({ navigation }) => {
 
   const onSubmitHandle = async () => {
     const imageUrl = await uploadImage();
-    await addPost(userName, userData.image, post, imageUrl, time, likes);
+    await addPost(post, imageUrl, time, likes);
   };
 
   const list = [

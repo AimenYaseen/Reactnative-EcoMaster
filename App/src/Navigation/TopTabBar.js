@@ -25,21 +25,18 @@ const TopTab = createMaterialTopTabNavigator();
 export const TopTabScreen = () => {
   const { state, getUser } = useContext(UserContext);
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     getUser();
-  //     const unsubscribe = () => {
-  //       getUser();
-  //     };
+  useFocusEffect(
+    React.useCallback(() => {
+      getUser();
+      const unsubscribe = () => {
+        getUser();
+      };
 
-  //     return () => {
-  //       unsubscribe();
-  //     };
-  //   }, [])
-  // );
-  useEffect(() => {
-    getUser();
-  }, []);
+      return () => {
+        unsubscribe();
+      };
+    }, [])
+  );
 
   return (
     <Fragment>

@@ -17,7 +17,7 @@ import { Context as AuthContext } from "../context/AuthContext";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export default SplashScreen = () => {
+export default SplashScreen = ({ navigation }) => {
   const { automaticSignin } = useContext(AuthContext);
 
   const insets = useSafeAreaInsets();
@@ -30,7 +30,7 @@ export default SplashScreen = () => {
         Alert.alert("Something went wrong", error);
       }
     }, 3000);
-  }, []);
+  }, [navigation]);
 
   const startColor = colors.primary;
   const endColor = colors.secondary;

@@ -21,29 +21,19 @@ const getPost = (dispatch) => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
       .ref("Posts/")
-      .orderBy("postTime", "desc")
+      .orderByKey()
       .get()
       .then((snapshot) => {
         if (snapshot.exists()) {
           dispatch({ type: "loader", payload: false });
           const postArr = [];
           snapshot.forEach((element) => {
-            const {
-              postId,
-              userId,
-              userName,
-              userImage,
-              post,
-              postImage,
-              postTime,
-              likes,
-            } = element.val();
+            const { postId, userId, post, postImage, postTime, likes } =
+              element.val();
             //pushValues of Object
             postArr.push({
               id: postId,
               userId,
-              userName,
-              userImage,
               post,
               postImage,
               postTime,
@@ -65,7 +55,7 @@ const getPost = (dispatch) => {
 };
 
 const addPost = (dispatch) => {
-  return async (userName, userImage, post, image, time, likes) => {
+  return async (post, image, time, likes) => {
     dispatch({ type: "loader", payload: true });
     const uid = await AsyncStorage.getItem("user");
     await Firebase.database()
@@ -73,8 +63,6 @@ const addPost = (dispatch) => {
       .set({
         postId: time,
         userId: uid,
-        userName,
-        userImage,
         post,
         postImage: image,
         postTime: Date.now(),

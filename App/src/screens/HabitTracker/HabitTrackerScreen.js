@@ -17,6 +17,12 @@ import { LockCard } from "../../components/Cards/LockCard";
 const screenHeight = Dimensions.get("screen").height;
 
 const HabitTrackerScreen = ({ navigation }) => {
+  const listEmpty = () => (
+    <View style={styles.container}>
+      <Text style={styles.text}> There are no feedbacks yet... </Text>
+    </View>
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <CustomHead
@@ -43,6 +49,7 @@ const HabitTrackerScreen = ({ navigation }) => {
         keyExtractor={(item) => {
           return item.id.toString();
         }}
+        ListEmptyComponent={listEmpty}
         renderItem={({ item }) => {
           return (
             <>
@@ -62,6 +69,22 @@ const HabitTrackerScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    justifyContent: "center",
+    alignItems: "center",
+    height: screenHeight * 0.83,
+  },
+  text: {
+    fontSize: 16,
+    fontStyle: "italic",
+    color: colors.gray,
+    alignSelf: "center",
+    textAlign: "center",
+    marginBottom: 80,
+  },
+});
 
 export default HabitTrackerScreen;

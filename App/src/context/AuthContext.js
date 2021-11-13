@@ -25,8 +25,11 @@ const automaticSignin = (dispatch) => {
     const user = await AsyncStorage.getItem("user");
     const admin = await AsyncStorage.getItem("admin");
     if (user) {
-      dispatch({ type: "signin", payload: user });
-      replace("AppFlow");
+      Firebase.auth().onAuthStateChanged((userPresent) => {
+        if (userPresent) {
+          replace("AppFlow");
+        }
+      });
     } else if (admin) {
       replace("Admin", { screen: "AdminFlow" });
     } else {
@@ -35,10 +38,8 @@ const automaticSignin = (dispatch) => {
   };
 };
 
-const signup = (dispatch) => {
+const verifyEmail = (dispatch) => {
   return async ({ email, password, firstName, lastName }) => {
-    //loader
-    dispatch({ type: "loader", payload: true });
     //Verification
     if (password === "" || email === "") {
       Alert.alert("ERROR!", "Email or Password can't be Empty");
@@ -46,43 +47,94 @@ const signup = (dispatch) => {
       if (firstName === "" || lastName === "") {
         Alert.alert("ERROR!", "FirstName or LastName can't be Empty");
       } else {
+        //loader
+        dispatch({ type: "loader", payload: true });
         // USER SIGNUP
         await Firebase.auth()
           .createUserWithEmailAndPassword(email, password)
           .then(async (userCredentials) => {
             const user = userCredentials.user;
-            // const userId = Firebase.auth().currentUser.uid;
-            // USER REFERENCE IN REALTIME DATABASE
-            await Firebase.database()
-              .ref("Users/" + user.uid)
-              .set({
-                userId: user.uid,
-                email: email,
-                password: password,
-                firstName: firstName,
-                lastName: lastName,
-                bio: "",
-                country: "",
-                image: "",
-              })
-              .then(() => {
-                //loader
+            try {
+              await user.sendEmailVerification().then(async () => {
                 dispatch({ type: "loader", payload: false });
-              })
-              .catch((error) => {
-                //loader
-                dispatch({ type: "loader", payload: false });
-                Alert.alert("ERROR!", error.message);
+                Alert.alert(
+                  "Email Verification!",
+                  "Verification Link Has been sent to your Email..."
+                );
               });
-            // ASYNC STORAGE
-            await AsyncStorage.setItem("user", user.uid);
-            dispatch({ type: "signin", payload: user });
-            replace("AppFlow");
+            } catch (error) {
+              dispatch({ type: "loader", payload: false });
+              Alert.alert("ERROR!", error.message);
+            }
           })
           .catch((error) => {
             //loader
             dispatch({ type: "loader", payload: false });
             Alert.alert("ERROR!", error.message);
+          });
+      }
+    }
+  };
+};
+
+const signup = (dispatch) => {
+  return async ({ email, password, firstName, lastName }) => {
+    //Verification
+    if (password === "" || email === "") {
+      Alert.alert("ERROR!", "Email or Password can't be Empty");
+    } else {
+      if (firstName === "" || lastName === "") {
+        Alert.alert("ERROR!", "FirstName or LastName can't be Empty");
+      } else {
+        dispatch({ type: "loader", payload: true });
+        await Firebase.auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(async (userCredentials) => {
+            //loader
+            const user = userCredentials.user;
+            if (user.emailVerified) {
+              //loader
+              dispatch({ type: "loader", payload: true });
+              // USER REFERENCE IN REALTIME DATABASE
+              await Firebase.database()
+                .ref("Users/" + user.uid)
+                .set({
+                  userId: user.uid,
+                  email: email,
+                  password: password,
+                  firstName: firstName,
+                  lastName: lastName,
+                  bio: "",
+                  country: "",
+                  image: "",
+                })
+                .then(async () => {
+                  //loader
+                  dispatch({ type: "loader", payload: false });
+                  await AsyncStorage.setItem("user", user.uid);
+                  dispatch({ type: "signin", payload: user });
+                  replace("AppFlow");
+                })
+                .catch((error) => {
+                  //loader
+                  dispatch({ type: "loader", payload: false });
+                  Alert.alert("ERROR!", error.message);
+                });
+            } else {
+              dispatch({ type: "loader", payload: false });
+              Alert.alert(
+                "Email Verification ERROR!",
+                "Please Verify Your Email First..."
+              );
+            }
+          })
+          .catch((error) => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(
+              "Email Verification ERROR!",
+              "Please Verify Your Email First..."
+            );
           });
       }
     }
@@ -116,7 +168,7 @@ const signout = (dispatch) => {
       .then(async () => {
         await AsyncStorage.removeItem("user");
         dispatch({ type: "signout" });
-        replace("AuthFlow", { screen: "Welcome" });
+        replace("AuthFlow");
       })
       .catch((error) => Alert.alert("ERROR!", error.message));
   };
@@ -124,6 +176,6 @@ const signout = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   AuthReducer,
-  { signin, signup, signout, automaticSignin },
+  { signin, signup, signout, automaticSignin, verifyEmail },
   { user: {}, loading: false }
 );
