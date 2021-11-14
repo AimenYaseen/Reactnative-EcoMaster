@@ -7,8 +7,8 @@ import {
   Dimensions,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { HabitCard } from "../../../components/CustomCard";
 
+import { HabitCard } from "../../components/Habit/HabitCard";
 import { CustomHead } from "../../../components/CustomHead";
 import { habits } from "../../../data/habits";
 import colors from "../../../constants/colors";
@@ -31,7 +31,15 @@ const AdminHabitTracker = ({ navigation }) => {
             color={colors.white}
           />
         )}
-        rightIcon={null}
+        rightIcon={() => (
+          <Icon
+            name="plus"
+            type="entypo"
+            size={30}
+            onPress={() => navigation.navigate("AddHabit")}
+            color={colors.white}
+          />
+        )}
       />
       <FlatList
         //removeClippedSubviews

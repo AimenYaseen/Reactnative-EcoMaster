@@ -53,10 +53,18 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <>
       <CustomHead
-        text={null}
+        text={() => <Text style={styles.text}>Profile</Text>}
         color={colors.secondary}
         centerColor={colors.white}
-        leftIcon={() => <Text style={styles.text}>Profile</Text>}
+        leftIcon={() => (
+          <Icon
+            name="chevron-left"
+            type="entypo"
+            size={30}
+            onPress={() => navigation.navigate("MainFlow")}
+            color={colors.white}
+          />
+        )}
         rightIcon={() => (
           <Icon
             name="user-edit"

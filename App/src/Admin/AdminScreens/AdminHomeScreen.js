@@ -29,19 +29,12 @@ const AdminHomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.subContainer}>
           <BlockButton
-            type="font-awesome"
-            iconName="user"
-            text="My Profile"
-            //onPress={() => navigation.navigate("Profile")}
+            type="material-community"
+            iconName="newspaper-plus"
+            text="Add News"
+            onPress={() => navigation.navigate("AddNews")}
             // subText="subText"
           />
-          {/* <BlockButton
-            type="font-awesome"
-            iconName="group"
-            text="Community"
-            onPress={() => navigation.navigate("Post")}
-            // subText="subText"
-          /> */}
         </View>
       </ImageBackground>
     </View>

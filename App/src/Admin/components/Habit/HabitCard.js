@@ -1,69 +1,13 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
-import { navigate } from "../Navigation/NavigationRef";
+import { navigate } from "../../../Navigation/NavigationRef";
 
-import colors from "../constants/colors";
-import { HabitOverlay } from "./CustomOverlay";
+import colors from "../../../constants/colors";
+import { HabitOverlay } from "../../../components/CustomOverlay";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-
-export const TileCard = ({ image, title, caption }) => {
-  const captionC = caption + "\n\nDuration :" + " Days";
-  return (
-    <View
-      style={{
-        // width: screenWidth * 0.95,
-        paddingHorizontal: 20,
-        paddingTop: 10,
-        alignSelf: "center",
-      }}
-    >
-      <Tile
-        imageSrc={image}
-        title={title}
-        featured
-        caption={caption}
-        width={screenWidth * 0.95}
-        height={screenHeight * 0.27}
-        imageContainerStyle={{
-          borderTopLeftRadius: 7,
-          borderTopRightRadius: 7,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        containerStyle={{
-          marginTop: 10,
-          alignSelf: "center",
-        }}
-      />
-      <View style={styles.durationTile}>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Icon
-            type="entypo"
-            name="time-slot"
-            color={colors.secondary}
-            size={20}
-          />
-          <Text style={{ paddingHorizontal: 10 }}>Duration : Days</Text>
-        </View>
-      </View>
-      <Button
-        title="Select"
-        buttonStyle={{
-          backgroundColor: colors.secondary,
-          width: screenWidth * 0.95,
-          borderBottomLeftRadius: 7,
-          borderBottomRightRadius: 7,
-          borderRadius: 0,
-        }}
-        onPress={() => navigate("Activity")}
-        containerStyle={styles.shadow}
-      />
-    </View>
-  );
-};
 
 export const HabitCard = ({ title, description, duration, steps, image }) => {
   const [visible, setVisible] = useState(false);
@@ -84,7 +28,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
             <Card.Divider />
 
             <Card.Image
-              source={require("../assets/images/leave.jpeg")}
+              source={require("../../../assets/images/leave.jpeg")}
               style={{ borderRadius: 5, height: screenHeight * 0.4 }}
             >
               <View style={{ flex: 1, justifyContent: "center" }}>
@@ -145,7 +89,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
             >
               <Button
                 type="solid"
-                title="Select"
+                title="Edit"
                 raised
                 buttonStyle={{
                   width: screenWidth * 0.25,
@@ -157,16 +101,17 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
                   borderTopRightRadius: 25,
                   borderBottomRightRadius: 25,
                 }}
+                onPress={() => navigate("EditHabit")}
               />
               <Button
                 type="solid"
-                title="Share"
+                title="Delete"
                 raised
                 buttonStyle={{
                   width: screenWidth * 0.25,
                   borderTopLeftRadius: 25,
                   borderBottomLeftRadius: 25,
-                  backgroundColor: colors.mauve,
+                  backgroundColor: colors.accent,
                 }}
                 containerStyle={{
                   borderTopLeftRadius: 25,
@@ -216,16 +161,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     borderRadius: 10,
-    justifyContent: "center",
-    alignSelf: "center",
-  },
-  durationTile: {
-    height: screenHeight * 0.06,
-    width: screenWidth * 0.95,
-    backgroundColor: colors.whiteSmoke,
-    borderColor: "transparent",
-    borderWidth: 1,
-    paddingHorizontal: 10,
     justifyContent: "center",
     alignSelf: "center",
   },

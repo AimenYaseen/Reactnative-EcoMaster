@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Share,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { Firebase } from "../../Firebase/config";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 import moment from "moment";
 
 import colors from "../../constants/colors";
 
 export const CommunityCard = ({ item }) => {
   const [userData, setUserData] = useState(null);
+  const fileUri = FileSystem.cacheDirectory + "tmp.jpg";
+  // const imageURL = item ? (item.postImage ? item.postImage : null) : null;
+
   const likeIcon = item.liked ? "heart" : "heart-outline";
   const likeIconColor = item.liked ? colors.like : colors.gray4;
 
@@ -41,6 +54,38 @@ export const CommunityCard = ({ item }) => {
   useEffect(() => {
     getUser();
   }, [item]);
+
+  const onShare = async () => {
+    await Sharing.isAvailableAsync().then(async (available) => {
+      if (available) {
+        Alert.alert("Congratulations!", "Sharing is available");
+        const options = {
+          mimeType: "image/jpeg",
+          dialogTitle: item.post,
+          UTI: "image/jpeg",
+        };
+
+        await FileSystem.downloadAsync(item.postImage, fileUri)
+          .then(({ uri }) => {
+            Alert.alert("Image Downloaded \n", uri);
+          })
+          .catch((error) => {
+            Alert.alert("ERROR!", JSON.stringify(error.message));
+          });
+
+        // Sharing only allows one to share a file.
+        await Sharing.shareAsync(fileUri, options)
+          .then((data) => {
+            Alert.alert("Image Shared \n", data);
+          })
+          .catch((error) => {
+            Alert.alert("ERROR!", JSON.stringify(error.message));
+          });
+      } else {
+        Alert.alert("ERROR!", "Sharing is NOT available");
+      }
+    });
+  };
 
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
   return (
@@ -88,7 +133,7 @@ export const CommunityCard = ({ item }) => {
             {likeText}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.interaction}>
+        <TouchableOpacity style={styles.interaction} onPress={onShare}>
           <Icon
             name="share-2"
             type="feather"

@@ -47,12 +47,13 @@ export const CustomHead = ({
   leftIcon,
   rightIcon,
   centerColor,
+  statusColor,
 }) => {
   return (
     <Header
       statusBarProps={{
         barStyle: "light-content",
-        backgroundColor: colors.secondary,
+        backgroundColor: color,
         hidden: false,
       }}
       leftComponent={leftIcon}

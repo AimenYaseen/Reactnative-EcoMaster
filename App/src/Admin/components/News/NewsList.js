@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
 
-import colors from "../../constants/colors";
-import { NewsCard } from "../Cards/NewsCard";
+import colors from "../../../constants/colors";
+import { NewsCard } from "./NewsCard";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -13,7 +13,7 @@ const NewsList = ({ title, result }) => {
 
   const listEmpty = () => (
     <View style={styles.container}>
-      <Text style={styles.text}> There are no feedbacks yet... </Text>
+      <Text style={styles.text}> There are no News yet... </Text>
     </View>
   );
   const renderItem = ({ item }) => {
@@ -23,12 +23,12 @@ const NewsList = ({ title, result }) => {
   };
 
   return (
-    <View style={{ marginLeft: 15 }}>
+    <View style={{ marginLeft: 10 }}>
       <Text style={styles.titleStyle}>{title}</Text>
       <FlatList
         showsHorizontalScrollIndicator={false}
         horizontal
-        contentContainerStyle={{ paddingBottom: screenHeight * 0.04 }}
+        contentContainerStyle={{ paddingBottom: screenHeight * 0.02 }}
         ListEmptyComponent={listEmpty}
         data={result}
         keyExtractor={(item) => item.id.toString()}

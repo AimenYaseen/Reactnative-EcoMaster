@@ -22,4 +22,8 @@ export default {
   shadow: "#7F5DF0",
   mustard: "#E3A500",
   mauve: "#B180A2",
+  success: "#2E7D32",
+  cancel: "#D32F2F",
+  orange: "#ED6C02",
+  niceBlue: "#0288D1",
 };

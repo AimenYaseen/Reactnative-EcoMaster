@@ -2,9 +2,7 @@ import React, { Fragment, useContext } from "react";
 import { Icon } from "react-native-elements";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { replace } from "../../Navigation/NavigationRef";
+import { navigate } from "../../Navigation/NavigationRef";
 
 import { Head, UpperBorder, CustomHead } from "../../components/CustomHead";
 
@@ -19,6 +17,7 @@ import AdminFoodAndDrink from "../AdminScreens/CustomHabit/Suggestion/AdminFoodA
 import { Context as AdminAuthContext } from "../AdminContext/AdminAuthContext";
 
 import colors from "../../constants/colors";
+import { Alert } from "react-native";
 
 const AdminTopTab = createMaterialTopTabNavigator();
 export const AdminTopTabScreen = () => {
@@ -35,7 +34,22 @@ export const AdminTopTabScreen = () => {
           color: colors.white,
         }}
         onPress={() => {
-          admin_signout();
+          Alert.alert(
+            "Log Out!",
+            "Are You Sure?",
+            [
+              {
+                text: "Cancel",
+                //onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              {
+                text: "OK",
+                onPress: () => admin_signout(),
+              },
+            ],
+            { cancelable: false }
+          );
         }}
       />
       <AdminTopTab.Navigator
@@ -106,7 +120,7 @@ export const AdminTopTabScreen = () => {
 const AdminSuggestionTopTab = createMaterialTopTabNavigator();
 export const AdminSuggestionTopTabScreen = () => {
   //const insets = useSafeAreaInsets();
-  const { navigate } = useNavigation();
+  //const { navigate } = useNavigation();
 
   return (
     <Fragment>
@@ -123,7 +137,15 @@ export const AdminSuggestionTopTabScreen = () => {
             color={colors.white}
           />
         )}
-        rightIcon={null}
+        rightIcon={() => (
+          <Icon
+            name="plus"
+            type="entypo"
+            size={30}
+            onPress={() => navigate("EditCustom")}
+            color={colors.white}
+          />
+        )}
       />
       <AdminSuggestionTopTab.Navigator
         screenOptions={{

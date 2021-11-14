@@ -6,7 +6,7 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
-import { TileCard } from "../../../../components/CustomCard";
+import { CustomCard } from "../../../components/Custom/CustomCard";
 
 import { habit as habitList } from "../../../../data/Suggestion/habit";
 
@@ -30,7 +30,7 @@ export default AdminHabits = () => {
           renderItem={({ item }) => {
             return (
               <>
-                <TileCard
+                <CustomCard
                   image={require("../../../../assets/images/leave.jpeg")}
                   title={item.title}
                   caption={item.caption}

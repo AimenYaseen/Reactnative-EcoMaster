@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 
-import NewsList from "../../components/News/NewsList";
+import NewsList from "../components/News/NewsList";
 import colors from "../../constants/colors";
 import { news } from "../../data/news";
 
@@ -16,7 +16,7 @@ const screenHeight = Dimensions.get("screen").height;
 
 const AdminFeedScreen = () => {
   return (
-    <View style={{ flex: 1, paddingTop: 20 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <NewsList title="Do You Know?" result={news} />
         <NewsList title="Information" result={news} />

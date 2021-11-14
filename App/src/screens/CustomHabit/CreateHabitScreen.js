@@ -23,16 +23,24 @@ const CreateHabitScreen = ({ navigation }) => {
     <View>
       <CustomHead
         text="Your Habits"
-        color={colors.white}
-        centerColor={colors.secondary}
-        leftIcon={null}
+        color={colors.secondary}
+        centerColor={colors.white}
+        leftIcon={() => (
+          <Icon
+            name="chevron-left"
+            type="entypo"
+            size={30}
+            onPress={() => navigation.navigate("MainFlow")}
+            color={colors.white}
+          />
+        )}
         rightIcon={() => (
           <Icon
-            name="add-box"
-            type="material-icons"
+            name="plus"
+            type="entypo"
             size={35}
             onPress={() => navigation.navigate("HabitForm")}
-            color={colors.secondary}
+            color={colors.white}
           />
         )}
       />
