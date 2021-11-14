@@ -1,13 +1,23 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  View,
+  ScrollView,
+} from "react-native";
 import { Icon } from "react-native-elements";
 
 import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
+import NewsForm from "../../components/News/NewsForm";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const EditNews = ({ navigation }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <CustomHead
         text="Edit News"
         color={colors.mustard}
@@ -23,11 +33,32 @@ const EditNews = ({ navigation }) => {
         )}
         rightIcon={null}
       />
-      <Text>Edit News</Text>
+      <ImageBackground
+        style={styles.background}
+        source={require("../../assets/news_back.jpg")}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <NewsForm text="Add" />
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    //justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  background: {
+    //paddingTop: screenHeight * 0.1,
+    flex: 1,
+    // paddingTop: screenHeight * 0.1,
+    justifyContent: "center",
+    alignItems: "center",
+    resizeMode: "contain",
+  },
+});
 
 export default EditNews;

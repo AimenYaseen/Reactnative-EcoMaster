@@ -7,6 +7,50 @@ import colors from "../constants/colors";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
+export const BlockInput = ({
+  label,
+  placeholder,
+  onChangeText,
+  value,
+  multiline,
+}) => {
+  const [focus, setFocus] = useState(false);
+
+  return (
+    <>
+      <Input
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        label={label}
+        labelStyle={{
+          color: colors.black,
+          marginBottom: 7,
+          // marginLeft: -7,
+          // marginTop: -2,
+        }}
+        placeholder={placeholder}
+        placeholderTextColor={colors.gray}
+        value={value}
+        inputContainerStyle={{
+          borderColor: focus ? colors.secondary : colors.gray,
+          borderWidth: focus ? 2 : 1,
+          borderBottomWidth: focus ? 2 : 1,
+          borderRadius: 5,
+          padding: 2,
+          paddingHorizontal: 5,
+          width: screenWidth * 0.77,
+          alignSelf: "center",
+        }}
+        multiline
+        onChangeText={onChangeText}
+        autoCorrect={false}
+        autoCapitalize="none"
+        autoComplete="off"
+      />
+    </>
+  );
+};
+
 export const SimpleInput = ({ label, placeholder, onChangeText, value }) => {
   const [focus, setFocus] = useState(false);
 

@@ -36,7 +36,7 @@ export const AdminTopTabScreen = () => {
         onPress={() => {
           Alert.alert(
             "Log Out!",
-            "Are You Sure?",
+            "Are You Sure, You want to logOut?",
             [
               {
                 text: "Cancel",
