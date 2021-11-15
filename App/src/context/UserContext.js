@@ -68,7 +68,7 @@ const uploadImage = (dispatch) => {
 const updateUser = (dispatch) => {
   return async (imgUrl, userBio, fName, lName, contry) => {
     if (fName === "") {
-      Alert.alert("ERROR!", "FirstName or LastName can't be Empty");
+      Alert.alert("ERROR!", "FirstName can't be Empty");
     } else {
       dispatch({ type: "loader", payload: true });
       try {
@@ -83,32 +83,6 @@ const updateUser = (dispatch) => {
             lastName: lName,
             country: contry,
           });
-        // await Firebase.database()
-        //   .ref("Posts/")
-        //   .orderByChild("userId")
-        //   .equalTo(uid)
-        //   .limitToLast(100)
-        //   .on("value", (snapshot) => {
-        //     if (snapshot.exists()) {
-        //       dispatch({ type: "loader", payload: false });
-        //       console.log(snapshot.val());
-        //       snapshot.forEach(async (element) => {
-        //         const { postId } = element.val();
-        //         try {
-        //           console.log(element.val());
-        //           await Firebase.database()
-        //             .ref("Posts/" + postId)
-        //             .update({
-        //               userImage: imgUrl,
-        //               userName: fName + " " + lName,
-        //             })
-        //             .then(() => console.log("test"));
-        //         } catch (error) {
-        //           console.log("Error updating... posts");
-        //         }
-        //       });
-        //     }
-        //   });
         dispatch({ type: "loader", payload: false });
         Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
       } catch (error) {

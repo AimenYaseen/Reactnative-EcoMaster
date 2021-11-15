@@ -27,6 +27,7 @@ const NewsForm = ({
   newsImage,
   imageVisible,
   onPress,
+  loading,
 }) => {
   const [title, setTitle] = useState(newsTitle);
   const [caption, setCaption] = useState(newsCaption);
@@ -38,6 +39,7 @@ const NewsForm = ({
 
   let time = new Date().getTime();
 
+  const disabled = image || newsImage ? false : true;
   // React.useEffect(() => {
   //   const unsubscribe = navigation.addListener("blur", () => {
   //     setPost("");
@@ -104,8 +106,11 @@ const NewsForm = ({
   };
 
   const onSubmitHandle = async () => {
-    const imageUrl = await uploadImage();
-    //await addPost(post, imageUrl, time, likes);
+    let imageUrl = await uploadImage();
+    if (imageUrl === null && newsImage) {
+      imageUrl = newsImage;
+    }
+    onPress(category, title, caption, imageUrl, time);
   };
 
   const list = [
@@ -192,6 +197,7 @@ const NewsForm = ({
       keyboardShouldPersistTaps="always"
     >
       <BlockInput
+        disabled={text === "Edit" ? true : false}
         label="Category"
         value={category}
         placeholder="News Category"
@@ -212,9 +218,26 @@ const NewsForm = ({
         multiline={true}
         onChangeText={(text) => setCaption(text)}
       />
+      {disabled ? (
+        <Text
+          style={{
+            fontStyle: "italic",
+            color: colors.gray,
+            marginTop: -10,
+            marginBottom: 5,
+          }}
+        >
+          Image is compulsory...
+        </Text>
+      ) : null}
       {image || newsImage ? <Text style={styles.imageText}>Image</Text> : null}
       {imageVisible ? (
-        <Image source={{ uri: newsImage }} style={styles.image} />
+        <Image
+          source={
+            image ? { uri: image } : newsImage ? { uri: newsImage } : null
+          }
+          style={styles.image}
+        />
       ) : image ? (
         <Image source={{ uri: image }} style={styles.image} />
       ) : null}
@@ -232,6 +255,7 @@ const NewsForm = ({
       />
       <Button
         raised
+        disabled={disabled}
         type="solid"
         title={`${text} News`}
         onPress={onSubmitHandle}
@@ -263,7 +287,11 @@ const NewsForm = ({
           </ListItem>
         ))}
       </BottomSheet>
-      <Spinner visible={uploading} color={colors.secondary} animation="fade" />
+      <Spinner
+        visible={loading || uploading}
+        color={colors.secondary}
+        animation="fade"
+      />
     </KeyboardAwareScrollView>
   );
 };

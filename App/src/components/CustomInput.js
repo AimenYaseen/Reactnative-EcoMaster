@@ -12,6 +12,7 @@ export const BlockInput = ({
   placeholder,
   onChangeText,
   value,
+  disabled,
   multiline,
 }) => {
   const [focus, setFocus] = useState(false);
@@ -21,6 +22,7 @@ export const BlockInput = ({
       <Input
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
+        disabled={disabled}
         label={label}
         labelStyle={{
           color: colors.black,
@@ -42,7 +44,7 @@ export const BlockInput = ({
           //  width: screenWidth * 0.77,
           alignSelf: "center",
         }}
-        multiline
+        multiline={multiline}
         onChangeText={onChangeText}
         autoCorrect={false}
         autoCapitalize="none"

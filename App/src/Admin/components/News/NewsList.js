@@ -17,9 +17,7 @@ const NewsList = ({ title, result }) => {
     </View>
   );
   const renderItem = ({ item }) => {
-    return (
-      <NewsCard title={item.title} caption={item.caption} image={item.image} />
-    );
+    return <NewsCard item={item} title={title} />;
   };
 
   return (

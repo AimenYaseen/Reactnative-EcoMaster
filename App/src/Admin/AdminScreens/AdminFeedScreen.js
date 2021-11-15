@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -11,16 +11,30 @@ import {
 import NewsList from "../components/News/NewsList";
 import colors from "../../constants/colors";
 import { news } from "../../data/news";
+import { Context as NewsContext } from "../AdminContext/NewsContext";
 
 const screenHeight = Dimensions.get("screen").height;
 
-const AdminFeedScreen = () => {
+const AdminFeedScreen = ({ navigation }) => {
+  const { state, getNewsTips, getNewsInformation } = useContext(NewsContext);
+
+  React.useEffect(() => {
+    getNewsTips();
+    getNewsInformation();
+
+    const unsubscribe = navigation.addListener("focus", () => {
+      getNewsTips();
+      getNewsInformation();
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <NewsList title="Do You Know?" result={news} />
-        <NewsList title="Information" result={news} />
-        <NewsList title="Tips" result={news} />
+        <NewsList title="Tips" result={state.newsTips} />
+        <NewsList title="Information" result={state.newsInformation} />
         <View />
       </ScrollView>
     </View>

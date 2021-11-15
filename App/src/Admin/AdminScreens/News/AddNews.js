@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -11,11 +11,16 @@ import { Icon } from "react-native-elements";
 import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
 import NewsForm from "../../components/News/NewsForm";
+import { Context as NewsContext } from "../../AdminContext/NewsContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const AddNews = ({ navigation }) => {
+  const {
+    state: { loading },
+    addNews,
+  } = useContext(NewsContext);
   return (
     <View style={styles.container}>
       <CustomHead
@@ -38,7 +43,26 @@ const AddNews = ({ navigation }) => {
         source={require("../../assets/news_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <NewsForm text="Add" imageVisible={false} />
+          <NewsForm
+            loading={loading}
+            text="Add"
+            imageVisible={false}
+            onPress={async (
+              newsCategory,
+              newsTitle,
+              newsCaption,
+              newsImage,
+              time
+            ) =>
+              await addNews(
+                newsCategory,
+                newsTitle,
+                newsCaption,
+                newsImage,
+                time
+              )
+            }
+          />
         </ScrollView>
       </ImageBackground>
     </View>

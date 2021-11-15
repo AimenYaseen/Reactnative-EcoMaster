@@ -1,14 +1,24 @@
-import React, { useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import React, { useContext, useState } from "react";
+import { Dimensions, StyleSheet, Text, View, Alert } from "react-native";
 import { Tile, Card, Icon, Button } from "react-native-elements";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import colors from "../../../constants/colors";
 import { navigate } from "../../../Navigation/NavigationRef";
+import { Context as NewsContext } from "../../AdminContext/NewsContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const NewsCard = ({ image, title, caption }) => {
+export const NewsCard = ({ item, title }) => {
+  const { state, deleteNews, getNewsTips, getNewsInformation } =
+    useContext(NewsContext);
+
+  React.useEffect(() => {
+    getNewsTips();
+    getNewsInformation();
+  }, [state.deleted]);
+
   return (
     <View
       style={{
@@ -19,10 +29,10 @@ export const NewsCard = ({ image, title, caption }) => {
       }}
     >
       <Tile
-        imageSrc={image}
+        imageSrc={{ uri: item.image }}
         title={null}
         featured
-        caption={caption}
+        caption={item.caption}
         width={screenWidth * 0.85}
         height={screenHeight * 0.25}
         imageContainerStyle={{
@@ -63,7 +73,7 @@ export const NewsCard = ({ image, title, caption }) => {
             borderBottomLeftRadius: 7,
             borderRadius: 0,
           }}
-          onPress={() => navigate("EditNews")}
+          onPress={() => navigate("EditNews", { item, title })}
         />
         <Button
           title="Delete"
@@ -73,9 +83,31 @@ export const NewsCard = ({ image, title, caption }) => {
             borderBottomRightRadius: 7,
             borderRadius: 0,
           }}
-          // onPress={() => navigate("Activity")}
+          onPress={() => {
+            Alert.alert(
+              "Delete!",
+              "Are You Sure, You want to Delete?",
+              [
+                {
+                  text: "No",
+                  //onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                {
+                  text: "Yes",
+                  onPress: () => deleteNews(item.id, title),
+                },
+              ],
+              { cancelable: false }
+            );
+          }}
         />
       </View>
+      <Spinner
+        visible={state.loading}
+        color={colors.secondary}
+        animation="fade"
+      />
     </View>
   );
 };

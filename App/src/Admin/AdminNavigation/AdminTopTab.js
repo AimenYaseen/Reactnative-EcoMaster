@@ -17,7 +17,7 @@ import AdminFoodAndDrink from "../AdminScreens/CustomHabit/Suggestion/AdminFoodA
 import { Context as AdminAuthContext } from "../AdminContext/AdminAuthContext";
 
 import colors from "../../constants/colors";
-import { Alert } from "react-native";
+import { Alert, Text } from "react-native";
 
 const AdminTopTab = createMaterialTopTabNavigator();
 export const AdminTopTabScreen = () => {
@@ -39,12 +39,16 @@ export const AdminTopTabScreen = () => {
             "Are You Sure, You want to logOut?",
             [
               {
-                text: "Cancel",
+                text: (
+                  <Text style={{ backgroundColor: colors.accent }}>No</Text>
+                ),
                 //onPress: () => console.log("Cancel Pressed"),
                 style: "cancel",
               },
               {
-                text: "OK",
+                text: (
+                  <Text style={{ backgroundColor: colors.success }}>No</Text>
+                ),
                 onPress: () => admin_signout(),
               },
             ],
