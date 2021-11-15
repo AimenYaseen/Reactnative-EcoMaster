@@ -38,7 +38,7 @@ const AddNews = ({ navigation }) => {
         source={require("../../assets/news_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <NewsForm text="Add" />
+          <NewsForm text="Add" imageVisible={false} />
         </ScrollView>
       </ImageBackground>
     </View>

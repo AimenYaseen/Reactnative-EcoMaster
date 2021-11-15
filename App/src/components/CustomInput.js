@@ -25,6 +25,7 @@ export const BlockInput = ({
         labelStyle={{
           color: colors.black,
           marginBottom: 7,
+          fontSize: 18,
           // marginLeft: -7,
           // marginTop: -2,
         }}
@@ -38,7 +39,7 @@ export const BlockInput = ({
           borderRadius: 5,
           padding: 2,
           paddingHorizontal: 5,
-          width: screenWidth * 0.77,
+          //  width: screenWidth * 0.77,
           alignSelf: "center",
         }}
         multiline
