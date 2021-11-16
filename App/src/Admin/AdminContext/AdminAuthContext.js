@@ -7,6 +7,8 @@ import { replace } from "../../Navigation/NavigationRef";
 
 const AdminAuthReducer = (state, action) => {
   switch (action.type) {
+    case "loader":
+      return { ...state, loading: action.payload };
     case "setData":
       return { ...state, adminData: action.payload };
     default:

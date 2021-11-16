@@ -39,16 +39,12 @@ export const AdminTopTabScreen = () => {
             "Are You Sure, You want to logOut?",
             [
               {
-                text: (
-                  <Text style={{ backgroundColor: colors.accent }}>No</Text>
-                ),
+                text: "No",
                 //onPress: () => console.log("Cancel Pressed"),
                 style: "cancel",
               },
               {
-                text: (
-                  <Text style={{ backgroundColor: colors.success }}>No</Text>
-                ),
+                text: "Yes",
                 onPress: () => admin_signout(),
               },
             ],
@@ -146,7 +142,7 @@ export const AdminSuggestionTopTabScreen = () => {
             name="plus"
             type="entypo"
             size={30}
-            onPress={() => navigate("EditCustom")}
+            onPress={() => navigate("AddCustom")}
             color={colors.white}
           />
         )}

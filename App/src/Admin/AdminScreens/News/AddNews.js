@@ -21,11 +21,13 @@ const AddNews = ({ navigation }) => {
     state: { loading },
     addNews,
   } = useContext(NewsContext);
+
   return (
     <View style={styles.container}>
       <CustomHead
         text="Add News"
         color={colors.success}
+        statusColor={colors.success}
         centerColor={colors.white}
         leftIcon={() => (
           <Icon

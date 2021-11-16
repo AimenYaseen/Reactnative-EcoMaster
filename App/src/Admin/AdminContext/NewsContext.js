@@ -51,8 +51,7 @@ const getNewsTips = (dispatch) => {
     Firebase.database()
       .ref("News/Tips")
       .orderByKey()
-      .get()
-      .then((snapshot) => {
+      .once("value", (snapshot) => {
         if (snapshot.exists()) {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
@@ -85,8 +84,7 @@ const getNewsInformation = (dispatch) => {
     Firebase.database()
       .ref("News/Information")
       .orderByKey()
-      .get()
-      .then((snapshot) => {
+      .once("value", (snapshot) => {
         if (snapshot.exists()) {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
@@ -140,8 +138,7 @@ const deleteNews = (dispatch) => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
       .ref(`News/${title}/` + newsId)
-      .get()
-      .then((documentSnapshot) => {
+      .once("value", (documentSnapshot) => {
         if (documentSnapshot.exists) {
           const { image } = documentSnapshot.val();
           const storageRef = Firebase.storage().refFromURL(image);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import { Tile, Icon, Button } from "react-native-elements";
 import { navigate } from "../../../Navigation/NavigationRef";
 
@@ -9,7 +9,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const CustomCard = ({ image, title, caption }) => {
-  const captionC = caption + "\n\nDuration :" + " Days";
+  // const captionC = caption + "\n\nDuration :" + " Days";
   return (
     <View
       style={{
@@ -69,7 +69,24 @@ export const CustomCard = ({ image, title, caption }) => {
             borderBottomRightRadius: 7,
             borderRadius: 0,
           }}
-          // onPress={() => navigate("Activity")}
+          onPress={() => {
+            Alert.alert(
+              "Delete!",
+              "Are You Sure, You want to Delete?",
+              [
+                {
+                  text: "No",
+                  //onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                {
+                  text: "Yes",
+                  //onPress: () => deleteNews(item.id, title),
+                },
+              ],
+              { cancelable: false }
+            );
+          }}
         />
       </View>
     </View>

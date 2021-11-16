@@ -10,7 +10,6 @@ import {
 
 import NewsList from "../components/News/NewsList";
 import colors from "../../constants/colors";
-import { news } from "../../data/news";
 import { Context as NewsContext } from "../AdminContext/NewsContext";
 
 const screenHeight = Dimensions.get("screen").height;

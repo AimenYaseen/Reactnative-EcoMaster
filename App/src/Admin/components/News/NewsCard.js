@@ -103,11 +103,6 @@ export const NewsCard = ({ item, title }) => {
           }}
         />
       </View>
-      <Spinner
-        visible={state.loading}
-        color={colors.secondary}
-        animation="fade"
-      />
     </View>
   );
 };

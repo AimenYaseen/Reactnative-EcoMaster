@@ -11,7 +11,7 @@ export const NewsCard = ({ image, title, caption }) => {
   return (
     <>
       <Tile
-        imageSrc={image}
+        imageSrc={{ uri: image }}
         title={null}
         featured
         caption={caption}
@@ -25,7 +25,8 @@ export const NewsCard = ({ image, title, caption }) => {
         containerStyle={{
           alignSelf: "center",
           marginTop: 15,
-          marginRight: 15,
+          marginLeft: 25,
+          //marginRight: 10,
           borderRadius: 10,
           ...styles.shadow,
         }}

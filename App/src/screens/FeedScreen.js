@@ -8,38 +8,33 @@ import {
   ScrollView,
   InteractionManager,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
 
-import { Context as UserContext } from "../context/UserContext";
-import { NewsCard } from "../components/Cards/NewsCard";
 import NewsList from "../components/News/NewsList";
 import colors from "../constants/colors";
-import { news } from "../data/news";
+import { Context as NewsContext } from "../Admin/AdminContext/NewsContext";
 
 const screenHeight = Dimensions.get("screen").height;
 
 const FeedScreen = ({ navigation }) => {
-  const { getUser } = useContext(UserContext);
+  const { state, getNewsTips, getNewsInformation } = useContext(NewsContext);
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     getUser();
-  //     const task = InteractionManager.runAfterInteractions(() => {
-  //       getUser();
-  //     });
+  React.useEffect(() => {
+    getNewsTips();
+    getNewsInformation();
 
-  //     return () => {
-  //       task.cancel();
-  //     };
-  //   }, [navigation])
-  // );
+    const unsubscribe = navigation.addListener("focus", () => {
+      getNewsTips();
+      getNewsInformation();
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
-    <View style={{ flex: 1, paddingTop: 20 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <NewsList title="Do You Know?" result={news} />
-        <NewsList title="Information" result={news} />
-        <NewsList title="Tips" result={news} />
+        <NewsList title="Do You Know?" result={state.newsTips} />
+        <NewsList title="Information" result={state.newsInformation} />
         <View />
       </ScrollView>
     </View>

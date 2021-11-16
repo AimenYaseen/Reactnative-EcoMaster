@@ -1,33 +1,93 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useContext } from "react";
+import {
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  View,
+  ScrollView,
+} from "react-native";
 import { Icon } from "react-native-elements";
 
 import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
+import CustomForm from "../../components/Custom/CustomForm";
+//import { Context as NewsContext } from "../../AdminContext/NewsContext";
 
-const EditCustom = ({ navigation }) => {
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+
+const EditCustom = ({ navigation, route }) => {
+  // const {
+  //   state: { loading },
+  //   editNews,
+  // } = useContext(NewsContext);
+
+  // const item = route.params.item;
+  // const title = route.params.title;
+
   return (
-    <View>
+    <View style={styles.container}>
       <CustomHead
         text="Edit Suggestions"
-        color={colors.secondary}
+        statusColor={colors.mustard}
+        color={colors.mustard}
         centerColor={colors.white}
         leftIcon={() => (
           <Icon
             name="chevron-left"
             type="entypo"
             size={30}
-            onPress={() => navigation.navigate("AdminMainFlow")}
+            onPress={() => navigation.navigate("AdminCustom")}
             color={colors.white}
           />
         )}
         rightIcon={null}
       />
-      <Text>Edit Custom</Text>
+      <ImageBackground
+        style={styles.background}
+        source={require("../../assets/news_back.jpg")}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <CustomForm
+            //loading={loading}
+            text="Edit"
+            // newsTitle={item.title}
+            // newsCaption={item.caption}
+            // newsCategory={title}
+            // newsImage={item.image}
+            // imageVisible={true}
+            onPress={
+              async (newsCategory, newsTitle, newsCaption, newsImage, time) =>
+                console.log("Pressed")
+              // await editNews(
+              //   item.id,
+              //   newsCategory,
+              //   newsTitle,
+              //   newsCaption,
+              //   newsImage
+              // )
+            }
+          />
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    //justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  background: {
+    //paddingTop: screenHeight * 0.1,
+    flex: 1,
+    // paddingTop: screenHeight * 0.1,
+    justifyContent: "center",
+    alignItems: "center",
+    resizeMode: "contain",
+  },
+});
 
 export default EditCustom;

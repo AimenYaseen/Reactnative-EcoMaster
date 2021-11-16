@@ -29,6 +29,7 @@ const EditNews = ({ navigation, route }) => {
       <CustomHead
         text="Edit News"
         color={colors.mustard}
+        statusColor={colors.mustard}
         centerColor={colors.white}
         leftIcon={() => (
           <Icon
