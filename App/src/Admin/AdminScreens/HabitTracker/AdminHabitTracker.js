@@ -16,6 +16,12 @@ import colors from "../../../constants/colors";
 const screenHeight = Dimensions.get("screen").height;
 
 const AdminHabitTracker = ({ navigation }) => {
+  const listEmpty = () => (
+    <View style={styles.container}>
+      <Text style={styles.text}> There are no News yet... </Text>
+    </View>
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <CustomHead
@@ -46,6 +52,7 @@ const AdminHabitTracker = ({ navigation }) => {
         showsHorizontalScrollIndicator={false}
         horizontal
         data={habits}
+        ListEmptyComponent={listEmpty}
         initialNumToRender={habits.length}
         keyExtractor={(item) => {
           return item.id.toString();
@@ -69,6 +76,22 @@ const AdminHabitTracker = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    justifyContent: "center",
+    alignItems: "center",
+    height: screenHeight * 0.83,
+  },
+  text: {
+    fontSize: 16,
+    fontStyle: "italic",
+    color: colors.gray,
+    alignSelf: "center",
+    textAlign: "center",
+    marginBottom: 80,
+  },
+});
 
 export default AdminHabitTracker;

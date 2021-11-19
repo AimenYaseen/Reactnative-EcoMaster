@@ -29,8 +29,8 @@ const NewsList = ({ title, result }) => {
         showsHorizontalScrollIndicator={false}
         horizontal
         contentContainerStyle={{
-          paddingBottom: screenHeight * 0.04,
-          paddingRight: screenHeight * 0.04,
+          paddingBottom: screenHeight * 0.03,
+          paddingRight: screenHeight * 0.05,
         }}
         ListEmptyComponent={listEmpty}
         data={result}

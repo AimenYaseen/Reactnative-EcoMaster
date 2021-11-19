@@ -11,16 +11,16 @@ import { Icon } from "react-native-elements";
 import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
 import CustomForm from "../../components/Custom/CustomForm";
-//import { Context as NewsContext } from "../../AdminContext/NewsContext";
+import { Context as CustomContext } from "../../AdminContext/CustomContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const AddCustom = ({ navigation }) => {
-  // const {
-  //   state: { loading },
-  //   addNews,
-  // } = useContext(NewsContext);
+  const {
+    state: { loading },
+    addCustom,
+  } = useContext(CustomContext);
 
   return (
     <View style={styles.container}>
@@ -46,20 +46,27 @@ const AddCustom = ({ navigation }) => {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomForm
-            // loading={loading}
+            loading={loading}
             text="Add"
             imageVisible={false}
-            onPress={
-              async (newsCategory, newsTitle, newsCaption, newsImage, time) =>
-                console.log("Pressed")
-              // await addNews(
-              //   newsCategory,
-              //   newsTitle,
-              //   newsCaption,
-              //   newsImage,
-              //   time
-              // )
-            }
+            onPress={async (
+              customCategory,
+              customTitle,
+              customDescription,
+              customDuration,
+              customImage,
+              time
+            ) => {
+              console.log("Pressed");
+              await addCustom(
+                customCategory,
+                customTitle,
+                customDescription,
+                customDuration,
+                customImage,
+                time
+              );
+            }}
           />
         </ScrollView>
       </ImageBackground>

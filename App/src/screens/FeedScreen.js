@@ -33,8 +33,8 @@ const FeedScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <NewsList title="Do You Know?" result={state.newsTips} />
-        <NewsList title="Information" result={state.newsInformation} />
+        <NewsList title="Do You Know?" result={state.newsInformation} />
+        <NewsList title="Information" result={state.newsTips} />
         <View />
       </ScrollView>
     </View>

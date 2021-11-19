@@ -111,7 +111,7 @@ const CustomForm = ({
     if (imageUrl === null && customImage) {
       imageUrl = customImage;
     }
-    onPress(category, title, description, imageUrl, time);
+    onPress(category, title, description, duration, imageUrl, time);
   };
 
   const list = [

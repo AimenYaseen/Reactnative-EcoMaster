@@ -15,8 +15,8 @@ export const NewsCard = ({ image, title, caption }) => {
         title={null}
         featured
         caption={caption}
-        width={screenWidth * 0.8}
-        height={screenHeight * 0.25}
+        width={screenWidth * 0.85}
+        height={screenHeight * 0.3}
         imageContainerStyle={{
           borderRadius: 10,
           //  borderWidth: 2,
@@ -25,7 +25,7 @@ export const NewsCard = ({ image, title, caption }) => {
         containerStyle={{
           alignSelf: "center",
           marginTop: 15,
-          marginLeft: 25,
+          marginLeft: 18,
           //marginRight: 10,
           borderRadius: 10,
           ...styles.shadow,

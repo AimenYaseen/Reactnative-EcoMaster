@@ -5,19 +5,25 @@ import { Provider as AdminAuthProvider } from "./src/Admin/AdminContext/AdminAut
 import { Provider as PostProvider } from "./src/context/PostContext";
 import { Provider as UserProvider } from "./src/context/UserContext";
 import { Provider as NewsProvider } from "./src/Admin/AdminContext/NewsContext";
+import { Provider as CustomProvider } from "./src/Admin/AdminContext/CustomContext";
+import { Provider as HabitProvider } from "./src/Admin/AdminContext/HabitContext";
 
 export default () => {
   return (
-    <NewsProvider>
-      <PostProvider>
-        <AdminAuthProvider>
-          <AuthProvider>
-            <UserProvider>
-              <Navigation />
-            </UserProvider>
-          </AuthProvider>
-        </AdminAuthProvider>
-      </PostProvider>
-    </NewsProvider>
+    <HabitProvider>
+      <CustomProvider>
+        <NewsProvider>
+          <PostProvider>
+            <AdminAuthProvider>
+              <AuthProvider>
+                <UserProvider>
+                  <Navigation />
+                </UserProvider>
+              </AuthProvider>
+            </AdminAuthProvider>
+          </PostProvider>
+        </NewsProvider>
+      </CustomProvider>
+    </HabitProvider>
   );
 };

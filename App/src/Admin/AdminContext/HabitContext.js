@@ -5,12 +5,10 @@ import { Alert } from "react-native";
 import { Firebase } from "../../Firebase/config";
 import { navigate } from "../../Navigation/NavigationRef";
 
-const NewsReducer = (state, action) => {
+const HabitReducer = (state, action) => {
   switch (action.type) {
-    case "newsTips":
-      return { ...state, newsTips: action.payload };
-    case "newsInformation":
-      return { ...state, newsInformation: action.payload };
+    case "habit":
+      return { ...state, habits: action.payload };
     case "loader":
       return { ...state, loading: action.payload };
     case "delete":
@@ -20,7 +18,7 @@ const NewsReducer = (state, action) => {
   }
 };
 
-const addNews = (dispatch) => {
+const addHabit = (dispatch) => {
   return async (newsCategory, newsTitle, newsCaption, newsImage, time) => {
     dispatch({ type: "loader", payload: true });
     await Firebase.database()
@@ -45,41 +43,7 @@ const addNews = (dispatch) => {
   };
 };
 
-const getNewsTips = (dispatch) => {
-  return async () => {
-    dispatch({ type: "loader", payload: true });
-    Firebase.database()
-      .ref("News/Tips")
-      .orderByKey()
-      .once("value", (snapshot) => {
-        if (snapshot.exists()) {
-          dispatch({ type: "loader", payload: false });
-          const newsArr = [];
-          snapshot.forEach((element) => {
-            const { newsId, title, caption, image } = element.val();
-            //pushValues of Object
-            newsArr.push({
-              id: newsId,
-              title,
-              caption,
-              image,
-            });
-          });
-          dispatch({ type: "newsTips", payload: newsArr });
-        } else {
-          dispatch({ type: "newsTips", payload: [] });
-          dispatch({ type: "loader", payload: false });
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        dispatch({ type: "loader", payload: false });
-        console.error(error);
-      });
-  };
-};
-
-const getNewsInformation = (dispatch) => {
+const getHabit = (dispatch) => {
   return async () => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
@@ -101,7 +65,6 @@ const getNewsInformation = (dispatch) => {
           });
           dispatch({ type: "newsInformation", payload: newsArr });
         } else {
-          dispatch({ type: "newsInformation", payload: [] });
           dispatch({ type: "loader", payload: false });
           console.log("No data available");
         }
@@ -113,7 +76,7 @@ const getNewsInformation = (dispatch) => {
   };
 };
 
-const editNews = (dispatch) => {
+const editHabit = (dispatch) => {
   return async (id, newsCategory, newsTitle, newsCaption, newsImage) => {
     dispatch({ type: "loader", payload: true });
     try {
@@ -135,7 +98,7 @@ const editNews = (dispatch) => {
   };
 };
 
-const deleteNews = (dispatch) => {
+const deleteHabit = (dispatch) => {
   return (newsId, title) => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
@@ -155,8 +118,8 @@ const deleteNews = (dispatch) => {
                 .remove()
                 .then(() => {
                   Alert.alert(
-                    "News Deleted!",
-                    "Your News has been deleted successfully!"
+                    "Post deleted!",
+                    "Your post has been deleted successfully!"
                   );
                   dispatch({ type: "delete", payload: true });
                   dispatch({ type: "loader", payload: false });
@@ -176,7 +139,7 @@ const deleteNews = (dispatch) => {
 };
 
 export const { Context, Provider } = createDataContext(
-  NewsReducer,
-  { addNews, getNewsTips, getNewsInformation, editNews, deleteNews },
-  { newsTips: [], newsInformation: [], loading: false, deleted: false }
+  HabitReducer,
+  { addHabit, getHabit, editHabit, deleteHabit },
+  { habits: [], loading: false, deleted: false }
 );

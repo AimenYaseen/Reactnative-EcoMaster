@@ -11,19 +11,18 @@ import { Icon } from "react-native-elements";
 import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
 import CustomForm from "../../components/Custom/CustomForm";
-//import { Context as NewsContext } from "../../AdminContext/NewsContext";
+import { Context as CustomContext } from "../../AdminContext/CustomContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const EditCustom = ({ navigation, route }) => {
-  // const {
-  //   state: { loading },
-  //   editNews,
-  // } = useContext(NewsContext);
+  const {
+    state: { loading },
+    editCustom,
+  } = useContext(CustomContext);
 
-  // const item = route.params.item;
-  // const title = route.params.title;
+  const item = route.params.item;
 
   return (
     <View style={styles.container}>
@@ -49,24 +48,30 @@ const EditCustom = ({ navigation, route }) => {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomForm
-            //loading={loading}
+            loading={loading}
             text="Edit"
-            // newsTitle={item.title}
-            // newsCaption={item.caption}
-            // newsCategory={title}
-            // newsImage={item.image}
-            // imageVisible={true}
-            onPress={
-              async (newsCategory, newsTitle, newsCaption, newsImage, time) =>
-                console.log("Pressed")
-              // await editNews(
-              //   item.id,
-              //   newsCategory,
-              //   newsTitle,
-              //   newsCaption,
-              //   newsImage
-              // )
-            }
+            newsTitle={item.title}
+            newsCaption={item.caption}
+            newsCategory={title}
+            newsImage={item.image}
+            imageVisible={true}
+            onPress={async (
+              customCategory,
+              customTitle,
+              customDescription,
+              customDuration,
+              customImage
+            ) => {
+              console.log("Pressed");
+              await editCustom(
+                item.id,
+                customCategory,
+                customTitle,
+                customDescription,
+                customDuration,
+                customImage
+              );
+            }}
           />
         </ScrollView>
       </ImageBackground>
