@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import { Tile, Icon, Button } from "react-native-elements";
 import { navigate } from "../../../Navigation/NavigationRef";
 
 import colors from "../../../constants/colors";
+import { Context as CustomContext } from "../../AdminContext/CustomContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const CustomCard = ({ image, title, caption }) => {
-  // const captionC = caption + "\n\nDuration :" + " Days";
+export const CustomCard = ({ item }) => {
+  const { state, deleteCustom, getCustom } = useContext(CustomContext);
+
+  React.useEffect(() => {
+    getCustom();
+  }, [state.deleted]);
+
   return (
     <View
       style={{
@@ -20,10 +26,10 @@ export const CustomCard = ({ image, title, caption }) => {
       }}
     >
       <Tile
-        imageSrc={image}
-        title={title}
+        imageSrc={{ uri: item.image }}
+        title={item.title}
         featured
-        caption={caption}
+        caption={item.description}
         width={screenWidth * 0.95}
         height={screenHeight * 0.27}
         imageContainerStyle={{
@@ -41,7 +47,7 @@ export const CustomCard = ({ image, title, caption }) => {
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Icon type="entypo" name="time-slot" color={colors.white} size={20} />
           <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
-            Duration : Days
+            Duration : {item.duration} Days
           </Text>
         </View>
       </View>
@@ -58,8 +64,9 @@ export const CustomCard = ({ image, title, caption }) => {
             width: screenWidth * 0.475,
             borderBottomLeftRadius: 7,
             borderRadius: 0,
+            margin: 0,
           }}
-          onPress={() => navigate("EditCustom")}
+          onPress={() => navigate("EditCustom", { item })}
         />
         <Button
           title="Delete"
@@ -68,6 +75,7 @@ export const CustomCard = ({ image, title, caption }) => {
             width: screenWidth * 0.475,
             borderBottomRightRadius: 7,
             borderRadius: 0,
+            margin: 0,
           }}
           onPress={() => {
             Alert.alert(
@@ -81,7 +89,7 @@ export const CustomCard = ({ image, title, caption }) => {
                 },
                 {
                   text: "Yes",
-                  //onPress: () => deleteNews(item.id, title),
+                  onPress: () => deleteCustom(item.id),
                 },
               ],
               { cancelable: false }

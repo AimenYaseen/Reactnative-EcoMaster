@@ -43,9 +43,15 @@ const addCustom = (dispatch) => {
         dispatch({ type: "loader", payload: false });
         Alert.alert(
           "Custom Habit Uploaded!",
-          "Your Habit has successfully Uploaded"
+          "Your Habit has successfully Uploaded",
+          [
+            {
+              text: "OK",
+              onPress: () => navigate("AdminCustom"),
+            },
+          ],
+          { cancelable: false }
         );
-        navigate("AdminCustom");
       })
       .catch((error) => {
         //loader
@@ -124,7 +130,7 @@ const editCustom = (dispatch) => {
 };
 
 const deleteCustom = (dispatch) => {
-  return (customId, title) => {
+  return (customId) => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
       .ref("CustomHabits/" + customId)
@@ -139,7 +145,7 @@ const deleteCustom = (dispatch) => {
             .then(() => {
               console.log(`${image} has been deleted successfully.`);
               Firebase.database()
-                .ref("CustomHabits/" + newsId)
+                .ref("CustomHabits/" + customId)
                 .remove()
                 .then(() => {
                   Alert.alert(

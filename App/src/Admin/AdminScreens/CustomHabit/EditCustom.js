@@ -50,10 +50,11 @@ const EditCustom = ({ navigation, route }) => {
           <CustomForm
             loading={loading}
             text="Edit"
-            newsTitle={item.title}
-            newsCaption={item.caption}
-            newsCategory={title}
-            newsImage={item.image}
+            customTitle={item.title}
+            customDescription={item.description}
+            customCategory={item.category}
+            customDuration={item.duration}
+            customImage={item.image}
             imageVisible={true}
             onPress={async (
               customCategory,
@@ -62,7 +63,6 @@ const EditCustom = ({ navigation, route }) => {
               customDuration,
               customImage
             ) => {
-              console.log("Pressed");
               await editCustom(
                 item.id,
                 customCategory,

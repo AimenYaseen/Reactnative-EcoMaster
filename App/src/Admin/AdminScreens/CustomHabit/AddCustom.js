@@ -57,7 +57,6 @@ const AddCustom = ({ navigation }) => {
               customImage,
               time
             ) => {
-              console.log("Pressed");
               await addCustom(
                 customCategory,
                 customTitle,

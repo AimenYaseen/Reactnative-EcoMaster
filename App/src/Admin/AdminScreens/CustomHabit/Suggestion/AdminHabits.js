@@ -5,22 +5,24 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  Text,
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomCard } from "../../../components/Custom/CustomCard";
 import { Context as CustomContext } from "../../../AdminContext/CustomContext";
-import { habit as habitList } from "../../../../data/Suggestion/habit";
+import colors from "../../../../constants/colors";
 
 const screenHeight = Dimensions.get("screen").height;
 
 export default AdminHabits = ({ navigation }) => {
   const {
-    state: { customHabit },
+    state: { customHabit, loading },
     getCustom,
   } = useContext(CustomContext);
 
   React.useEffect(() => {
-    getCustom();
+    // getCustom();
     const unsubscribe = navigation.addListener("focus", () => {
       getCustom();
     });
@@ -30,15 +32,13 @@ export default AdminHabits = ({ navigation }) => {
 
   const filterHabits = () => {
     return customHabit.filter((habit) => {
-      return habit.category === Habits;
+      return habit.category === "Habit";
     });
   };
 
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Text style={styles.text}> There are no News yet... </Text>
-    </View>
-  );
+  const habitList = filterHabits();
+
+  const listEmpty = () => <View style={styles.container} />;
 
   return (
     <View style={{ flex: 1 }}>
@@ -58,15 +58,12 @@ export default AdminHabits = ({ navigation }) => {
           renderItem={({ item }) => {
             return (
               <>
-                <CustomCard
-                  image={require("../../../../assets/images/leave.jpeg")}
-                  title={item.title}
-                  caption={item.caption}
-                />
+                <CustomCard item={item} />
               </>
             );
           }}
         />
+        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </ImageBackground>
     </View>
   );
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontStyle: "italic",
-    color: colors.black,
+    color: colors.gray,
     alignSelf: "center",
     textAlign: "center",
     marginBottom: 80,

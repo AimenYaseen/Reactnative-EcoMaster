@@ -74,7 +74,7 @@ const CustomForm = ({
       Alert.alert("ERROR", error.message);
     }
 
-    const storageRef = Firebase.storage().ref("newsImages/").child(filename);
+    const storageRef = Firebase.storage().ref("customImages/").child(filename);
     const task = storageRef.put(uploadUri, {
       contentType: "image/jpeg",
     });

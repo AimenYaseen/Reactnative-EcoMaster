@@ -7,6 +7,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import NewsList from "../components/News/NewsList";
 import colors from "../../constants/colors";
@@ -36,6 +37,11 @@ const AdminFeedScreen = ({ navigation }) => {
         <NewsList title="Information" result={state.newsInformation} />
         <View />
       </ScrollView>
+      <Spinner
+        visible={state.loading}
+        color={colors.secondary}
+        animation="fade"
+      />
     </View>
   );
 };

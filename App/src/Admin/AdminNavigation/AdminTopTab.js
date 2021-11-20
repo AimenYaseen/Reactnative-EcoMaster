@@ -14,6 +14,7 @@ import AdminEnergy from "../AdminScreens/CustomHabit/Suggestion/AdminEnergy";
 import AdminWater from "../AdminScreens/CustomHabit/Suggestion/AdminWater";
 import AdminTransportation from "../AdminScreens/CustomHabit/Suggestion/AdminTransportation";
 import AdminFoodAndDrink from "../AdminScreens/CustomHabit/Suggestion/AdminFoodAndDrink";
+import AdminWaste from "../AdminScreens/CustomHabit/Suggestion/AdminWaste";
 import { Context as AdminAuthContext } from "../AdminContext/AdminAuthContext";
 
 import colors from "../../constants/colors";
@@ -203,7 +204,7 @@ export const AdminSuggestionTopTabScreen = () => {
         />
         <AdminSuggestionTopTab.Screen
           name="Waste"
-          component={Waste}
+          component={AdminWaste}
           options={
             {
               // tabBarLabel: "HOME",
