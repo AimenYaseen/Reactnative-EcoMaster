@@ -44,7 +44,7 @@ export const NewsCard = ({ item, title }) => {
         containerStyle={{
           alignSelf: "center",
           marginTop: 15,
-          // marginRight: 15,
+          marginLeft: 18,
           ...styles.shadow,
         }}
         // titleStyle={{

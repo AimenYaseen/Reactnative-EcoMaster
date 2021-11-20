@@ -13,7 +13,7 @@ const NewsList = ({ title, result }) => {
 
   const listEmpty = () => (
     <View style={styles.container}>
-      <Text style={styles.text}> There are no feedbacks yet... </Text>
+      <Text style={styles.text}> There are no News yet... </Text>
     </View>
   );
   const renderItem = ({ item }) => {
@@ -47,8 +47,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 20,
     marginLeft: 15,
-    // marginLeft: 15,
-    // marginBottom: 5,
   },
   container: {
     flex: 1,

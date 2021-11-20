@@ -22,7 +22,7 @@ export default AdminHabits = ({ navigation }) => {
   } = useContext(CustomContext);
 
   React.useEffect(() => {
-    // getCustom();
+    //getCustom();
     const unsubscribe = navigation.addListener("focus", () => {
       getCustom();
     });
@@ -38,7 +38,11 @@ export default AdminHabits = ({ navigation }) => {
 
   const habitList = filterHabits();
 
-  const listEmpty = () => <View style={styles.container} />;
+  const listEmpty = () => (
+    <View style={styles.container}>
+      <Text style={styles.text}>There are no Suggestions yet!</Text>
+    </View>
+  );
 
   return (
     <View style={{ flex: 1 }}>

@@ -297,11 +297,7 @@ const CustomForm = ({
           </ListItem>
         ))}
       </BottomSheet>
-      <Spinner
-        visible={loading || uploading}
-        color={colors.secondary}
-        animation="fade"
-      />
+      <Spinner visible={uploading} color={colors.secondary} animation="fade" />
     </KeyboardAwareScrollView>
   );
 };

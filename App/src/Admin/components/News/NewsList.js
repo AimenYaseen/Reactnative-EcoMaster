@@ -26,7 +26,10 @@ const NewsList = ({ title, result }) => {
       <FlatList
         showsHorizontalScrollIndicator={false}
         horizontal
-        contentContainerStyle={{ paddingBottom: screenHeight * 0.02 }}
+        contentContainerStyle={{
+          paddingBottom: screenHeight * 0.03,
+          paddingRight: screenHeight * 0.05,
+        }}
         ListEmptyComponent={listEmpty}
         data={result}
         keyExtractor={(item) => item.id.toString()}
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 20,
-    // marginLeft: 15,
+    marginLeft: 15,
     // marginBottom: 5,
   },
   container: {

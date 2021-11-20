@@ -71,8 +71,17 @@ const addPost = (dispatch) => {
       .then(() => {
         //loader
         dispatch({ type: "loader", payload: false });
-        Alert.alert("Post Uploaded!", "Your post has successfully Uploaded");
-        navigate("Post");
+        Alert.alert(
+          "Post Uploaded!",
+          "Your post has successfully Uploaded",
+          [
+            {
+              text: "OK",
+              onPress: () => navigate("Post"),
+            },
+          ],
+          { cancelable: false }
+        );
       })
       .catch((error) => {
         //loader

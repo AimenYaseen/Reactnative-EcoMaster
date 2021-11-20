@@ -22,26 +22,40 @@ const NewsReducer = (state, action) => {
 
 const addNews = (dispatch) => {
   return async (newsCategory, newsTitle, newsCaption, newsImage, time) => {
-    dispatch({ type: "loader", payload: true });
-    await Firebase.database()
-      .ref(`News/${newsCategory}/` + time)
-      .set({
-        newsId: time,
-        title: newsTitle,
-        caption: newsCaption,
-        image: newsImage,
-      })
-      .then(() => {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("News Uploaded!", "Your News has successfully Uploaded");
-        navigate("AdminMainFlow", { screen: "AdminNews" });
-      })
-      .catch((error) => {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR!", error.message);
-      });
+    if (newsCategory && newsTitle && newsCaption) {
+      dispatch({ type: "loader", payload: true });
+      await Firebase.database()
+        .ref(`News/${newsCategory}/` + time)
+        .set({
+          newsId: time,
+          title: newsTitle,
+          caption: newsCaption,
+          image: newsImage,
+        })
+        .then(() => {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert(
+            "News Uploaded!",
+            "Your News has successfully Uploaded",
+            [
+              {
+                text: "OK",
+                onPress: () =>
+                  navigate("AdminMainFlow", { screen: "AdminNews" }),
+              },
+            ],
+            { cancelable: false }
+          );
+        })
+        .catch((error) => {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert("ERROR!", error.message);
+        });
+    } else {
+      Alert.alert("ERROR!", " Please Enter All the fields...");
+    }
   };
 };
 
@@ -115,23 +129,36 @@ const getNewsInformation = (dispatch) => {
 
 const editNews = (dispatch) => {
   return async (id, newsCategory, newsTitle, newsCaption, newsImage) => {
-    dispatch({ type: "loader", payload: true });
-    try {
-      await Firebase.database()
-        .ref(`News/${newsCategory}/` + id)
-        .update({
-          title: newsTitle,
-          caption: newsCaption,
-          image: newsImage,
-        });
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
-    } catch (error) {
-      //loader
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("ERROR!", error.message);
+    if (newsCategory && newsCaption && newsTitle) {
+      dispatch({ type: "loader", payload: true });
+      try {
+        await Firebase.database()
+          .ref(`News/${newsCategory}/` + id)
+          .update({
+            title: newsTitle,
+            caption: newsCaption,
+            image: newsImage,
+          });
+        dispatch({ type: "loader", payload: false });
+        Alert.alert(
+          "UPDATED!",
+          "Congratulations, Your data has updated...",
+          [
+            {
+              text: "OK",
+              onPress: () => navigate("AdminMainFlow", { screen: "AdminNews" }),
+            },
+          ],
+          { cancelable: false }
+        );
+      } catch (error) {
+        //loader
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR!", error.message);
+      }
+    } else {
+      Alert.alert("ERROR!", " Please Enter All the fields...");
     }
-    navigate("AdminMainFlow", { screen: "AdminNews" });
   };
 };
 
@@ -154,12 +181,12 @@ const deleteNews = (dispatch) => {
                 .ref(`News/${title}/` + newsId)
                 .remove()
                 .then(() => {
+                  dispatch({ type: "delete", payload: true });
+                  dispatch({ type: "loader", payload: false });
                   Alert.alert(
                     "News Deleted!",
                     "Your News has been deleted successfully!"
                   );
-                  dispatch({ type: "delete", payload: true });
-                  dispatch({ type: "loader", payload: false });
                 })
                 .catch((e) => {
                   dispatch({ type: "loader", payload: false });

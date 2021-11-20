@@ -56,6 +56,8 @@ export const AdminTopTabScreen = () => {
       <AdminTopTab.Navigator
         screenOptions={{
           headerShown: false,
+          swipeEnabled: false,
+          tabBarScrollEnabled: false,
           tabBarLabelStyle: {
             fontSize: 14,
             //color: colors.secondary,

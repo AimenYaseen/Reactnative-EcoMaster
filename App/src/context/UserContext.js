@@ -18,53 +18,6 @@ const UserReducer = (state, action) => {
   }
 };
 
-const uploadImage = (dispatch) => {
-  return async (image) => {
-    if (image == "") {
-      dispatch({ type: "setImage", payload: image });
-    } else {
-      dispatch({ type: "loader", payload: true });
-      // FILENAME
-      let fileName = image.substring(image.lastIndexOf("/") + 1);
-      // ADD TIMESTAMP TO FILENAME
-      const extension = fileName.split(".").pop();
-      const name = fileName.split(".").slice(0, -1).join(".");
-      fileName = name + Date.now() + "." + extension;
-      let uploadUri;
-      try {
-        const response = await fetch(image);
-        uploadUri = await response.blob();
-      } catch (error) {
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR", error.message);
-      }
-
-      const storageRef = Firebase.storage().ref("userImages/").child(fileName);
-
-      try {
-        await storageRef
-          .put(uploadUri, {
-            contentType: "image/jpeg",
-          })
-          .then(async (snapshot) => {
-            dispatch({ type: "loader", payload: false });
-            Alert.alert(
-              "Image Uploaded!",
-              "Your image has been successfully Uploaded"
-            );
-            await storageRef.getDownloadURL().then((downloadURL) => {
-              console.log(downloadURL);
-              dispatch({ type: "setImage", payload: downloadURL });
-            });
-          });
-      } catch (error) {
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR", error.message);
-      }
-    }
-  };
-};
-
 const updateUser = (dispatch) => {
   return async (imgUrl, userBio, fName, lName, contry) => {
     if (fName === "") {
@@ -84,13 +37,22 @@ const updateUser = (dispatch) => {
             country: contry,
           });
         dispatch({ type: "loader", payload: false });
-        Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
+        Alert.alert(
+          "UPDATED!",
+          "Congratulations, Your data has updated...",
+          [
+            {
+              text: "OK",
+              onPress: () => navigate("Profile"),
+            },
+          ],
+          { cancelable: false }
+        );
       } catch (error) {
         //loader
         dispatch({ type: "loader", payload: false });
         Alert.alert("ERROR!", error.message);
       }
-      navigate("Profile");
     }
   };
 };
@@ -160,6 +122,6 @@ const getUser = (dispatch) => {
 
 export const { Provider, Context } = createDataContext(
   UserReducer,
-  { getUser, updateUser, uploadImage, changePassword },
+  { getUser, updateUser, changePassword },
   { userData: {}, loading: false }
 );

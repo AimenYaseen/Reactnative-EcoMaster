@@ -9,8 +9,8 @@ import { HabitOverlay } from "./CustomOverlay";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const TileCard = ({ image, title, caption }) => {
-  const captionC = caption + "\n\nDuration :" + " Days";
+export const TileCard = ({ item }) => {
+  //const captionC = caption + "\n\nDuration :" + " Days";
   return (
     <View
       style={{
@@ -21,10 +21,10 @@ export const TileCard = ({ image, title, caption }) => {
       }}
     >
       <Tile
-        imageSrc={image}
-        title={title}
+        imageSrc={{ uri: item.image }}
+        title={item.title}
         featured
-        caption={caption}
+        caption={item.description}
         width={screenWidth * 0.95}
         height={screenHeight * 0.27}
         imageContainerStyle={{
@@ -46,7 +46,9 @@ export const TileCard = ({ image, title, caption }) => {
             color={colors.secondary}
             size={20}
           />
-          <Text style={{ paddingHorizontal: 10 }}>Duration : Days</Text>
+          <Text style={{ paddingHorizontal: 10 }}>
+            Duration : Days {item.duration}
+          </Text>
         </View>
       </View>
       <Button

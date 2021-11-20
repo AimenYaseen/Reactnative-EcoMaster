@@ -51,7 +51,6 @@ const NewsForm = ({
 
   const uploadImage = async () => {
     if (image == null) {
-      Alert.alert("ERROR!", "You must Upload Image");
       return null;
     }
     const Uri = image;
