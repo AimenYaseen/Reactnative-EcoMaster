@@ -22,7 +22,7 @@ export default AdminTransportation = ({ navigation }) => {
   } = useContext(CustomContext);
 
   React.useEffect(() => {
-    // getCustom();
+    getCustom();
     const unsubscribe = navigation.addListener("focus", () => {
       getCustom();
     });
@@ -63,11 +63,15 @@ export default AdminTransportation = ({ navigation }) => {
             return (
               <>
                 <CustomCard item={item} />
+                <Spinner
+                  visible={loading}
+                  color={colors.secondary}
+                  animation="fade"
+                />
               </>
             );
           }}
         />
-        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </ImageBackground>
     </View>
   );

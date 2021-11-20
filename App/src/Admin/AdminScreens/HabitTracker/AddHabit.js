@@ -1,13 +1,26 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useContext } from "react";
+import {
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  View,
+  ScrollView,
+} from "react-native";
 import { Icon } from "react-native-elements";
 
 import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
+import HabitForm from "../../components/Habit/HabitForm";
+import { Context as HabitContext } from "../../AdminContext/HabitContext";
 
 const AddHabit = ({ navigation }) => {
+  const {
+    state: { loading },
+    addHabit,
+  } = useContext(HabitContext);
+
   return (
-    <View>
+    <View style={styles.container}>
       <CustomHead
         text="Add Habits"
         color={colors.secondary}
@@ -23,11 +36,53 @@ const AddHabit = ({ navigation }) => {
         )}
         rightIcon={null}
       />
-      <Text>Add Habit</Text>
+      <ImageBackground
+        style={styles.background}
+        source={require("../../assets/news_back.jpg")}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <HabitForm
+            loading={loading}
+            text="Add"
+            imageVisible={false}
+            onPress={async (
+              habitSteps,
+              habitTitle,
+              habitDescription,
+              habitDuration,
+              habitImage,
+              time
+            ) => {
+              await addHabit(
+                habitSteps,
+                habitTitle,
+                habitDescription,
+                habitDuration,
+                habitImage,
+                time
+              );
+            }}
+          />
+        </ScrollView>
+      </ImageBackground>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    //justifyContent: "center",
+    backgroundColor: colors.white,
+  },
+  background: {
+    //paddingTop: screenHeight * 0.1,
+    flex: 1,
+    // paddingTop: screenHeight * 0.1,
+    justifyContent: "center",
+    alignItems: "center",
+    resizeMode: "contain",
+  },
+});
 
 export default AddHabit;

@@ -1,24 +1,34 @@
-import React from "react";
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import React, { useContext } from "react";
+import { View, FlatList, StyleSheet, Text, Dimensions } from "react-native";
 import { Icon } from "react-native-elements";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import { HabitCard } from "../../components/Habit/HabitCard";
 import { CustomHead } from "../../../components/CustomHead";
-import { habits } from "../../../data/habits";
+import { Context as HabitContext } from "../../AdminContext/HabitContext";
 import colors from "../../../constants/colors";
+import { ScreenWidth } from "react-native-elements/dist/helpers";
 
 const screenHeight = Dimensions.get("screen").height;
 
 const AdminHabitTracker = ({ navigation }) => {
+  const {
+    state: { habits, loading },
+    getHabit,
+  } = useContext(HabitContext);
+
+  React.useEffect(() => {
+    getHabit();
+    const unsubscribe = navigation.addListener("focus", () => {
+      getHabit();
+    });
+
+    return unsubscribe;
+  }, []);
+
   const listEmpty = () => (
     <View style={styles.container}>
-      <Text style={styles.text}> There are no News yet... </Text>
+      <Text style={styles.text}> There are no Habits yet... </Text>
     </View>
   );
 
@@ -60,12 +70,11 @@ const AdminHabitTracker = ({ navigation }) => {
         renderItem={({ item }) => {
           return (
             <>
-              <HabitCard
-                title={item.title}
-                description={item.description}
-                duration={item.duration}
-                steps={item.steps}
-                image={item.image}
+              <HabitCard item={item} />
+              <Spinner
+                visible={loading}
+                color={colors.secondary}
+                animation="fade"
               />
               {/* <LockCard /> */}
             </>
@@ -83,6 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: screenHeight * 0.83,
+    width: ScreenWidth,
   },
   text: {
     fontSize: 16,

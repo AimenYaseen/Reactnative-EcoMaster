@@ -22,9 +22,6 @@ export const NewsCard = ({ item, title }) => {
   return (
     <View
       style={{
-        // width: screenWidth * 0.95,
-        paddingHorizontal: 10,
-        // paddingTop: 10,
         alignSelf: "center",
       }}
     >
@@ -44,7 +41,7 @@ export const NewsCard = ({ item, title }) => {
         containerStyle={{
           alignSelf: "center",
           marginTop: 15,
-          marginLeft: 18,
+          marginLeft: 25,
           ...styles.shadow,
         }}
         // titleStyle={{
@@ -62,7 +59,7 @@ export const NewsCard = ({ item, title }) => {
       <View
         style={[
           styles.shadow,
-          { flexDirection: "row", justifyContent: "center" },
+          { flexDirection: "row", justifyContent: "center", marginLeft: 25 },
         ]}
       >
         <Button

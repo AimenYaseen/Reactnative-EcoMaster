@@ -1,5 +1,5 @@
 import createDataContext from "../../context/createDataContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+//import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
 
 import { Firebase } from "../../Firebase/config";
@@ -7,7 +7,7 @@ import { navigate } from "../../Navigation/NavigationRef";
 
 const HabitReducer = (state, action) => {
   switch (action.type) {
-    case "habit":
+    case "habits":
       return { ...state, habits: action.payload };
     case "loader":
       return { ...state, loading: action.payload };
@@ -19,27 +19,49 @@ const HabitReducer = (state, action) => {
 };
 
 const addHabit = (dispatch) => {
-  return async (newsCategory, newsTitle, newsCaption, newsImage, time) => {
-    dispatch({ type: "loader", payload: true });
-    await Firebase.database()
-      .ref(`News/${newsCategory}/` + time)
-      .set({
-        newsId: time,
-        title: newsTitle,
-        caption: newsCaption,
-        image: newsImage,
-      })
-      .then(() => {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("News Uploaded!", "Your News has successfully Uploaded");
-        navigate("AdminMainFlow", { screen: "AdminNews" });
-      })
-      .catch((error) => {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR!", error.message);
-      });
+  return async (
+    habitSteps,
+    habitTitle,
+    habitDescription,
+    habitDuration,
+    habitImage,
+    time
+  ) => {
+    if (habitSteps && habitTitle && habitDescription && habitDuration) {
+      dispatch({ type: "loader", payload: true });
+      await Firebase.database()
+        .ref("Habits/" + time)
+        .set({
+          habitId: time,
+          title: habitTitle,
+          steps: habitSteps,
+          description: habitDescription,
+          duration: habitDuration,
+          image: habitImage,
+        })
+        .then(() => {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert(
+            "Habit Uploaded!",
+            "Your Habit has successfully Uploaded",
+            [
+              {
+                text: "OK",
+                onPress: () => navigate("AdminHabit"),
+              },
+            ],
+            { cancelable: false }
+          );
+        })
+        .catch((error) => {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert("ERROR!", error.message);
+        });
+    } else {
+      Alert.alert("ERROR!", " Please Enter All the fields...");
+    }
   };
 };
 
@@ -47,24 +69,28 @@ const getHabit = (dispatch) => {
   return async () => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
-      .ref("News/Information")
+      .ref("Habits/")
       .orderByKey()
       .once("value", (snapshot) => {
         if (snapshot.exists()) {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
           snapshot.forEach((element) => {
-            const { newsId, title, caption, image } = element.val();
+            const { habitId, title, steps, description, duration, image } =
+              element.val();
             //pushValues of Object
             newsArr.push({
-              id: newsId,
+              id: habitId,
               title,
-              caption,
+              steps,
+              description,
+              duration,
               image,
             });
           });
-          dispatch({ type: "newsInformation", payload: newsArr });
+          dispatch({ type: "habits", payload: newsArr });
         } else {
+          dispatch({ type: "habits", payload: [] });
           dispatch({ type: "loader", payload: false });
           console.log("No data available");
         }
@@ -77,32 +103,54 @@ const getHabit = (dispatch) => {
 };
 
 const editHabit = (dispatch) => {
-  return async (id, newsCategory, newsTitle, newsCaption, newsImage) => {
-    dispatch({ type: "loader", payload: true });
-    try {
-      await Firebase.database()
-        .ref(`News/${newsCategory}/` + id)
-        .update({
-          title: newsTitle,
-          caption: newsCaption,
-          image: newsImage,
-        });
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("UPDATED!", "Congratulations, Your data has updated...");
-    } catch (error) {
-      //loader
-      dispatch({ type: "loader", payload: false });
-      Alert.alert("ERROR!", error.message);
+  return async (
+    id,
+    habitCategory,
+    habitTitle,
+    habitDescription,
+    habitDuration,
+    habitImage
+  ) => {
+    if (habitCategory && habitTitle && habitDescription && habitDuration) {
+      dispatch({ type: "loader", payload: true });
+      try {
+        await Firebase.database()
+          .ref("Habits/" + id)
+          .update({
+            title: habitTitle,
+            category: habitCategory,
+            description: habitDescription,
+            duration: habitDuration,
+            image: habitImage,
+          });
+        dispatch({ type: "loader", payload: false });
+        Alert.alert(
+          "UPDATED!",
+          "Congratulations, Your data has updated...",
+          [
+            {
+              text: "OK",
+              onPress: () => navigate("AdminHabit"),
+            },
+          ],
+          { cancelable: false }
+        );
+      } catch (error) {
+        //loader
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR!", error.message);
+      }
+    } else {
+      Alert.alert("ERROR!", " Please Enter All the fields...");
     }
-    navigate("AdminMainFlow", { screen: "AdminNews" });
   };
 };
 
 const deleteHabit = (dispatch) => {
-  return (newsId, title) => {
+  return (habitId) => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
-      .ref(`News/${title}/` + newsId)
+      .ref("Habits/" + habitId)
       .once("value", (documentSnapshot) => {
         if (documentSnapshot.exists) {
           const { image } = documentSnapshot.val();
@@ -114,15 +162,15 @@ const deleteHabit = (dispatch) => {
             .then(() => {
               console.log(`${image} has been deleted successfully.`);
               Firebase.database()
-                .ref(`News/${title}/` + newsId)
+                .ref("Habits/" + habitId)
                 .remove()
                 .then(() => {
-                  Alert.alert(
-                    "Post deleted!",
-                    "Your post has been deleted successfully!"
-                  );
-                  dispatch({ type: "delete", payload: true });
                   dispatch({ type: "loader", payload: false });
+                  dispatch({ type: "delete", payload: true });
+                  Alert.alert(
+                    "Custom Habit Deleted!",
+                    "Your Custom Habit has been deleted successfully!"
+                  );
                 })
                 .catch((e) => {
                   dispatch({ type: "loader", payload: false });

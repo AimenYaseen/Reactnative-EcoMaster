@@ -21,7 +21,7 @@ const NewsList = ({ title, result }) => {
   };
 
   return (
-    <View style={{ marginLeft: 10 }}>
+    <View>
       <Text style={styles.titleStyle}>{title}</Text>
       <FlatList
         showsHorizontalScrollIndicator={false}
