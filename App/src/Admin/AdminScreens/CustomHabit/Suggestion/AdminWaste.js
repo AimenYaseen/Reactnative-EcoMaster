@@ -22,7 +22,7 @@ const AdminWaste = ({ navigation }) => {
   } = useContext(CustomContext);
 
   React.useEffect(() => {
-    // getCustom();
+    getCustom();
     const unsubscribe = navigation.addListener("focus", () => {
       getCustom();
     });
@@ -67,7 +67,7 @@ const AdminWaste = ({ navigation }) => {
             );
           }}
         />
-        <Spinner visible={loading} color={colors.secondary} animation="fade" />
+        {/* <Spinner visible={loading} color={colors.secondary} animation="fade" /> */}
       </ImageBackground>
     </View>
   );

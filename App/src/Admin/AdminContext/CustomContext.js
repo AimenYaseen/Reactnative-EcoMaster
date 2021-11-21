@@ -27,6 +27,7 @@ const addCustom = (dispatch) => {
     customImage,
     time
   ) => {
+    dispatch({ type: "delete", payload: false });
     if (customCategory && customTitle && customDescription && customDuration) {
       dispatch({ type: "loader", payload: true });
       await Firebase.database()
@@ -67,6 +68,7 @@ const addCustom = (dispatch) => {
 
 const getCustom = (dispatch) => {
   return async () => {
+    dispatch({ type: "delete", payload: false });
     dispatch({ type: "loader", payload: true });
     Firebase.database()
       .ref("CustomHabits/")
@@ -111,6 +113,7 @@ const editCustom = (dispatch) => {
     customDuration,
     customImage
   ) => {
+    dispatch({ type: "delete", payload: false });
     if (customCategory && customTitle && customDescription && customDuration) {
       dispatch({ type: "loader", payload: true });
       try {
@@ -166,10 +169,17 @@ const deleteCustom = (dispatch) => {
                 .remove()
                 .then(() => {
                   dispatch({ type: "loader", payload: false });
-                  dispatch({ type: "delete", payload: true });
                   Alert.alert(
                     "Custom Habit Deleted!",
-                    "Your Custom Habit has been deleted successfully!"
+                    "Your Custom Habit has been deleted successfully!",
+                    [
+                      {
+                        text: "OK",
+                        onPress: () =>
+                          dispatch({ type: "delete", payload: true }),
+                      },
+                    ],
+                    { cancelable: false }
                   );
                 })
                 .catch((e) => {

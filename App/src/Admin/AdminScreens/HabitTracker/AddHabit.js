@@ -38,7 +38,7 @@ const AddHabit = ({ navigation }) => {
       />
       <ImageBackground
         style={styles.background}
-        source={require("../../assets/news_back.jpg")}
+        source={require("../../assets/habit_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <HabitForm
@@ -50,6 +50,7 @@ const AddHabit = ({ navigation }) => {
               habitTitle,
               habitDescription,
               habitDuration,
+              habitReward,
               habitImage,
               time
             ) => {
@@ -58,6 +59,7 @@ const AddHabit = ({ navigation }) => {
                 habitTitle,
                 habitDescription,
                 habitDuration,
+                habitReward,
                 habitImage,
                 time
               );

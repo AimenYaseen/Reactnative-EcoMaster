@@ -7,7 +7,6 @@ import {
   Dimensions,
   Text,
 } from "react-native";
-import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomCard } from "../../../components/Custom/CustomCard";
 import { Context as CustomContext } from "../../../AdminContext/CustomContext";
@@ -63,11 +62,6 @@ export default AdminEnergy = ({ navigation }) => {
             return (
               <>
                 <CustomCard item={item} />
-                <Spinner
-                  visible={loading}
-                  color={colors.secondary}
-                  animation="fade"
-                />
               </>
             );
           }}

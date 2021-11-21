@@ -26,6 +26,7 @@ const HabitForm = ({
   habitSteps,
   habitImage,
   habitDuration,
+  habitReward,
   imageVisible,
   onPress,
   loading,
@@ -124,7 +125,7 @@ const HabitForm = ({
     step3 ? steps.push(step3) : null;
     step4 ? steps.push(step4) : null;
     step5 ? steps.push(step5) : null;
-    onPress(steps, title, description, duration, imageUrl, time);
+    onPress(steps, title, description, duration, reward, imageUrl, time);
   };
 
   const list = [
@@ -234,7 +235,7 @@ const HabitForm = ({
       <BlockInput
         label="Reward"
         value={reward}
-        placeholder="Days / Months / Weeks"
+        placeholder="points"
         multiline={false}
         onChangeText={(text) => setReward(text)}
       />
@@ -356,6 +357,7 @@ HabitForm.defaultProps = () => {
     habitDescrition: "",
     habitImage: "",
     habitDuration: "",
+    habitReward: "",
   };
 };
 

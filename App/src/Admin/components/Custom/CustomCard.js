@@ -1,6 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import { Tile, Icon, Button } from "react-native-elements";
+import Spinner from "react-native-loading-spinner-overlay";
+
 import { navigate } from "../../../Navigation/NavigationRef";
 
 import colors from "../../../constants/colors";
@@ -11,9 +13,13 @@ const screenHeight = Dimensions.get("window").height;
 
 export const CustomCard = ({ item }) => {
   const { state, deleteCustom, getCustom } = useContext(CustomContext);
+  // const [deleted, setDeleted] = useState(false);
 
   React.useEffect(() => {
-    getCustom();
+    if (state.deleted) {
+      getCustom();
+      // setDeleted(false);
+    }
   }, [state.deleted]);
 
   return (
@@ -89,7 +95,10 @@ export const CustomCard = ({ item }) => {
                 },
                 {
                   text: "Yes",
-                  onPress: () => deleteCustom(item.id),
+                  onPress: () => {
+                    deleteCustom(item.id);
+                    // setDeleted(true);
+                  },
                 },
               ],
               { cancelable: false }
@@ -97,6 +106,11 @@ export const CustomCard = ({ item }) => {
           }}
         />
       </View>
+      {/* <Spinner
+        visible={state.loading}
+        color={colors.secondary}
+        animation="fade"
+      /> */}
     </View>
   );
 };

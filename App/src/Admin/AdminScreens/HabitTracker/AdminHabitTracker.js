@@ -26,11 +26,7 @@ const AdminHabitTracker = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Text style={styles.text}> There are no Habits yet... </Text>
-    </View>
-  );
+  const listEmpty = () => <View style={styles.container}></View>;
 
   return (
     <View style={{ flex: 1 }}>
@@ -71,16 +67,12 @@ const AdminHabitTracker = ({ navigation }) => {
           return (
             <>
               <HabitCard item={item} />
-              <Spinner
-                visible={loading}
-                color={colors.secondary}
-                animation="fade"
-              />
               {/* <LockCard /> */}
             </>
           );
         }}
       />
+      <Spinner visible={loading} color={colors.secondary} animation="fade" />
     </View>
   );
 };

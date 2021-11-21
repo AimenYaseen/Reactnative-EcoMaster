@@ -51,12 +51,14 @@ const EditHabit = ({ navigation, route }) => {
             habitSteps={item.steps}
             habitDuration={item.duration}
             habitImage={item.image}
+            habitReward={item.reward}
             imageVisible={true}
             onPress={async (
               habitSteps,
               habitTitle,
               habitDescription,
               habitDuration,
+              habitReward,
               habitImage
             ) => {
               await editHabit(
@@ -65,6 +67,7 @@ const EditHabit = ({ navigation, route }) => {
                 habitTitle,
                 habitDescription,
                 habitDuration,
+                habitReward,
                 habitImage
               );
             }}

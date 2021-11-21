@@ -63,11 +63,11 @@ export default AdminFoodAndDrink = ({ navigation }) => {
             return (
               <>
                 <CustomCard item={item} />
-                <Spinner
+                {/* <Spinner
                   visible={loading}
                   color={colors.secondary}
                   animation="fade"
-                />
+                /> */}
               </>
             );
           }}

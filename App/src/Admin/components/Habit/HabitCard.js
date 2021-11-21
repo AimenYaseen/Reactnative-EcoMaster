@@ -1,16 +1,32 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import React, { useState, useContext } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
-import { navigate } from "../../../Navigation/NavigationRef";
+import Spinner from "react-native-loading-spinner-overlay";
 
+import { navigate } from "../../../Navigation/NavigationRef";
 import colors from "../../../constants/colors";
 import { HabitOverlay } from "../../../components/CustomOverlay";
+import { Context as HabitContext } from "../../AdminContext/HabitContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const HabitCard = ({ item }) => {
   const [visible, setVisible] = useState(false);
+  const { state, deleteHabit, getHabit } = useContext(HabitContext);
+
+  React.useEffect(() => {
+    if (state.deleted) {
+      getHabit();
+    }
+  }, [state.deleted]);
 
   return (
     <>
@@ -116,6 +132,24 @@ export const HabitCard = ({ item }) => {
                 containerStyle={{
                   borderTopLeftRadius: 25,
                   borderBottomLeftRadius: 25,
+                }}
+                onPress={() => {
+                  Alert.alert(
+                    "Delete!",
+                    "Are You Sure, You want to Delete?",
+                    [
+                      {
+                        text: "No",
+                        //onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel",
+                      },
+                      {
+                        text: "Yes",
+                        onPress: () => deleteHabit(item.id),
+                      },
+                    ],
+                    { cancelable: false }
+                  );
                 }}
               />
             </View>

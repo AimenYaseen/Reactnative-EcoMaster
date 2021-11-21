@@ -40,7 +40,7 @@ export default AdminHabits = ({ navigation }) => {
 
   const listEmpty = () => (
     <View style={styles.container}>
-      <Text style={styles.text}>There are no Suggestions yet!</Text>
+      <Spinner visible={loading} color={colors.secondary} animation="fade" />
     </View>
   );
 
@@ -63,11 +63,6 @@ export default AdminHabits = ({ navigation }) => {
             return (
               <>
                 <CustomCard item={item} />
-                <Spinner
-                  visible={loading}
-                  color={colors.secondary}
-                  animation="fade"
-                />
               </>
             );
           }}

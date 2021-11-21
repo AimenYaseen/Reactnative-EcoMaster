@@ -24,10 +24,18 @@ const addHabit = (dispatch) => {
     habitTitle,
     habitDescription,
     habitDuration,
+    habitReward,
     habitImage,
     time
   ) => {
-    if (habitSteps && habitTitle && habitDescription && habitDuration) {
+    dispatch({ type: "delete", payload: false });
+    if (
+      habitSteps &&
+      habitTitle &&
+      habitDescription &&
+      habitDuration &&
+      habitReward
+    ) {
       dispatch({ type: "loader", payload: true });
       await Firebase.database()
         .ref("Habits/" + time)
@@ -37,6 +45,7 @@ const addHabit = (dispatch) => {
           steps: habitSteps,
           description: habitDescription,
           duration: habitDuration,
+          reward: habitReward,
           image: habitImage,
         })
         .then(() => {
@@ -67,6 +76,7 @@ const addHabit = (dispatch) => {
 
 const getHabit = (dispatch) => {
   return async () => {
+    dispatch({ type: "delete", payload: false });
     dispatch({ type: "loader", payload: true });
     Firebase.database()
       .ref("Habits/")
@@ -76,8 +86,15 @@ const getHabit = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
           snapshot.forEach((element) => {
-            const { habitId, title, steps, description, duration, image } =
-              element.val();
+            const {
+              habitId,
+              title,
+              steps,
+              description,
+              duration,
+              reward,
+              image,
+            } = element.val();
             //pushValues of Object
             newsArr.push({
               id: habitId,
@@ -85,6 +102,7 @@ const getHabit = (dispatch) => {
               steps,
               description,
               duration,
+              reward,
               image,
             });
           });
@@ -105,22 +123,31 @@ const getHabit = (dispatch) => {
 const editHabit = (dispatch) => {
   return async (
     id,
-    habitCategory,
+    habitSteps,
     habitTitle,
     habitDescription,
     habitDuration,
+    habitReward,
     habitImage
   ) => {
-    if (habitCategory && habitTitle && habitDescription && habitDuration) {
+    dispatch({ type: "delete", payload: false });
+    if (
+      habitSteps &&
+      habitTitle &&
+      habitDescription &&
+      habitDuration &&
+      habitReward
+    ) {
       dispatch({ type: "loader", payload: true });
       try {
         await Firebase.database()
           .ref("Habits/" + id)
           .update({
             title: habitTitle,
-            category: habitCategory,
+            steps: habitSteps,
             description: habitDescription,
             duration: habitDuration,
+            reward: habitReward,
             image: habitImage,
           });
         dispatch({ type: "loader", payload: false });
@@ -149,6 +176,7 @@ const editHabit = (dispatch) => {
 const deleteHabit = (dispatch) => {
   return (habitId) => {
     dispatch({ type: "loader", payload: true });
+    dispatch({ type: "delete", payload: false });
     Firebase.database()
       .ref("Habits/" + habitId)
       .once("value", (documentSnapshot) => {
@@ -166,10 +194,17 @@ const deleteHabit = (dispatch) => {
                 .remove()
                 .then(() => {
                   dispatch({ type: "loader", payload: false });
-                  dispatch({ type: "delete", payload: true });
                   Alert.alert(
-                    "Custom Habit Deleted!",
-                    "Your Custom Habit has been deleted successfully!"
+                    "Habit Deleted!",
+                    "Your Habit has been deleted successfully!",
+                    [
+                      {
+                        text: "OK",
+                        onPress: () =>
+                          dispatch({ type: "delete", payload: true }),
+                      },
+                    ],
+                    { cancelable: false }
                   );
                 })
                 .catch((e) => {
