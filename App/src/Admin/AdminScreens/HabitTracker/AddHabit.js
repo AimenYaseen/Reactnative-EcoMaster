@@ -30,7 +30,7 @@ const AddHabit = ({ navigation }) => {
             name="chevron-left"
             type="entypo"
             size={30}
-            onPress={() => navigation.navigate("AdminMainFlow")}
+            onPress={() => navigation.navigate("AdminHabit")}
             color={colors.white}
           />
         )}

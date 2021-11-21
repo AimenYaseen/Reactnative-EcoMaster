@@ -28,8 +28,15 @@ const getPost = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const postArr = [];
           snapshot.forEach((element) => {
-            const { postId, userId, post, postImage, postTime, likes } =
-              element.val();
+            const {
+              postId,
+              userId,
+              post,
+              postImage,
+              postTime,
+              likedBy,
+              likes,
+            } = element.val();
             //pushValues of Object
             postArr.push({
               id: postId,
@@ -38,6 +45,7 @@ const getPost = (dispatch) => {
               postImage,
               postTime,
               likes,
+              likedBy,
               liked: false,
             });
           });
@@ -69,6 +77,9 @@ const addPost = (dispatch) => {
         likes: "",
       })
       .then(() => {
+        await Firebase.database()
+          .ref("Posts/likedBy" + 0)
+          .set();
         //loader
         dispatch({ type: "loader", payload: false });
         Alert.alert(

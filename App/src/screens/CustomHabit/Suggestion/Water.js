@@ -67,7 +67,6 @@ export default Water = ({ navigation }) => {
             );
           }}
         />
-        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </ImageBackground>
     </View>
   );

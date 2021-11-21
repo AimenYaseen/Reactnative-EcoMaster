@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   FlatList,
@@ -7,21 +7,33 @@ import {
   Dimensions,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { HabitCard } from "../../components/CustomCard";
+import Spinner from "react-native-loading-spinner-overlay";
 
+import { HabitCard } from "../../components/CustomCard";
 import { CustomHead } from "../../components/CustomHead";
-import { habits } from "../../data/habits";
 import colors from "../../constants/colors";
 import { LockCard } from "../../components/Cards/LockCard";
+import { Context as HabitContext } from "../../Admin/AdminContext/HabitContext";
+import { ScreenWidth } from "react-native-elements/dist/helpers";
 
 const screenHeight = Dimensions.get("screen").height;
 
 const HabitTrackerScreen = ({ navigation }) => {
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Text style={styles.text}> There are no feedbacks yet... </Text>
-    </View>
-  );
+  const {
+    state: { habits, loading },
+    getHabit,
+  } = useContext(HabitContext);
+
+  React.useEffect(() => {
+    getHabit();
+    const unsubscribe = navigation.addListener("focus", () => {
+      getHabit();
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const listEmpty = () => <View style={styles.container}></View>;
 
   return (
     <View style={{ flex: 1 }}>
@@ -53,18 +65,13 @@ const HabitTrackerScreen = ({ navigation }) => {
         renderItem={({ item }) => {
           return (
             <>
-              <HabitCard
-                title={item.title}
-                description={item.description}
-                duration={item.duration}
-                steps={item.steps}
-                image={item.image}
-              />
+              <HabitCard item={item} />
               {/* <LockCard /> */}
             </>
           );
         }}
       />
+      <Spinner visible={loading} color={colors.secondary} animation="fade" />
     </View>
   );
 };
@@ -76,6 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: screenHeight * 0.83,
+    width: ScreenWidth,
   },
   text: {
     fontSize: 16,

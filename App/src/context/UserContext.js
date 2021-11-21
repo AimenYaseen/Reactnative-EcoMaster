@@ -77,7 +77,7 @@ const changePassword = (dispatch) => {
             .then(async () => {
               //loader
               dispatch({ type: "loader", payload: false });
-              await AsyncStorage.removeItem("paasword");
+              await AsyncStorage.removeItem("password");
               await AsyncStorage.setItem("password", newPassword);
               Alert.alert("Congratulations!", "Your Password has updated");
             })

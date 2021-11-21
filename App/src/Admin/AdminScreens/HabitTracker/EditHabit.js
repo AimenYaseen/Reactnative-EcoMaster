@@ -25,14 +25,15 @@ const EditHabit = ({ navigation, route }) => {
     <View style={styles.container}>
       <CustomHead
         text="Edit Habit"
-        color={colors.secondary}
+        color={colors.mustard}
+        statusColor={colors.mustard}
         centerColor={colors.white}
         leftIcon={() => (
           <Icon
             name="chevron-left"
             type="entypo"
             size={30}
-            onPress={() => navigation.navigate("AdminMainFlow")}
+            onPress={() => navigation.navigate("AdminHabit")}
             color={colors.white}
           />
         )}
@@ -40,7 +41,7 @@ const EditHabit = ({ navigation, route }) => {
       />
       <ImageBackground
         style={styles.background}
-        source={require("../../assets/news_back.jpg")}
+        source={require("../../assets/habit_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <HabitForm

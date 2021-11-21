@@ -38,11 +38,7 @@ export default AdminHabits = ({ navigation }) => {
 
   const habitList = filterHabits();
 
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Spinner visible={loading} color={colors.secondary} animation="fade" />
-    </View>
-  );
+  const listEmpty = () => <View style={styles.container}></View>;
 
   return (
     <View style={{ flex: 1 }}>
@@ -67,6 +63,7 @@ export default AdminHabits = ({ navigation }) => {
             );
           }}
         />
+        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </ImageBackground>
     </View>
   );

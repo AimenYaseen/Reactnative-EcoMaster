@@ -17,16 +17,14 @@ const screenHeight = Dimensions.get("screen").height;
 
 export default Habits = ({ navigation }) => {
   const {
-    state: { customHabit },
+    state: { customHabit, loading },
     getCustom,
   } = useContext(CustomContext);
-  let loading;
+
   React.useEffect(() => {
-    loading = true;
     //getCustom();
     const unsubscribe = navigation.addListener("focus", () => {
       getCustom();
-      loading = false;
     });
 
     return unsubscribe;
@@ -40,11 +38,7 @@ export default Habits = ({ navigation }) => {
 
   const habitList = filterHabits();
 
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Text style={styles.text}>There are no Suggestions yet!</Text>
-    </View>
-  );
+  const listEmpty = () => <View style={styles.container}></View>;
 
   return (
     <View style={{ flex: 1 }}>

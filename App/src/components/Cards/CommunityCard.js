@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Firebase } from "../../Firebase/config";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 import * as Sharing from "expo-sharing";
 import * as FileSystem from "expo-file-system";
 import moment from "moment";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Firebase } from "../../Firebase/config";
 
 import colors from "../../constants/colors";
 
@@ -87,6 +89,32 @@ export const CommunityCard = ({ item }) => {
     });
   };
 
+  const onLike = async () => {
+    const uid = await AsyncStorage.getItem("user");
+    // console.log(item);
+    await Firebase.database()
+      .ref(`Posts/${item.id}/`)
+      .update({
+        likedBy: [...item.likedBy, uid],
+      })
+      .then(() => {
+        console.log("ADDED");
+      })
+      .catch((error) => console.log(error.message));
+  };
+
+  const onDislike = async () => {
+    const uid = await AsyncStorage.getItem("user");
+    // console.log(item);
+    await Firebase.database()
+      .ref(`Posts/${item.id}/likedBy/` + uid)
+      .remove()
+      .then(() => {
+        console.log("Deleted");
+      })
+      .catch((error) => console.log(error.message));
+  };
+
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
   return (
     <Card containerStyle={styles.card}>
@@ -121,6 +149,7 @@ export const CommunityCard = ({ item }) => {
             styles.interaction,
             { backgroundColor: item.liked ? colors.select : "transparent" },
           ]}
+          onPress={onDislike}
         >
           <Icon
             name={likeIcon}

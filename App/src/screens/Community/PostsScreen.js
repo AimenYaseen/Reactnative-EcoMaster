@@ -70,11 +70,6 @@ const PostsScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <>
               <CommunityCard item={item} activeLike={true} />
-              <Spinner
-                visible={loading}
-                color={colors.secondary}
-                animation="fade"
-              />
             </>
           )}
         />
@@ -102,6 +97,7 @@ const PostsScreen = ({ navigation }) => {
             borderRadius: 30,
           }}
         />
+        <Spinner visible={loading} color={colors.secondary} animation="fade" />
       </View>
     </>
   );

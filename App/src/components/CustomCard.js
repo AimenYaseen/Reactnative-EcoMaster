@@ -67,7 +67,7 @@ export const TileCard = ({ item }) => {
   );
 };
 
-export const HabitCard = ({ title, description, duration, steps, image }) => {
+export const HabitCard = ({ item }) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -81,12 +81,12 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
                 //fontFamily: "arial"
               }}
             >
-              {title}
+              {item.title}
             </Card.Title>
             <Card.Divider />
 
             <Card.Image
-              source={require("../assets/images/leave.jpeg")}
+              source={{ uri: item.image }}
               style={{ borderRadius: 5, height: screenHeight * 0.4 }}
             >
               <View style={{ flex: 1, justifyContent: "center" }}>
@@ -96,7 +96,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
                   insetType="right"
                   style={{ marginLeft: 15, width: screenWidth * 0.73 }}
                 />
-                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.description}>{item.description}</Text>
               </View>
             </Card.Image>
             <View style={[styles.duration, styles.shadow]}>
@@ -108,7 +108,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
                   size={20}
                 />
                 <Text style={{ paddingHorizontal: 10 }}>
-                  Duration : {duration} Days
+                  Duration : {item.duration} Days
                 </Text>
               </View>
             </View>
@@ -121,7 +121,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
                   size={19}
                 />
                 <Text style={{ paddingHorizontal: 10 }}>
-                  Reward : {10} points
+                  Reward : {item.reward} points
                 </Text>
               </View>
             </View>
@@ -133,7 +133,7 @@ export const HabitCard = ({ title, description, duration, steps, image }) => {
               containerStyle={{ marginTop: 20 }}
             />
             <HabitOverlay
-              data={steps}
+              data={item.steps}
               visible={visible}
               onBackdropPress={() => setVisible(false)}
             />

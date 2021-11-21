@@ -292,7 +292,7 @@ const AddPost = ({ navigation }) => {
             ))}
           </BottomSheet>
           <Spinner
-            visible={loading || uploading}
+            visible={uploading}
             color={colors.secondary}
             animation="fade"
           />
