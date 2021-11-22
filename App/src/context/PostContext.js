@@ -28,15 +28,8 @@ const getPost = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const postArr = [];
           snapshot.forEach((element) => {
-            const {
-              postId,
-              userId,
-              post,
-              postImage,
-              postTime,
-              likedBy,
-              likes,
-            } = element.val();
+            const { postId, userId, post, postImage, postTime, likedBy } =
+              element.val();
             //pushValues in likedBy
             const liked = Object.keys(likedBy);
             //pushValues of Object
@@ -46,7 +39,6 @@ const getPost = (dispatch) => {
               post,
               postImage,
               postTime,
-              likes,
               likedBy: liked,
               liked: false,
             });
@@ -76,7 +68,6 @@ const addPost = (dispatch) => {
         post,
         postImage: image,
         postTime: Date.now(),
-        likes: "",
       })
       .then(async () => {
         await Firebase.database()
@@ -104,16 +95,12 @@ const addPost = (dispatch) => {
   };
 };
 
-const getLikes = (dispatch) => {
-  return () => {};
-};
-
 const deletePost = (dispatch) => {
   return () => {};
 };
 
 export const { Context, Provider } = createDataContext(
   PostReducer,
-  { addPost, deletePost, getPost, getLikes },
+  { addPost, deletePost, getPost },
   { posts: [], loading: false }
 );

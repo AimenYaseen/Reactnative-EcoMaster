@@ -21,25 +21,27 @@ const AddCustomHabit = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <CustomHead
-        text="Create Post"
-        color={colors.whiteSmoke}
-        centerColor={colors.secondary}
-        leftIcon={() => (
-          <Icon
-            name="chevron-left"
-            type="entypo"
-            size={30}
-            onPress={() => navigation.navigate("Post")}
-            color={colors.secondary}
-          />
-        )}
-        rightIcon={null}
-      />
       <ImageBackground
         style={styles.background}
         source={require("../../Admin/assets/white.jpg")}
       >
+        <CustomHead
+          text="Create Post"
+          color="transparent"
+          centerColor={colors.secondary}
+          leftIcon={() => (
+            <Icon
+              name="chevron-left"
+              type="entypo"
+              size={30}
+              onPress={() =>
+                navigation.navigate("Custom", { screen: "CreateHabit" })
+              }
+              color={colors.secondary}
+            />
+          )}
+          rightIcon={null}
+        />
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomHabitForm
             text="Add"

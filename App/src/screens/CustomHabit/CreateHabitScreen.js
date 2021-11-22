@@ -7,6 +7,7 @@ import {
   Dimensions,
   Text,
 } from "react-native";
+import { Icon } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomHead } from "../../components/CustomHead";
@@ -14,6 +15,7 @@ import { Context as CustomContext } from "../../context/CustomHabitContext";
 import { TileCard } from "../../components/CustomCard";
 import colors from "../../constants/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Firebase } from "../../Firebase/config";
 
 const screenHeight = Dimensions.get("screen").height;
 
@@ -32,19 +34,24 @@ const CreateHabitScreen = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
-  const filterHabits = async () => {
-    const uid = await AsyncStorage.getItem("user");
+  const user = Firebase.auth().currentUser.uid;
+
+  const filterHabits = () => {
     return customHabit.filter((habit) => {
-      return habit.userId === uid;
+      return habit.userId == user;
     });
   };
 
   const habitList = filterHabits();
 
-  const listEmpty = () => <View style={styles.container}></View>;
+  const listEmpty = () => (
+    <View style={styles.container}>
+      <Text style={styles.text}>You havn't created any habits</Text>
+    </View>
+  );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <CustomHead
         text="Your Habits"
         color={colors.secondary}
@@ -70,7 +77,7 @@ const CreateHabitScreen = ({ navigation }) => {
       />
       <ImageBackground
         style={styles.background}
-        source={require("../../Admin/assets/vintage.jpg")}
+        source={require("../../Admin/assets/abstract.jpg")}
       >
         <FlatList
           contentContainerStyle={{ paddingBottom: screenHeight * 0.2 }}
@@ -96,9 +103,16 @@ const CreateHabitScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  background: {
+    //paddingTop: screenHeight * 0.1,
+    flex: 1,
+    // paddingTop: screenHeight * 0.1,
+    justifyContent: "center",
+    alignItems: "center",
+    resizeMode: "contain",
+  },
   container: {
     flex: 1,
-    backgroundColor: colors.white,
     justifyContent: "center",
     alignItems: "center",
     height: screenHeight * 0.83,

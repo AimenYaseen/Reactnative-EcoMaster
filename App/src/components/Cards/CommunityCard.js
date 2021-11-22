@@ -33,7 +33,7 @@ export const CommunityCard = ({ item }) => {
   const likeIconColor = liked ? colors.like : colors.gray4;
 
   let likeText;
-  console.log(item.likedBy.length);
+
   if (item.likedBy.length == 2) {
     likeText = " 1 Like";
   } else if (item.likedBy.length > 2) {
@@ -61,8 +61,7 @@ export const CommunityCard = ({ item }) => {
 
   useEffect(() => {
     getUser();
-    getPost();
-  }, [item, liked]);
+  }, [item]);
 
   // const onShare = async () => {
   //   await Sharing.isAvailableAsync().then(async (available) => {
@@ -102,7 +101,7 @@ export const CommunityCard = ({ item }) => {
       .ref(`Posts/${item.id}/likedBy/` + uid)
       .set(uid)
       .then(() => {
-        liked = true;
+        getPost();
       })
       .catch((error) => Alert.alert("ERROR!", error.message));
   };
@@ -113,7 +112,7 @@ export const CommunityCard = ({ item }) => {
       .ref(`Posts/${item.id}/likedBy/` + uid)
       .remove()
       .then(() => {
-        liked = false;
+        getPost();
       })
       .catch((error) => Alert.alert("ERROR!", error.message));
   };

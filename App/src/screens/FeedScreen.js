@@ -8,6 +8,7 @@ import {
   ScrollView,
   InteractionManager,
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import NewsList from "../components/News/NewsList";
 import colors from "../constants/colors";
@@ -37,6 +38,11 @@ const FeedScreen = ({ navigation }) => {
         <NewsList title="Information" result={state.newsTips} />
         <View />
       </ScrollView>
+      <Spinner
+        visible={state.loading}
+        color={colors.secondary}
+        animation="fade"
+      />
     </View>
   );
 };
