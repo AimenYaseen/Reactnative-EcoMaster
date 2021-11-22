@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,21 +17,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Firebase } from "../../Firebase/config";
 
 import colors from "../../constants/colors";
+import { Context as PostContext } from "../../context/PostContext";
 
 export const CommunityCard = ({ item }) => {
+  const { getPost } = useContext(PostContext);
   const [userData, setUserData] = useState(null);
-  const fileUri = FileSystem.cacheDirectory + "tmp.jpg";
+  // const fileUri = FileSystem.cacheDirectory + "tmp.jpg";
   // const imageURL = item ? (item.postImage ? item.postImage : null) : null;
+  const user = Firebase.auth().currentUser.uid;
+  let liked = false;
 
-  const likeIcon = item.liked ? "heart" : "heart-outline";
-  const likeIconColor = item.liked ? colors.like : colors.gray4;
+  item.likedBy.includes(user) ? (liked = true) : (liked = false);
+
+  const likeIcon = liked ? "heart" : "heart-outline";
+  const likeIconColor = liked ? colors.like : colors.gray4;
 
   let likeText;
-
-  if (item.likes == 1) {
+  console.log(item.likedBy.length);
+  if (item.likedBy.length == 2) {
     likeText = " 1 Like";
-  } else if (item.likes > 1) {
-    likeText = item.likes + " Likes";
+  } else if (item.likedBy.length > 2) {
+    likeText = item.likedBy.length - 1 + " Likes";
   } else {
     likeText = " Like";
   }
@@ -55,64 +61,61 @@ export const CommunityCard = ({ item }) => {
 
   useEffect(() => {
     getUser();
-  }, [item]);
+    getPost();
+  }, [item, liked]);
 
-  const onShare = async () => {
-    await Sharing.isAvailableAsync().then(async (available) => {
-      if (available) {
-        Alert.alert("Congratulations!", "Sharing is available");
-        const options = {
-          mimeType: "image/jpeg",
-          dialogTitle: item.post,
-          UTI: "image/jpeg",
-        };
+  // const onShare = async () => {
+  //   await Sharing.isAvailableAsync().then(async (available) => {
+  //     if (available) {
+  //       Alert.alert("Congratulations!", "Sharing is available");
+  //       const options = {
+  //         mimeType: "image/jpeg",
+  //         dialogTitle: item.post,
+  //         UTI: "image/jpeg",
+  //       };
 
-        await FileSystem.downloadAsync(item.postImage, fileUri)
-          .then(({ uri }) => {
-            Alert.alert("Image Downloaded \n", uri);
-          })
-          .catch((error) => {
-            Alert.alert("ERROR!", JSON.stringify(error.message));
-          });
+  //       await FileSystem.downloadAsync(item.postImage, fileUri)
+  //         .then(({ uri }) => {
+  //           Alert.alert("Image Downloaded \n", uri);
+  //         })
+  //         .catch((error) => {
+  //           Alert.alert("ERROR!", JSON.stringify(error.message));
+  //         });
 
-        // Sharing only allows one to share a file.
-        await Sharing.shareAsync(fileUri, options)
-          .then((data) => {
-            Alert.alert("Image Shared \n", data);
-          })
-          .catch((error) => {
-            Alert.alert("ERROR!", JSON.stringify(error.message));
-          });
-      } else {
-        Alert.alert("ERROR!", "Sharing is NOT available");
-      }
-    });
-  };
+  //       // Sharing only allows one to share a file.
+  //       await Sharing.shareAsync(fileUri, options)
+  //         .then((data) => {
+  //           Alert.alert("Image Shared \n", data);
+  //         })
+  //         .catch((error) => {
+  //           Alert.alert("ERROR!", JSON.stringify(error.message));
+  //         });
+  //     } else {
+  //       Alert.alert("ERROR!", "Sharing is NOT available");
+  //     }
+  //   });
+  // };
 
   const onLike = async () => {
     const uid = await AsyncStorage.getItem("user");
-    // console.log(item);
     await Firebase.database()
-      .ref(`Posts/${item.id}/`)
-      .update({
-        likedBy: [...item.likedBy, uid],
-      })
+      .ref(`Posts/${item.id}/likedBy/` + uid)
+      .set(uid)
       .then(() => {
-        console.log("ADDED");
+        liked = true;
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => Alert.alert("ERROR!", error.message));
   };
 
   const onDislike = async () => {
     const uid = await AsyncStorage.getItem("user");
-    // console.log(item);
     await Firebase.database()
       .ref(`Posts/${item.id}/likedBy/` + uid)
       .remove()
       .then(() => {
-        console.log("Deleted");
+        liked = false;
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => Alert.alert("ERROR!", error.message));
   };
 
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
@@ -149,7 +152,7 @@ export const CommunityCard = ({ item }) => {
             styles.interaction,
             { backgroundColor: item.liked ? colors.select : "transparent" },
           ]}
-          onPress={onDislike}
+          onPress={liked ? onDislike : onLike}
         >
           <Icon
             name={likeIcon}
@@ -162,7 +165,10 @@ export const CommunityCard = ({ item }) => {
             {likeText}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.interaction} onPress={onShare}>
+        <TouchableOpacity
+          style={styles.interaction}
+          // onPress={onShare}
+        >
           <Icon
             name="share-2"
             type="feather"

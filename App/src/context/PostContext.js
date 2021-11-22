@@ -37,6 +37,8 @@ const getPost = (dispatch) => {
               likedBy,
               likes,
             } = element.val();
+            //pushValues in likedBy
+            const liked = Object.keys(likedBy);
             //pushValues of Object
             postArr.push({
               id: postId,
@@ -45,7 +47,7 @@ const getPost = (dispatch) => {
               postImage,
               postTime,
               likes,
-              likedBy,
+              likedBy: liked,
               liked: false,
             });
           });
@@ -76,10 +78,10 @@ const addPost = (dispatch) => {
         postTime: Date.now(),
         likes: "",
       })
-      .then(() => {
+      .then(async () => {
         await Firebase.database()
-          .ref("Posts/likedBy" + 0)
-          .set();
+          .ref(`Posts/${time}/likedBy/` + time)
+          .set(1);
         //loader
         dispatch({ type: "loader", payload: false });
         Alert.alert(
@@ -102,12 +104,16 @@ const addPost = (dispatch) => {
   };
 };
 
+const getLikes = (dispatch) => {
+  return () => {};
+};
+
 const deletePost = (dispatch) => {
   return () => {};
 };
 
 export const { Context, Provider } = createDataContext(
   PostReducer,
-  { addPost, deletePost, getPost },
+  { addPost, deletePost, getPost, getLikes },
   { posts: [], loading: false }
 );

@@ -1,26 +1,50 @@
-import React from "react";
-import { View, StyleSheet, Text, FlatList, Dimensions } from "react-native";
-import { Icon } from "react-native-elements";
+import React, { useContext } from "react";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  Text,
+} from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomHead } from "../../components/CustomHead";
+import { Context as CustomContext } from "../../context/CustomHabitContext";
+import { TileCard } from "../../components/CustomCard";
 import colors from "../../constants/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screenHeight = Dimensions.get("screen").height;
 
 const CreateHabitScreen = ({ navigation }) => {
-  const listEmpty = () => (
-    <View style={styles.container}>
-      <Text style={styles.text}> You do not have any Habits yet... </Text>
-    </View>
-  );
-  const renderItem = ({ item }) => {
-    return (
-      <NewsCard title={item.title} caption={item.caption} image={item.image} />
-    );
+  const {
+    state: { customHabit, loading },
+    getCustom,
+  } = useContext(CustomContext);
+
+  React.useEffect(() => {
+    getCustom();
+    const unsubscribe = navigation.addListener("focus", () => {
+      getCustom();
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const filterHabits = async () => {
+    const uid = await AsyncStorage.getItem("user");
+    return customHabit.filter((habit) => {
+      return habit.userId === uid;
+    });
   };
 
+  const habitList = filterHabits();
+
+  const listEmpty = () => <View style={styles.container}></View>;
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <CustomHead
         text="Your Habits"
         color={colors.secondary}
@@ -44,14 +68,29 @@ const CreateHabitScreen = ({ navigation }) => {
           />
         )}
       />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: screenHeight * 0.04 }}
-        ListEmptyComponent={listEmpty}
-        // data={result}
-        keyExtractor={(index) => index.toString()}
-        // renderItem={renderItem}
-      />
+      <ImageBackground
+        style={styles.background}
+        source={require("../../Admin/assets/vintage.jpg")}
+      >
+        <FlatList
+          contentContainerStyle={{ paddingBottom: screenHeight * 0.2 }}
+          showsVerticalScrollIndicator={false}
+          data={habitList}
+          ListEmptyComponent={listEmpty}
+          initialNumToRender={habitList.length}
+          keyExtractor={(item) => {
+            return item.id.toString();
+          }}
+          renderItem={({ item }) => {
+            return (
+              <>
+                <TileCard item={item} />
+              </>
+            );
+          }}
+        />
+        <Spinner visible={loading} color={colors.secondary} animation="fade" />
+      </ImageBackground>
     </View>
   );
 };
