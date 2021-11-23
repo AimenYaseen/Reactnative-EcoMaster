@@ -36,38 +36,42 @@ const addHabit = (dispatch) => {
       habitDuration &&
       habitReward
     ) {
-      dispatch({ type: "loader", payload: true });
-      await Firebase.database()
-        .ref("Habits/" + time)
-        .set({
-          habitId: time,
-          title: habitTitle,
-          steps: habitSteps,
-          description: habitDescription,
-          duration: habitDuration,
-          reward: habitReward,
-          image: habitImage,
-        })
-        .then(() => {
-          //loader
-          dispatch({ type: "loader", payload: false });
-          Alert.alert(
-            "Habit Uploaded!",
-            "Your Habit has successfully Uploaded",
-            [
-              {
-                text: "OK",
-                onPress: () => navigate("AdminHabit"),
-              },
-            ],
-            { cancelable: false }
-          );
-        })
-        .catch((error) => {
-          //loader
-          dispatch({ type: "loader", payload: false });
-          Alert.alert("ERROR!", error.message);
-        });
+      if (habitDuration > 1) {
+        dispatch({ type: "loader", payload: true });
+        await Firebase.database()
+          .ref("Habits/" + time)
+          .set({
+            habitId: time,
+            title: habitTitle,
+            steps: habitSteps,
+            description: habitDescription,
+            duration: habitDuration,
+            reward: habitReward,
+            image: habitImage,
+          })
+          .then(() => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(
+              "Habit Uploaded!",
+              "Your Habit has successfully Uploaded",
+              [
+                {
+                  text: "OK",
+                  onPress: () => navigate("AdminHabit"),
+                },
+              ],
+              { cancelable: false }
+            );
+          })
+          .catch((error) => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert("ERROR!", error.message);
+          });
+      } else {
+        Alert.alert("ERROR!", " Duration must be Greater than 1");
+      }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");
     }
@@ -138,34 +142,38 @@ const editHabit = (dispatch) => {
       habitDuration &&
       habitReward
     ) {
-      dispatch({ type: "loader", payload: true });
-      try {
-        await Firebase.database()
-          .ref("Habits/" + id)
-          .update({
-            title: habitTitle,
-            steps: habitSteps,
-            description: habitDescription,
-            duration: habitDuration,
-            reward: habitReward,
-            image: habitImage,
-          });
-        dispatch({ type: "loader", payload: false });
-        Alert.alert(
-          "UPDATED!",
-          "Congratulations, Your data has updated...",
-          [
-            {
-              text: "OK",
-              onPress: () => navigate("AdminHabit"),
-            },
-          ],
-          { cancelable: false }
-        );
-      } catch (error) {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR!", error.message);
+      if (habitDuration > 1) {
+        dispatch({ type: "loader", payload: true });
+        try {
+          await Firebase.database()
+            .ref("Habits/" + id)
+            .update({
+              title: habitTitle,
+              steps: habitSteps,
+              description: habitDescription,
+              duration: habitDuration,
+              reward: habitReward,
+              image: habitImage,
+            });
+          dispatch({ type: "loader", payload: false });
+          Alert.alert(
+            "UPDATED!",
+            "Congratulations, Your data has updated...",
+            [
+              {
+                text: "OK",
+                onPress: () => navigate("AdminHabit"),
+              },
+            ],
+            { cancelable: false }
+          );
+        } catch (error) {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert("ERROR!", error.message);
+        }
+      } else {
+        Alert.alert("ERROR!", " Duration must be greater than 1");
       }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");

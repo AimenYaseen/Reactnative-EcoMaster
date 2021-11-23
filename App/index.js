@@ -8,25 +8,28 @@ import { Provider as NewsProvider } from "./src/Admin/AdminContext/NewsContext";
 import { Provider as CustomProvider } from "./src/Admin/AdminContext/CustomContext";
 import { Provider as HabitProvider } from "./src/Admin/AdminContext/HabitContext";
 import { Provider as CustomHabitProvider } from "./src/context/CustomHabitContext";
+import { Provider as ActivityContext } from "./src/context/ActivityContext";
 
 export default () => {
   return (
-    <CustomHabitProvider>
-      <HabitProvider>
-        <CustomProvider>
-          <NewsProvider>
-            <PostProvider>
-              <AdminAuthProvider>
-                <AuthProvider>
-                  <UserProvider>
-                    <Navigation />
-                  </UserProvider>
-                </AuthProvider>
-              </AdminAuthProvider>
-            </PostProvider>
-          </NewsProvider>
-        </CustomProvider>
-      </HabitProvider>
-    </CustomHabitProvider>
+    <ActivityContext>
+      <CustomHabitProvider>
+        <HabitProvider>
+          <CustomProvider>
+            <NewsProvider>
+              <PostProvider>
+                <AdminAuthProvider>
+                  <AuthProvider>
+                    <UserProvider>
+                      <Navigation />
+                    </UserProvider>
+                  </AuthProvider>
+                </AdminAuthProvider>
+              </PostProvider>
+            </NewsProvider>
+          </CustomProvider>
+        </HabitProvider>
+      </CustomHabitProvider>
+    </ActivityContext>
   );
 };

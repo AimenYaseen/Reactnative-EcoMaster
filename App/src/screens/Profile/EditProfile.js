@@ -241,7 +241,8 @@ const EditScreen = ({ navigation }) => {
             <View style={styles.input}>
               <SimpleInput
                 label="Bio"
-                placeholder="short bio..."
+                placeholder="Your short bio upto 120 words..."
+                maxLength={120}
                 value={bio}
                 onChangeText={(text) => setBio(text)}
               />

@@ -201,7 +201,7 @@ const CustomForm = ({
         disabled={text === "Edit" ? true : false}
         label="Category"
         value={category}
-        placeholder="Suggestion Category"
+        placeholder="Habits / Energy / Food & Drink / Transportation / Waste / Water"
         multiline={false}
         onChangeText={(text) => setCategory(text)}
       />
@@ -222,7 +222,8 @@ const CustomForm = ({
       <BlockInput
         label="Duration"
         value={duration}
-        placeholder="Days / Months / Weeks"
+        placeholder="Days"
+        keyboardType="numeric"
         multiline={false}
         onChangeText={(text) => setDuration(text)}
       />

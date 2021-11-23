@@ -12,9 +12,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomHead } from "../../components/CustomHead";
 import { Context as CustomContext } from "../../context/CustomHabitContext";
-import { TileCard } from "../../components/CustomCard";
+import { CustomHabitCard } from "../../components/Cards/CustomHabitCard";
 import colors from "../../constants/colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Firebase } from "../../Firebase/config";
 
 const screenHeight = Dimensions.get("screen").height;
@@ -91,7 +90,7 @@ const CreateHabitScreen = ({ navigation }) => {
           renderItem={({ item }) => {
             return (
               <>
-                <TileCard item={item} />
+                <CustomHabitCard item={item} />
               </>
             );
           }}

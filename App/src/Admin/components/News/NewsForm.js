@@ -199,7 +199,7 @@ const NewsForm = ({
         disabled={text === "Edit" ? true : false}
         label="Category"
         value={category}
-        placeholder="News Category"
+        placeholder="Information / Tips"
         multiline={false}
         onChangeText={(text) => setCategory(text)}
       />

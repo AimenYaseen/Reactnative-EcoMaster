@@ -14,6 +14,7 @@ export const BlockInput = ({
   value,
   disabled,
   multiline,
+  keyboardType,
 }) => {
   const [focus, setFocus] = useState(false);
 
@@ -33,6 +34,7 @@ export const BlockInput = ({
         }}
         placeholder={placeholder}
         placeholderTextColor={colors.gray}
+        keyboardType={keyboardType ? keyboardType : "default"}
         value={value}
         inputContainerStyle={{
           borderColor: focus ? colors.secondary : colors.gray,
@@ -54,7 +56,13 @@ export const BlockInput = ({
   );
 };
 
-export const SimpleInput = ({ label, placeholder, onChangeText, value }) => {
+export const SimpleInput = ({
+  label,
+  placeholder,
+  onChangeText,
+  value,
+  maxLength,
+}) => {
   const [focus, setFocus] = useState(false);
 
   return (
@@ -66,6 +74,7 @@ export const SimpleInput = ({ label, placeholder, onChangeText, value }) => {
         labelStyle={{ color: colors.black }}
         placeholder={placeholder}
         placeholderTextColor={colors.gray}
+        maxLength={maxLength}
         value={value}
         inputContainerStyle={{
           borderBottomColor: focus ? colors.secondary : colors.gray,

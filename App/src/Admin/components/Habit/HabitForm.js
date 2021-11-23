@@ -228,7 +228,8 @@ const HabitForm = ({
       <BlockInput
         label="Duration"
         value={duration}
-        placeholder="Days / Months / Weeks"
+        placeholder="Days"
+        keyboardType="numeric"
         multiline={false}
         onChangeText={(text) => setDuration(text)}
       />
@@ -236,6 +237,7 @@ const HabitForm = ({
         label="Reward"
         value={reward}
         placeholder="points"
+        keyboardType="numeric"
         multiline={false}
         onChangeText={(text) => setReward(text)}
       />

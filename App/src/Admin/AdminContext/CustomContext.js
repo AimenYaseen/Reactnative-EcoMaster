@@ -29,37 +29,41 @@ const addCustom = (dispatch) => {
   ) => {
     dispatch({ type: "delete", payload: false });
     if (customCategory && customTitle && customDescription && customDuration) {
-      dispatch({ type: "loader", payload: true });
-      await Firebase.database()
-        .ref("CustomHabits/" + time)
-        .set({
-          customId: time,
-          title: customTitle,
-          category: customCategory,
-          description: customDescription,
-          duration: customDuration,
-          image: customImage,
-        })
-        .then(() => {
-          //loader
-          dispatch({ type: "loader", payload: false });
-          Alert.alert(
-            "Custom Habit Uploaded!",
-            "Your Habit has successfully Uploaded",
-            [
-              {
-                text: "OK",
-                onPress: () => navigate("AdminCustom"),
-              },
-            ],
-            { cancelable: false }
-          );
-        })
-        .catch((error) => {
-          //loader
-          dispatch({ type: "loader", payload: false });
-          Alert.alert("ERROR!", error.message);
-        });
+      if (customDuration > 1) {
+        dispatch({ type: "loader", payload: true });
+        await Firebase.database()
+          .ref("CustomHabits/" + time)
+          .set({
+            customId: time,
+            title: customTitle,
+            category: customCategory,
+            description: customDescription,
+            duration: customDuration,
+            image: customImage,
+          })
+          .then(() => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(
+              "Custom Habit Uploaded!",
+              "Your Habit has successfully Uploaded",
+              [
+                {
+                  text: "OK",
+                  onPress: () => navigate("AdminCustom"),
+                },
+              ],
+              { cancelable: false }
+            );
+          })
+          .catch((error) => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert("ERROR!", error.message);
+          });
+      } else {
+        Alert.alert("ERROR!", " Duration must be greater than 1");
+      }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");
     }
@@ -115,33 +119,37 @@ const editCustom = (dispatch) => {
   ) => {
     dispatch({ type: "delete", payload: false });
     if (customCategory && customTitle && customDescription && customDuration) {
-      dispatch({ type: "loader", payload: true });
-      try {
-        await Firebase.database()
-          .ref("CustomHabits/" + id)
-          .update({
-            title: customTitle,
-            category: customCategory,
-            description: customDescription,
-            duration: customDuration,
-            image: customImage,
-          });
-        dispatch({ type: "loader", payload: false });
-        Alert.alert(
-          "UPDATED!",
-          "Congratulations, Your data has updated...",
-          [
-            {
-              text: "OK",
-              onPress: () => navigate("AdminCustom"),
-            },
-          ],
-          { cancelable: false }
-        );
-      } catch (error) {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR!", error.message);
+      if (customDuration > 1) {
+        dispatch({ type: "loader", payload: true });
+        try {
+          await Firebase.database()
+            .ref("CustomHabits/" + id)
+            .update({
+              title: customTitle,
+              category: customCategory,
+              description: customDescription,
+              duration: customDuration,
+              image: customImage,
+            });
+          dispatch({ type: "loader", payload: false });
+          Alert.alert(
+            "UPDATED!",
+            "Congratulations, Your data has updated...",
+            [
+              {
+                text: "OK",
+                onPress: () => navigate("AdminCustom"),
+              },
+            ],
+            { cancelable: false }
+          );
+        } catch (error) {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert("ERROR!", error.message);
+        }
+      } else {
+        Alert.alert("ERROR!", " Duration must be greater than 1");
       }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
+
 import { navigate } from "../Navigation/NavigationRef";
+import { Context as ActivityContext } from "../context/ActivityContext";
 
 import colors from "../constants/colors";
 import { HabitOverlay } from "./CustomOverlay";
@@ -10,7 +12,8 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const TileCard = ({ item }) => {
-  //const captionC = caption + "\n\nDuration :" + " Days";
+  const { addActivity } = useContext(ActivityContext);
+
   return (
     <View
       style={{
@@ -47,7 +50,7 @@ export const TileCard = ({ item }) => {
             size={20}
           />
           <Text style={{ paddingHorizontal: 10 }}>
-            Duration : Days {item.duration}
+            Duration : {item.duration} Days
           </Text>
         </View>
       </View>
@@ -60,7 +63,7 @@ export const TileCard = ({ item }) => {
           borderBottomRightRadius: 7,
           borderRadius: 0,
         }}
-        onPress={() => navigate("Activity")}
+        onPress={() => navigate(addActivity({ customId: item.id }))}
         containerStyle={styles.shadow}
       />
     </View>

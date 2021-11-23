@@ -215,6 +215,7 @@ const CustomHabitForm = ({
         value={duration}
         placeholder="Days"
         multiline={false}
+        keyboardType="numeric"
         onChangeText={(text) => setDuration(text)}
       />
       {disabled ? (
