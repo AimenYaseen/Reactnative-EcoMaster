@@ -133,7 +133,7 @@ const editCustom = (dispatch) => {
           [
             {
               text: "OK",
-              onPress: () => navigate("AdminCustom"),
+              onPress: () => navigate("Custom", { screen: "CreateHabit" }),
             },
           ],
           { cancelable: false }

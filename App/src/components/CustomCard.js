@@ -63,7 +63,7 @@ export const TileCard = ({ item }) => {
           borderBottomRightRadius: 7,
           borderRadius: 0,
         }}
-        onPress={() => navigate(addActivity({ customId: item.id }))}
+        onPress={() => addActivity({ customId: item.id })}
         containerStyle={styles.shadow}
       />
     </View>

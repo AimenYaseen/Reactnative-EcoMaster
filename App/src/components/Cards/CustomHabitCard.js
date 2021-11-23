@@ -16,7 +16,7 @@ export const CustomHabitCard = ({ item }) => {
         featured
         caption={item.caption}
         width={screenWidth * 0.95}
-        height={screenHeight * 0.3}
+        height={screenHeight * 0.27}
         imageContainerStyle={{
           borderTopLeftRadius: 7,
           borderTopRightRadius: 7,
@@ -26,7 +26,7 @@ export const CustomHabitCard = ({ item }) => {
           alignSelf: "center",
         }}
       />
-      <View style={[styles.durationTile, { backgroundColor: colors.mauve }]}>
+      <View style={[styles.durationTile, { backgroundColor: colors.mustard }]}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Icon type="entypo" name="time-slot" color={colors.white} size={20} />
           <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
@@ -39,8 +39,10 @@ export const CustomHabitCard = ({ item }) => {
           styles.durationTile,
           {
             backgroundColor: colors.secondary,
-            borderBottomLeftRadius: 5,
-            borderBottomRightRadius: 5,
+            width: screenWidth * 0.955,
+            borderBottomLeftRadius: 7,
+            borderBottomRightRadius: 7,
+            marginTop: -1,
           },
         ]}
       >
@@ -50,9 +52,14 @@ export const CustomHabitCard = ({ item }) => {
             justifyContent: "center",
           }}
         >
-          <Icon type="entypo" name="time-slot" color={colors.white} size={20} />
+          <Icon
+            type="material-community"
+            name="progress-clock"
+            color={colors.white}
+            size={20}
+          />
           <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
-            Status :
+            Status : Pending
           </Text>
         </View>
       </View>

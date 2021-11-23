@@ -39,41 +39,57 @@ export const ActivityCard = ({ item }) => {
         imageSrc={
           habitData ? (habitData.image ? { uri: habitData.image } : null) : null
         }
-        title={habitData.title}
+        title={habitData ? habitData.title : null}
         featured
-        caption={habitData.caption}
+        caption={habitData ? habitData.description : null}
         width={screenWidth * 0.95}
-        height={screenHeight * 0.3}
+        height={screenHeight * 0.27}
         imageContainerStyle={{
-          borderRadius: 7,
+          borderTopLeftRadius: 7,
+          borderTopRightRadius: 7,
+          alignItems: "center",
+          justifyContent: "center",
         }}
         containerStyle={{
           marginTop: 10,
           alignSelf: "center",
         }}
       />
-      <View style={styles.durationTile}>
+      <View
+        style={[
+          styles.durationTile,
+          { backgroundColor: colors.secondary, width: screenWidth * 0.95 },
+        ]}
+      >
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Icon
-            type="entypo"
-            name="time-slot"
-            color={colors.secondary}
-            size={20}
-          />
-          <Text style={{ paddingHorizontal: 10 }}>
-            Duration : Days {habitData.duration}
+          <Icon type="entypo" name="time-slot" color={colors.white} size={20} />
+          <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
+            Duration : Days {habitData ? habitData.duration : null}
           </Text>
         </View>
       </View>
-      <View style={styles.durationTile}>
+      <View
+        style={[
+          styles.durationTile,
+          {
+            backgroundColor: colors.mauve,
+            width: screenWidth * 0.955,
+            borderBottomLeftRadius: 7,
+            borderBottomRightRadius: 7,
+            marginTop: -1,
+          },
+        ]}
+      >
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Icon
-            type="entypo"
-            name="time-slot"
-            color={colors.secondary}
+            type="material-community"
+            name="progress-clock"
+            color={colors.white}
             size={20}
           />
-          <Text style={{ paddingHorizontal: 10 }}>Status :</Text>
+          <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
+            Status : Completed
+          </Text>
         </View>
       </View>
       <Button
@@ -83,7 +99,7 @@ export const ActivityCard = ({ item }) => {
         // onPress={() => setVisible(true)}
         containerStyle={styles.buttonContainer}
         buttonStyle={{
-          width: screenWidth * 0.5,
+          width: screenWidth * 0.3,
           borderRadius: 30,
           backgroundColor: colors.mauve,
         }}

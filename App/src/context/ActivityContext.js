@@ -37,7 +37,7 @@ const addActivity = (dispatch) => {
           [
             {
               text: "OK",
-              onPress: () => navigate("Activity"),
+              onPress: () => navigate("Custom", { screen: "Activity" }),
             },
           ],
           { cancelable: false }
