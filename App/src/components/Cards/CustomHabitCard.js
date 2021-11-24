@@ -1,13 +1,33 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
 
 import colors from "../../constants/colors";
+import { navigate } from "../../Navigation/NavigationRef";
+
+import { Context as CustomContext } from "../../context/CustomHabitContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const CustomHabitCard = ({ item }) => {
+  const { state, deleteCustom, getCustom } = useContext(CustomContext);
+  // const [deleted, setDeleted] = useState(false);
+
+  React.useEffect(() => {
+    if (state.deleted) {
+      getCustom();
+      // setDeleted(false);
+    }
+  }, [state.deleted]);
+
   return (
     <>
       <Tile
@@ -62,6 +82,57 @@ export const CustomHabitCard = ({ item }) => {
             Status : Pending
           </Text>
         </View>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 10,
+        }}
+      >
+        <Button
+          raised
+          type="solid"
+          title="Edit"
+          onPress={() => navigate("EditCustomHabit", { item })}
+          containerStyle={styles.buttonContainer}
+          buttonStyle={{
+            width: screenWidth * 0.5,
+            borderRadius: 30,
+            backgroundColor: colors.mustard,
+          }}
+        />
+        <Button
+          raised
+          type="solid"
+          title="Delete"
+          containerStyle={styles.buttonContainer}
+          buttonStyle={{
+            width: screenWidth * 0.25,
+            borderRadius: 30,
+            backgroundColor: colors.accent,
+          }}
+          onPress={() => {
+            Alert.alert(
+              "Delete!",
+              "Are You Sure, You want to Delete?",
+              [
+                {
+                  text: "No",
+                  //onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                {
+                  text: "Yes",
+                  onPress: () => {
+                    deleteCustom(item.id);
+                    // setDeleted(true);
+                  },
+                },
+              ],
+              { cancelable: false }
+            );
+          }}
+        />
       </View>
     </>
   );

@@ -69,7 +69,7 @@ const CreateHabitScreen = ({ navigation }) => {
             name="plus"
             type="entypo"
             size={35}
-            onPress={() => navigation.navigate("HabitForm")}
+            onPress={() => navigation.navigate("AddCustomHabit")}
             color={colors.white}
           />
         )}

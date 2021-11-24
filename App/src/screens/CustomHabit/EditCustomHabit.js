@@ -13,12 +13,13 @@ import colors from "../../constants/colors";
 import CustomHabitForm from "../../components/CustomHabitForm";
 import { Context as CustomContext } from "../../context/CustomHabitContext";
 
-const AddCustomHabit = ({ navigation }) => {
+const EditCustomHabit = ({ navigation, route }) => {
   const {
     state: { loading },
-    addCustom,
+    editCustom,
   } = useContext(CustomContext);
 
+  const item = route.params.item;
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -26,7 +27,7 @@ const AddCustomHabit = ({ navigation }) => {
         source={require("../../Admin/assets/white.jpg")}
       >
         <CustomHead
-          text="Create Habit"
+          text="Edit Habit"
           color="transparent"
           centerColor={colors.secondary}
           leftIcon={() => (
@@ -44,22 +45,25 @@ const AddCustomHabit = ({ navigation }) => {
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomHabitForm
-            text="Add"
-            imageVisible={false}
+            text="Edit"
+            customTitle={item.title}
+            customDescription={item.description}
+            customDuration={item.duration}
+            customImage={item.image}
+            imageVisible={true}
             onPress={async (
               customTitle,
               customDescription,
               customDuration,
-              customImage,
-              time
+              customImage
             ) => {
               console.log("Pressed");
-              await addCustom(
+              await editCustom(
+                item.id,
                 customTitle,
                 customDescription,
                 customDuration,
-                customImage,
-                time
+                customImage
               );
             }}
           />
@@ -85,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddCustomHabit;
+export default EditCustomHabit;

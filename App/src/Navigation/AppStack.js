@@ -10,6 +10,7 @@ import AddPost from "../screens/Community/AddPost";
 
 import { TopTabScreen } from "./TopTabBar";
 import AddCustomHabit from "../screens/CustomHabit/AddCustomHabit";
+import EditCustomHabit from "../screens/CustomHabit/EditCustomHabit";
 
 const AppStack = createNativeStackNavigator();
 export const AppStackScreen = () => {
@@ -46,8 +47,13 @@ export const AppStackScreen = () => {
         options={{ headerShown: false }}
       />
       <AppStack.Screen
-        name="HabitForm"
+        name="AddCustomHabit"
         component={AddCustomHabit}
+        options={{ headerShown: false }}
+      />
+      <AppStack.Screen
+        name="EditCustomHabit"
+        component={EditCustomHabit}
         options={{ headerShown: false }}
       />
       <AppStack.Screen

@@ -107,21 +107,19 @@ const getCustom = (dispatch) => {
 const editCustom = (dispatch) => {
   return async (
     id,
-    customCategory,
     customTitle,
     customDescription,
     customDuration,
     customImage
   ) => {
     dispatch({ type: "delete", payload: false });
-    if (customCategory && customTitle && customDescription && customDuration) {
+    if (customTitle && customDescription && customDuration) {
       dispatch({ type: "loader", payload: true });
       try {
         await Firebase.database()
           .ref("CustomHabits/" + id)
           .update({
             title: customTitle,
-            category: customCategory,
             description: customDescription,
             duration: customDuration,
             image: customImage,
