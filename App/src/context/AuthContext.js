@@ -26,7 +26,7 @@ const automaticSignin = (dispatch) => {
     const admin = await AsyncStorage.getItem("admin");
     if (user) {
       Firebase.auth().onAuthStateChanged((userPresent) => {
-        if (userPresent) {
+        if (userPresent.emailVerified) {
           replace("AppFlow");
         }
       });
@@ -109,17 +109,41 @@ const signup = (dispatch) => {
                 })
                 .then(async () => {
                   //loader
-                  dispatch({ type: "loader", payload: false });
+                  // dispatch({ type: "loader", payload: false });
                   await AsyncStorage.setItem("user", user.uid);
                   await AsyncStorage.setItem("password", password);
-                  dispatch({ type: "signin", payload: user });
-                  replace("AppFlow");
-                })
-                .catch((error) => {
-                  //loader
-                  dispatch({ type: "loader", payload: false });
-                  Alert.alert("ERROR!", error.message);
+
+                  //creating its seperate habit module
+                  await Firebase.database()
+                    .ref("Habits/")
+                    .orderByKey()
+                    .once("value", (snapshot) => {
+                      if (snapshot.exists()) {
+                        dispatch({ type: "loader", payload: false });
+                        // console.log(snapshot.val())
+                        snapshot.forEach((element) => {
+                          console.log(element.val());
+                          const { habitId } = element.val();
+                          console.log(habitId);
+                          //pushValues of Object
+                          Firebase.database()
+                            .ref(`HabitTracker/${user.uid}/` + habitId)
+                            .set({
+                              habitId: habitId,
+                              time: "",
+                              completed: false,
+                              select: false,
+                            });
+                        });
+                      }
+                    })
+                    .catch((error) => {
+                      dispatch({ type: "loader", payload: false });
+                      console.error(error);
+                    });
                 });
+              dispatch({ type: "signin", payload: user });
+              replace("AppFlow");
             } else {
               dispatch({ type: "loader", payload: false });
               Alert.alert(

@@ -110,6 +110,21 @@ export const ConfirmationOverlay = ({
 };
 
 export const HabitOverlay = ({ data, visible, onBackdropPress, onPress }) => {
+  const listEmpty = () => (
+    <View
+      style={{
+        height: screenHeight * 0.6,
+        width: screenWidth * 0.9,
+        flex: 1,
+        backgroundColor: colors.white,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text>No Steps Available</Text>
+    </View>
+  );
+
   const renderItem = ({ item }) => {
     return (
       <View
@@ -172,6 +187,7 @@ export const HabitOverlay = ({ data, visible, onBackdropPress, onPress }) => {
           showsVerticalScrollIndicator={false}
           data={data}
           initialNumToRender={data.length}
+          ListEmptyComponent={listEmpty}
           keyExtractor={(item, index) => {
             return index.toString();
           }}

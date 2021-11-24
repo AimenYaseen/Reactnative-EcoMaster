@@ -8,12 +8,13 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
+import { Firebase } from "../../Firebase/config";
 
 import { HabitCard } from "../../components/CustomCard";
 import { CustomHead } from "../../components/CustomHead";
 import colors from "../../constants/colors";
 import { LockCard } from "../../components/Cards/LockCard";
-import { Context as HabitContext } from "../../Admin/AdminContext/HabitContext";
+import { Context as HabitContext } from "../../context/HabitTrackerContext";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
 
 const screenHeight = Dimensions.get("screen").height;

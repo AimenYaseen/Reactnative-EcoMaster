@@ -1,8 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
 
 import { navigate } from "../Navigation/NavigationRef";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Firebase } from "../Firebase/config";
 import { Context as ActivityContext } from "../context/ActivityContext";
 
 import colors from "../constants/colors";
@@ -71,7 +73,29 @@ export const TileCard = ({ item }) => {
 };
 
 export const HabitCard = ({ item }) => {
+  const [habitData, setHabitData] = useState(null);
   const [visible, setVisible] = useState(false);
+
+  const getHabit = async () => {
+    try {
+      await Firebase.database()
+        .ref("Habits/" + item.id)
+        .once("value", async (snapshot) => {
+          if (snapshot.exists) {
+            const data = await snapshot.val();
+            // console.log(data);
+            setHabitData(data);
+          }
+        });
+    } catch (error) {
+      //loader
+      Alert.alert("ERROR!", error.message);
+    }
+  };
+
+  useEffect(() => {
+    getHabit();
+  }, [item]);
 
   return (
     <>
@@ -84,12 +108,12 @@ export const HabitCard = ({ item }) => {
                 //fontFamily: "arial"
               }}
             >
-              {item.title}
+              {habitData ? habitData.title : null}
             </Card.Title>
             <Card.Divider />
 
             <Card.Image
-              source={{ uri: item.image }}
+              source={{ uri: habitData ? habitData.image : null }}
               style={{ borderRadius: 5, height: screenHeight * 0.4 }}
             >
               <View style={{ flex: 1, justifyContent: "center" }}>
@@ -99,7 +123,9 @@ export const HabitCard = ({ item }) => {
                   insetType="right"
                   style={{ marginLeft: 15, width: screenWidth * 0.73 }}
                 />
-                <Text style={styles.description}>{item.description}</Text>
+                <Text style={styles.description}>
+                  {habitData ? habitData.description : null}
+                </Text>
               </View>
             </Card.Image>
             <View style={[styles.duration, styles.shadow]}>
@@ -111,7 +137,7 @@ export const HabitCard = ({ item }) => {
                   size={20}
                 />
                 <Text style={{ paddingHorizontal: 10 }}>
-                  Duration : {item.duration} Days
+                  Duration : {habitData ? habitData.duration : null} Days
                 </Text>
               </View>
             </View>
@@ -124,7 +150,7 @@ export const HabitCard = ({ item }) => {
                   size={19}
                 />
                 <Text style={{ paddingHorizontal: 10 }}>
-                  Reward : {item.reward} points
+                  Reward : {habitData ? habitData.reward : null} points
                 </Text>
               </View>
             </View>
@@ -136,7 +162,7 @@ export const HabitCard = ({ item }) => {
               containerStyle={{ marginTop: 20 }}
             />
             <HabitOverlay
-              data={item.steps}
+              data={habitData ? habitData.steps : []}
               visible={visible}
               onBackdropPress={() => setVisible(false)}
             />
