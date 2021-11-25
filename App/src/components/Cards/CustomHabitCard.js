@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Text,
   View,
@@ -34,7 +34,7 @@ export const CustomHabitCard = ({ item }) => {
         imageSrc={{ uri: item.image }}
         title={item.title}
         featured
-        caption={item.caption}
+        caption={item.description}
         width={screenWidth * 0.95}
         height={screenHeight * 0.27}
         imageContainerStyle={{
@@ -86,7 +86,8 @@ export const CustomHabitCard = ({ item }) => {
       <View
         style={{
           flexDirection: "row",
-          marginTop: 10,
+          marginTop: 5,
+          justifyContent: "flex-end",
         }}
       >
         <Button
@@ -96,7 +97,7 @@ export const CustomHabitCard = ({ item }) => {
           onPress={() => navigate("EditCustomHabit", { item })}
           containerStyle={styles.buttonContainer}
           buttonStyle={{
-            width: screenWidth * 0.5,
+            width: screenWidth * 0.455,
             borderRadius: 30,
             backgroundColor: colors.mustard,
           }}
@@ -107,7 +108,7 @@ export const CustomHabitCard = ({ item }) => {
           title="Delete"
           containerStyle={styles.buttonContainer}
           buttonStyle={{
-            width: screenWidth * 0.25,
+            width: screenWidth * 0.455,
             borderRadius: 30,
             backgroundColor: colors.accent,
           }}
@@ -140,9 +141,10 @@ export const CustomHabitCard = ({ item }) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    marginTop: 10,
-    alignSelf: "flex-end",
+    marginTop: 3,
+    // justifyContent: "flex-end",
     borderRadius: 30,
+    marginRight: 7,
   },
   durationTile: {
     height: screenHeight * 0.06,

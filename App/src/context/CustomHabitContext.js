@@ -117,7 +117,7 @@ const editCustom = (dispatch) => {
       dispatch({ type: "loader", payload: true });
       try {
         await Firebase.database()
-          .ref("CustomHabits/" + id)
+          .ref("UserHabits/" + id)
           .update({
             title: customTitle,
             description: customDescription,
@@ -151,7 +151,7 @@ const deleteCustom = (dispatch) => {
   return (customId) => {
     dispatch({ type: "loader", payload: true });
     Firebase.database()
-      .ref("CustomHabits/" + customId)
+      .ref("UserHabits/" + customId)
       .once("value", (documentSnapshot) => {
         if (documentSnapshot.exists) {
           const { image } = documentSnapshot.val();
@@ -163,7 +163,7 @@ const deleteCustom = (dispatch) => {
             .then(() => {
               console.log(`${image} has been deleted successfully.`);
               Firebase.database()
-                .ref("CustomHabits/" + customId)
+                .ref("UserHabits/" + customId)
                 .remove()
                 .then(() => {
                   dispatch({ type: "loader", payload: false });

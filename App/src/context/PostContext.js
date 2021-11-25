@@ -95,12 +95,92 @@ const addPost = (dispatch) => {
   };
 };
 
+const editPost = (dispatch) => {
+  return async (id, postTitle, postDescription, postDuration, postImage) => {
+    dispatch({ type: "delete", payload: false });
+    if (postTitle && postDescription && postDuration) {
+      dispatch({ type: "loader", payload: true });
+      try {
+        await Firebase.database()
+          .ref("UserHabits/" + id)
+          .update({
+            title: postTitle,
+            description: postDescription,
+            duration: postDuration,
+            image: postImage,
+          });
+        dispatch({ type: "loader", payload: false });
+        Alert.alert(
+          "UPDATED!",
+          "Congratulations, Your data has updated...",
+          [
+            {
+              text: "OK",
+              onPress: () => navigate("post", { screen: "CreateHabit" }),
+            },
+          ],
+          { cancelable: false }
+        );
+      } catch (error) {
+        //loader
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR!", error.message);
+      }
+    } else {
+      Alert.alert("ERROR!", " Please Enter All the fields...");
+    }
+  };
+};
+
 const deletePost = (dispatch) => {
-  return () => {};
+  return (postId) => {
+    dispatch({ type: "loader", payload: true });
+    Firebase.database()
+      .ref("UserHabits/" + postId)
+      .once("value", (documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          const { image } = documentSnapshot.val();
+          const storageRef = Firebase.storage().refFromURL(image);
+          const imageRef = Firebase.storage().ref(storageRef.fullPath);
+
+          imageRef
+            .delete()
+            .then(() => {
+              console.log(`${image} has been deleted successfully.`);
+              Firebase.database()
+                .ref("UserHabits/" + postId)
+                .remove()
+                .then(() => {
+                  dispatch({ type: "loader", payload: false });
+                  Alert.alert(
+                    "post Habit Deleted!",
+                    "Your post Habit has been deleted successfully!",
+                    [
+                      {
+                        text: "OK",
+                        onPress: () =>
+                          dispatch({ type: "delete", payload: true }),
+                      },
+                    ],
+                    { cancelable: false }
+                  );
+                })
+                .catch((e) => {
+                  dispatch({ type: "loader", payload: false });
+                  Alert.alert("ERROR!", e.message);
+                });
+            })
+            .catch((e) => {
+              dispatch({ type: "loader", payload: false });
+              Alert.alert("ERROR!", e.message);
+            });
+        }
+      });
+  };
 };
 
 export const { Context, Provider } = createDataContext(
   PostReducer,
-  { addPost, deletePost, getPost },
-  { posts: [], loading: false }
+  { addPost, deletePost, getPost, editPost },
+  { posts: [], loading: false, deleted: false }
 );

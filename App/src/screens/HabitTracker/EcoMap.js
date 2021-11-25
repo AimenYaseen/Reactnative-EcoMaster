@@ -36,7 +36,11 @@ const EcoMap = ({ navigation }) => {
       <ImageBackground
         style={styles.background}
         source={require("../../Admin/assets/habit_back2.jpg")}
-      ></ImageBackground>
+      >
+        <View style={styles.outer}>
+          <View style={styles.inner} />
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -63,6 +67,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     marginBottom: 80,
+  },
+  outer: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: colors.secondary2,
+    padding: 3,
+  },
+  inner: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: colors.secondary2,
   },
 });
 

@@ -169,12 +169,23 @@ export const CommunityCard = ({ item }) => {
           // onPress={onShare}
         >
           <Icon
-            name="share-2"
-            type="feather"
+            name="edit"
+            type="material-icons"
+            size={18}
+            style={{ marginTop: 5 }}
+          />
+          <Text style={styles.interactionText}>Edit Post</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.interaction}
+          // onPress={onShare}
+        >
+          <Icon
+            name="delete"
+            type="material-icons"
             size={20}
             style={{ marginTop: 3 }}
           />
-          <Text style={styles.interactionText}> Share</Text>
         </TouchableOpacity>
       </View>
     </Card>
