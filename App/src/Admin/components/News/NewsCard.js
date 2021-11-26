@@ -41,7 +41,7 @@ export const NewsCard = ({ item, title }) => {
         containerStyle={{
           alignSelf: "center",
           marginTop: 15,
-          marginLeft: 25,
+          marginLeft: 20,
           ...styles.shadow,
         }}
         // titleStyle={{
@@ -59,7 +59,7 @@ export const NewsCard = ({ item, title }) => {
       <View
         style={[
           styles.shadow,
-          { flexDirection: "row", justifyContent: "center", marginLeft: 25 },
+          { flexDirection: "row", justifyContent: "center", marginLeft: 20 },
         ]}
       >
         <Button

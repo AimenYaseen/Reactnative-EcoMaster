@@ -63,10 +63,10 @@ const AdminHabitTracker = ({ navigation }) => {
         keyExtractor={(item) => {
           return item.id.toString();
         }}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <>
-              <HabitCard item={item} />
+              <HabitCard item={item} index={index} />
               {/* <LockCard /> */}
             </>
           );
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: "center",
     alignItems: "center",
-    height: screenHeight * 0.83,
+    height: screenHeight,
     width: ScreenWidth,
   },
   text: {

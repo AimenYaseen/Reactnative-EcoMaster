@@ -125,9 +125,10 @@ const signup = (dispatch) => {
                         dispatch({ type: "loader", payload: false });
                         // console.log(snapshot.val())
                         snapshot.forEach((element) => {
-                          console.log(element.val());
+                          // console.log(element.val());
                           const { habitId } = element.val();
                           console.log(habitId);
+                          const lock = habitId == 1 ? false : true;
                           //pushValues of Object
                           Firebase.database()
                             .ref(`HabitTracker/${user.uid}/` + habitId)
@@ -136,6 +137,7 @@ const signup = (dispatch) => {
                               time: "",
                               completed: false,
                               select: false,
+                              lock: lock,
                             });
                         });
                       }

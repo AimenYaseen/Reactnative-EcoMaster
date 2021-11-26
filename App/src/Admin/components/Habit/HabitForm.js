@@ -29,8 +29,9 @@ const HabitForm = ({
   habitReward,
   imageVisible,
   onPress,
-  loading,
+  habitId,
 }) => {
+  const [id, setId] = useState(habitId ? habitId : "");
   const [title, setTitle] = useState(habitTitle);
   const [description, setDescription] = useState(habitDescription);
   const [duration, setDuration] = useState(habitDuration);
@@ -55,7 +56,7 @@ const HabitForm = ({
   const [visible, setVisible] = useState(false);
   const [image, setImage] = useState(null);
 
-  let time = new Date().getTime();
+  let time = new Date();
   let steps = [];
 
   const disabled = image || habitImage ? false : true;
@@ -125,10 +126,15 @@ const HabitForm = ({
     step3 ? steps.push(step3) : null;
     step4 ? steps.push(step4) : null;
     step5 ? steps.push(step5) : null;
-    if (!steps.length) {
-      steps = [];
-    }
-    onPress(steps, title, description, duration, reward, imageUrl, time);
+    onPress(
+      steps,
+      title,
+      description,
+      duration,
+      reward,
+      imageUrl,
+      parseInt(id)
+    );
   };
 
   const list = [
@@ -214,6 +220,14 @@ const HabitForm = ({
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="always"
     >
+      <BlockInput
+        disabled={text === "Edit" ? true : false}
+        label="Habit Id"
+        value={id}
+        placeholder="Start from 1"
+        multiline={false}
+        onChangeText={(text) => setId(text)}
+      />
       <BlockInput
         label="Title"
         value={title}
@@ -363,6 +377,7 @@ HabitForm.defaultProps = () => {
     habitImage: "",
     habitDuration: "",
     habitReward: "",
+    habitId: "",
   };
 };
 

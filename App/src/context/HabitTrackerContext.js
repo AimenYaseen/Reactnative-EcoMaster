@@ -28,12 +28,13 @@ const getHabit = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
           snapshot.forEach((element) => {
-            const { habitId, completed, select, time } = element.val();
+            const { habitId, completed, select, time, lock } = element.val();
             //pushValues of Object
             newsArr.push({
               id: habitId,
               completed,
               selected: select,
+              locked: lock,
               time,
             });
           });
@@ -51,8 +52,36 @@ const getHabit = (dispatch) => {
   };
 };
 
-const updateHabit = (dispatch) => {
-  return (habitId, completed, selected, time) => {
+const setLock = (dispatch) => {
+  return (habitId, locked) => {
+    try {
+      const userId = Firebase.auth().currentUser.uid;
+      Firebase.database()
+        .ref(`HabitTracker/${userId}/` + habitId)
+        .update({
+          lock: locked,
+        });
+      dispatch({ type: "loader", payload: false });
+      Alert.alert(
+        "ECO-MASTER!",
+        "Congratulations, Your journey have completed your Habit...",
+        [
+          {
+            text: "OK",
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+      //loader
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR!", error.message);
+    }
+  };
+};
+
+const startHabit = (dispatch) => {
+  return (habitId, selected, time) => {
     try {
       const userId = Firebase.auth().currentUser.uid;
       Firebase.database()
@@ -60,16 +89,14 @@ const updateHabit = (dispatch) => {
         .update({
           time: time,
           select: selected,
-          completed: completed,
         });
       dispatch({ type: "loader", payload: false });
       Alert.alert(
-        "UPDATED!",
-        "Congratulations, Your data has updated...",
+        "ECO-MASTER!",
+        "Congratulations, Your journey has started...",
         [
           {
             text: "OK",
-            //onPress: () => navigate("AdminHabit"),
           },
         ],
         { cancelable: false }
@@ -84,6 +111,6 @@ const updateHabit = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   HabitReducer,
-  { getHabit, updateHabit },
+  { getHabit, startHabit },
   { habits: [], loading: false, deleted: false }
 );

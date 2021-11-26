@@ -6,6 +6,7 @@ import { navigate } from "../Navigation/NavigationRef";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Firebase } from "../Firebase/config";
 import { Context as ActivityContext } from "../context/ActivityContext";
+import { Context as HabitContext } from "../context/HabitTrackerContext";
 
 import colors from "../constants/colors";
 import { HabitOverlay } from "./CustomOverlay";
@@ -65,7 +66,7 @@ export const TileCard = ({ item }) => {
           borderBottomRightRadius: 7,
           borderRadius: 0,
         }}
-        onPress={() => addActivity({ customId: item.id })}
+        onPress={() => addActivity({ Id: item.id })}
         containerStyle={styles.shadow}
       />
     </View>
@@ -73,6 +74,7 @@ export const TileCard = ({ item }) => {
 };
 
 export const HabitCard = ({ item }) => {
+  const { startHabit } = useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
   const [visible, setVisible] = useState(false);
 
@@ -99,116 +101,142 @@ export const HabitCard = ({ item }) => {
 
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Card containerStyle={[styles.habitContainer, styles.shadow]}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Card.Title
-              style={{
-                fontSize: 20,
-                //fontFamily: "arial"
-              }}
-            >
-              {habitData ? habitData.title : null}
-            </Card.Title>
-            <Card.Divider />
+      <View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Card containerStyle={[styles.habitContainer, styles.shadow]}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Card.Title
+                style={{
+                  fontSize: 20,
+                  //fontFamily: "arial"
+                }}
+              >
+                {habitData ? habitData.title : null}
+              </Card.Title>
+              <Card.Divider />
 
-            <Card.Image
-              source={{ uri: habitData ? habitData.image : null }}
-              style={{ borderRadius: 5, height: screenHeight * 0.4 }}
-            >
-              <View style={{ flex: 1, justifyContent: "center" }}>
-                <Text style={styles.dTitle}>Description</Text>
-                <Divider
-                  inset
-                  insetType="right"
-                  style={{ marginLeft: 15, width: screenWidth * 0.73 }}
-                />
-                <Text style={styles.description}>
-                  {habitData ? habitData.description : null}
-                </Text>
+              <Card.Image
+                source={{ uri: habitData ? habitData.image : null }}
+                style={{ borderRadius: 5, height: screenHeight * 0.4 }}
+              >
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                  <Text style={styles.dTitle}>Description</Text>
+                  <Divider
+                    inset
+                    insetType="right"
+                    style={{ marginLeft: 15, width: screenWidth * 0.73 }}
+                  />
+                  <Text style={styles.description}>
+                    {habitData ? habitData.description : null}
+                  </Text>
+                </View>
+              </Card.Image>
+              <View style={[styles.duration, styles.shadow]}>
+                <View
+                  style={{ flexDirection: "row", justifyContent: "center" }}
+                >
+                  <Icon
+                    type="entypo"
+                    name="time-slot"
+                    color={colors.secondary}
+                    size={20}
+                  />
+                  <Text style={{ paddingHorizontal: 10 }}>
+                    Duration : {habitData ? habitData.duration : null} Days
+                  </Text>
+                </View>
               </View>
-            </Card.Image>
-            <View style={[styles.duration, styles.shadow]}>
-              <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Icon
-                  type="entypo"
-                  name="time-slot"
-                  color={colors.secondary}
-                  size={20}
-                />
-                <Text style={{ paddingHorizontal: 10 }}>
-                  Duration : {habitData ? habitData.duration : null} Days
-                </Text>
+              <View style={[styles.duration, styles.shadow]}>
+                <View
+                  style={{ flexDirection: "row", justifyContent: "center" }}
+                >
+                  <Icon
+                    type="font-awesome-5"
+                    name="coins"
+                    color={colors.secondary}
+                    size={19}
+                  />
+                  <Text style={{ paddingHorizontal: 10 }}>
+                    Reward : {habitData ? habitData.reward : null} points
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={[styles.duration, styles.shadow]}>
-              <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Icon
-                  type="font-awesome-5"
-                  name="coins"
-                  color={colors.secondary}
-                  size={19}
-                />
-                <Text style={{ paddingHorizontal: 10 }}>
-                  Reward : {habitData ? habitData.reward : null} points
-                </Text>
-              </View>
-            </View>
-            <Button
-              type="clear"
-              title="Learn More"
-              titleStyle={{ color: colors.secondary, fontWeight: "bold" }}
-              onPress={() => setVisible(true)}
-              containerStyle={{ marginTop: 20 }}
-            />
-            <HabitOverlay
-              data={habitData ? habitData.steps : []}
-              visible={visible}
-              onBackdropPress={() => setVisible(false)}
-            />
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginVertical: 15,
-              }}
-            >
               <Button
-                type="solid"
-                title="Select"
-                raised
-                buttonStyle={{
-                  width: screenWidth * 0.25,
-                  borderTopRightRadius: 25,
-                  borderBottomRightRadius: 25,
-                  backgroundColor: colors.mustard,
-                }}
-                containerStyle={{
-                  borderTopRightRadius: 25,
-                  borderBottomRightRadius: 25,
-                }}
+                type="clear"
+                title="Learn More"
+                titleStyle={{ color: colors.secondary, fontWeight: "bold" }}
+                onPress={() => setVisible(true)}
+                containerStyle={{ marginTop: 20 }}
               />
-              <Button
-                type="solid"
-                title="Share"
-                raised
-                buttonStyle={{
-                  width: screenWidth * 0.25,
-                  borderTopLeftRadius: 25,
-                  borderBottomLeftRadius: 25,
-                  backgroundColor: colors.mauve,
-                }}
-                containerStyle={{
-                  borderTopLeftRadius: 25,
-                  borderBottomLeftRadius: 25,
-                }}
+              <HabitOverlay
+                data={habitData ? habitData.steps : []}
+                visible={visible}
+                onBackdropPress={() => setVisible(false)}
               />
-            </View>
-          </ScrollView>
-        </Card>
-        <View style={{ height: screenHeight * 0.2 }} />
-      </ScrollView>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginVertical: 15,
+                }}
+              >
+                <Button
+                  type="solid"
+                  title="Select"
+                  onPress={() => console.log("pressed")}
+                  raised
+                  buttonStyle={{
+                    width: screenWidth * 0.25,
+                    borderTopRightRadius: 25,
+                    borderBottomRightRadius: 25,
+                    backgroundColor: colors.mustard,
+                  }}
+                  containerStyle={{
+                    borderTopRightRadius: 25,
+                    borderBottomRightRadius: 25,
+                  }}
+                />
+                <Button
+                  type="solid"
+                  title="Share"
+                  raised
+                  buttonStyle={{
+                    width: screenWidth * 0.25,
+                    borderTopLeftRadius: 25,
+                    borderBottomLeftRadius: 25,
+                    backgroundColor: colors.mauve,
+                  }}
+                  containerStyle={{
+                    borderTopLeftRadius: 25,
+                    borderBottomLeftRadius: 25,
+                  }}
+                />
+              </View>
+            </ScrollView>
+          </Card>
+          <View style={{ height: screenHeight * 0.2 }} />
+        </ScrollView>
+      </View>
+      {item.locked ? (
+        <View style={styles.lock}>
+          <View
+            style={{
+              marginTop: screenHeight * 0.4,
+            }}
+          >
+            <Icon
+              type="ionicon"
+              name="lock-closed"
+              color={colors.black}
+              size={60}
+            />
+            <Text style={{ alignSelf: "center" }}>
+              Complete Previous Habits to unlock this...
+            </Text>
+          </View>
+        </View>
+      ) : null}
     </>
   );
 };
@@ -269,5 +297,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.75,
     shadowRadius: 3.5,
     elevation: 5,
+  },
+  lock: {
+    borderRadius: 10,
+    height: screenHeight * 0.86,
+    width: screenWidth * 0.92,
+    position: "absolute",
+    backgroundColor: colors.whiteSmoke,
+    opacity: 0.8,
+    marginLeft: 15,
+    marginTop: 15,
   },
 });

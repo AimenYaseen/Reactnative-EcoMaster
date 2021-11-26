@@ -11,48 +11,79 @@ const ActivityReducer = (state, action) => {
       return { ...state, activity: action.payload };
     case "loader":
       return { ...state, loading: action.payload };
+    case "delete":
+      return { ...state, deleted: action.payload };
     default:
       return state;
   }
 };
 
 const addActivity = (dispatch) => {
-  return async ({ customId }) => {
+  return async ({ Id }) => {
+    dispatch({ type: "delete", payload: false });
     const time = Date.now();
     dispatch({ type: "loader", payload: true });
     const uid = await AsyncStorage.getItem("user");
-    await Firebase.database()
-      .ref("Activity/" + time)
-      .set({
-        activityId: time,
-        userId: uid,
-        customId: customId,
-      })
-      .then(() => {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert(
-          " Habit Uploaded!",
-          "Your Habit has successfully Uploaded",
-          [
-            {
-              text: "OK",
-              onPress: () => navigate("Custom", { screen: "Activity" }),
-            },
-          ],
-          { cancelable: false }
-        );
-      })
-      .catch((error) => {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR!", error.message);
+
+    Firebase.database()
+      .ref("Activity/")
+      .orderByKey()
+      .once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          let present = false;
+          snapshot.forEach((element) => {
+            // console.log(element.val());
+            const { customId } = element.val();
+            // Checking
+            if (customId == Id) {
+              present = true;
+            }
+          });
+          if (present) {
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(
+              "ERROR",
+              "You Have already select this Habit, Please select another one..."
+            );
+          } else {
+            Firebase.database()
+              .ref("Activity/" + time)
+              .set({
+                activityId: time,
+                userId: uid,
+                customId: Id,
+              })
+              .then(() => {
+                //loader
+                dispatch({ type: "loader", payload: false });
+                Alert.alert(
+                  " Habit Uploaded!",
+                  "Your Habit has successfully Uploaded",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => navigate("Custom", { screen: "Activity" }),
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              })
+              .catch((error) => {
+                //loader
+                dispatch({ type: "loader", payload: false });
+                Alert.alert("ERROR!", error.message);
+              });
+          }
+        } else {
+          console.log("No data available");
+        }
       });
   };
 };
 
 const getActivity = (dispatch) => {
   return async () => {
+    dispatch({ type: "delete", payload: false });
     dispatch({ type: "loader", payload: true });
     Firebase.database()
       .ref("Activity/")
@@ -84,8 +115,35 @@ const getActivity = (dispatch) => {
   };
 };
 
+const deleteActivity = (dispatch) => {
+  return (customId) => {
+    dispatch({ type: "loader", payload: true });
+    Firebase.database()
+      .ref("Activity/" + customId)
+      .remove()
+      .then(() => {
+        dispatch({ type: "loader", payload: false });
+        Alert.alert(
+          " Habit Deleted!",
+          "Your Habit has been deleted successfully!",
+          [
+            {
+              text: "OK",
+              onPress: () => dispatch({ type: "delete", payload: true }),
+            },
+          ],
+          { cancelable: false }
+        );
+      })
+      .catch((e) => {
+        dispatch({ type: "loader", payload: false });
+        Alert.alert("ERROR!", e.message);
+      });
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   ActivityReducer,
-  { addActivity, getActivity },
-  { activity: [], loading: false }
+  { addActivity, getActivity, deleteActivity },
+  { activity: [], loading: false, deleted: false }
 );

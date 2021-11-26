@@ -26,22 +26,16 @@ const addHabit = (dispatch) => {
     habitDuration,
     habitReward,
     habitImage,
-    time
+    id
   ) => {
     dispatch({ type: "delete", payload: false });
-    if (
-      habitSteps &&
-      habitTitle &&
-      habitDescription &&
-      habitDuration &&
-      habitReward
-    ) {
+    if (habitTitle && habitDescription && habitDuration && habitReward) {
       if (habitDuration >= 7) {
         dispatch({ type: "loader", payload: true });
         await Firebase.database()
-          .ref("Habits/" + time)
+          .ref("Habits/" + id)
           .set({
-            habitId: time,
+            habitId: id,
             title: habitTitle,
             steps: habitSteps,
             description: habitDescription,
@@ -50,6 +44,28 @@ const addHabit = (dispatch) => {
             image: habitImage,
           })
           .then(() => {
+            Firebase.database()
+              .ref("HabitTracker/")
+              .orderByKey()
+              .once("value", (snapshot) => {
+                if (snapshot.exists()) {
+                  // dispatch({ type: "loader", payload: false });
+                  snapshot.forEach((element) => {
+                    //console.log("Key: ", element.key);
+                    const lock = id == 1 ? false : true;
+                    const key = element.key;
+                    Firebase.database()
+                      .ref(`HabitTracker/${key}/` + id)
+                      .set({
+                        habitId: id,
+                        time: "",
+                        completed: false,
+                        select: false,
+                        lock: lock,
+                      });
+                  });
+                }
+              });
             //loader
             dispatch({ type: "loader", payload: false });
             Alert.alert(
@@ -201,6 +217,24 @@ const deleteHabit = (dispatch) => {
                 .ref("Habits/" + habitId)
                 .remove()
                 .then(() => {
+                  Firebase.database()
+                    .ref("HabitTracker/")
+                    .orderByKey()
+                    .once("value", (snapshot) => {
+                      if (snapshot.exists()) {
+                        // dispatch({ type: "loader", payload: false });
+                        snapshot.forEach((element) => {
+                          console.log("Key: ", element.key);
+                          const key = element.key;
+                          Firebase.database()
+                            .ref(`HabitTracker/${key}/` + habitId)
+                            .remove()
+                            .then(() => {
+                              console.log("Removed");
+                            });
+                        });
+                      }
+                    });
                   dispatch({ type: "loader", payload: false });
                   Alert.alert(
                     "Habit Deleted!",

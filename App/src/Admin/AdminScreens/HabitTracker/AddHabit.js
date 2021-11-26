@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -12,12 +12,30 @@ import colors from "../../../constants/colors";
 import { CustomHead } from "../../../components/CustomHead";
 import HabitForm from "../../components/Habit/HabitForm";
 import { Context as HabitContext } from "../../AdminContext/HabitContext";
+import { Firebase } from "../../../Firebase/config";
 
 const AddHabit = ({ navigation }) => {
   const {
     state: { loading },
     addHabit,
   } = useContext(HabitContext);
+  const [habitId, setHabitId] = useState("");
+
+  const getId = async () => {
+    await Firebase.database()
+      .ref("Habits/")
+      .orderByKey()
+      .once("value", async (snapshot) => {
+        if (snapshot.exists()) {
+          const Id = (await Object.keys(snapshot.val()).length) + 1;
+          setHabitId(Id.toString());
+        }
+      });
+  };
+
+  React.useEffect(() => {
+    getId();
+  }, [habitId]);
 
   return (
     <View style={styles.container}>
@@ -41,10 +59,12 @@ const AddHabit = ({ navigation }) => {
         source={require("../../assets/habit_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
+          {console.log(habitId)}
           <HabitForm
             loading={loading}
             text="Add"
             imageVisible={false}
+            habitId={habitId}
             onPress={async (
               habitSteps,
               habitTitle,
@@ -52,7 +72,7 @@ const AddHabit = ({ navigation }) => {
               habitDuration,
               habitReward,
               habitImage,
-              time
+              habitId
             ) => {
               await addHabit(
                 habitSteps,
@@ -61,7 +81,7 @@ const AddHabit = ({ navigation }) => {
                 habitDuration,
                 habitReward,
                 habitImage,
-                time
+                habitId
               );
             }}
           />

@@ -1,18 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
 import { Tile, Icon, Button, Divider } from "react-native-elements";
 import moment from "moment";
 
 import colors from "../../constants/colors";
 
 import { Firebase } from "../../Firebase/config";
+import { Context as ActivityContext } from "../../context/ActivityContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const ActivityCard = ({ item }) => {
+  const { state, getActivity, deleteActivity } = useContext(ActivityContext);
   const [habitData, setHabitData] = useState(null);
   const [status, setStatus] = useState("Pending");
+
+  const remove = status == "Completed" ? true : false;
 
   const getHabit = async () => {
     try {
@@ -30,6 +34,12 @@ export const ActivityCard = ({ item }) => {
       Alert.alert("ERROR!", error.message);
     }
   };
+
+  useEffect(() => {
+    if (state.deleted) {
+      getActivity();
+    }
+  }, [state.deleted]);
 
   useEffect(() => {
     getHabit();
@@ -105,27 +115,69 @@ export const ActivityCard = ({ item }) => {
           </Text>
         </View>
       </View>
-      <Button
-        raised
-        type="solid"
-        title="Share"
-        // onPress={() => setVisible(true)}
-        containerStyle={styles.buttonContainer}
-        buttonStyle={{
-          width: screenWidth * 0.3,
-          borderRadius: 30,
-          backgroundColor: colors.mauve,
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 5,
+          justifyContent: "flex-end",
         }}
-      />
+      >
+        {remove ? (
+          <Button
+            raised
+            type="solid"
+            title="Remove"
+            containerStyle={styles.buttonContainer}
+            buttonStyle={{
+              width: screenWidth * 0.3,
+              borderRadius: 30,
+              backgroundColor: colors.accent,
+            }}
+            onPress={() => {
+              Alert.alert(
+                "Delete!",
+                "Are You Sure, You want to Delete?",
+                [
+                  {
+                    text: "No",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                      deleteActivity(item.id);
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+          />
+        ) : null}
+        <Button
+          raised
+          type="solid"
+          title="Share"
+          // onPress={() => navigate("EditCustomHabit", { item })}
+          containerStyle={styles.buttonContainer}
+          buttonStyle={{
+            width: screenWidth * 0.3,
+            borderRadius: 30,
+            backgroundColor: colors.mauve,
+          }}
+        />
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 5,
     alignSelf: "flex-end",
     borderRadius: 30,
+    marginBottom: 10,
+    marginLeft: 5,
   },
   durationTile: {
     height: screenHeight * 0.06,

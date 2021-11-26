@@ -18,11 +18,13 @@ import { Context as HabitContext } from "../../AdminContext/HabitContext";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-export const HabitCard = ({ item }) => {
+export const HabitCard = ({ item, index }) => {
   const [visible, setVisible] = useState(false);
   const { state, deleteHabit, getHabit } = useContext(HabitContext);
 
   React.useEffect(() => {
+    //console.log("Current", index);
+    //console.log("Last", index + 1);
     if (state.deleted) {
       getHabit();
     }

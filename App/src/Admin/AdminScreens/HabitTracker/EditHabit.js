@@ -53,6 +53,7 @@ const EditHabit = ({ navigation, route }) => {
             habitDuration={item.duration}
             habitImage={item.image}
             habitReward={item.reward}
+            habitId={item.id.toString()}
             imageVisible={true}
             onPress={async (
               habitSteps,
