@@ -27,7 +27,7 @@ import colors from "../../constants/colors";
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-const AddPost = ({ navigation }) => {
+const PostForm = ({ navigation }) => {
   const {
     state: { loading },
     addPost,
@@ -183,22 +183,6 @@ const AddPost = ({ navigation }) => {
 
   return (
     <>
-      {/* {console.log(userData)} */}
-      <CustomHead
-        text="Create Post"
-        color={colors.whiteSmoke}
-        centerColor={colors.secondary}
-        leftIcon={() => (
-          <Icon
-            name="chevron-left"
-            type="entypo"
-            size={30}
-            onPress={() => navigation.navigate("Post")}
-            color={colors.secondary}
-          />
-        )}
-        rightIcon={null}
-      />
       <KeyboardAwareScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -355,4 +339,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddPost;
+export default PostForm;

@@ -28,38 +28,43 @@ const addCustom = (dispatch) => {
   ) => {
     dispatch({ type: "delete", payload: false });
     if (customTitle && customDescription && customDuration) {
-      dispatch({ type: "loader", payload: true });
-      const uid = await AsyncStorage.getItem("user");
-      await Firebase.database()
-        .ref("UserHabits/" + time)
-        .set({
-          customId: time,
-          userId: uid,
-          title: customTitle,
-          description: customDescription,
-          duration: customDuration,
-          image: customImage,
-        })
-        .then(() => {
-          //loader
-          dispatch({ type: "loader", payload: false });
-          Alert.alert(
-            " Habit Uploaded!",
-            "Your Habit has successfully Uploaded",
-            [
-              {
-                text: "OK",
-                onPress: () => navigate("Custom", { screen: "CreateHabit" }),
-              },
-            ],
-            { cancelable: false }
-          );
-        })
-        .catch((error) => {
-          //loader
-          dispatch({ type: "loader", payload: false });
-          Alert.alert("ERROR!", error.message);
-        });
+      if (customDuration > 1) {
+        dispatch({ type: "loader", payload: true });
+        const uid = await AsyncStorage.getItem("user");
+        await Firebase.database()
+          .ref("UserHabits/" + time)
+          .set({
+            customId: time,
+            userId: uid,
+            title: customTitle,
+            description: customDescription,
+            duration: customDuration,
+            time: Date.now(),
+            image: customImage,
+          })
+          .then(() => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert(
+              " Habit Uploaded!",
+              "Your Habit has successfully Uploaded",
+              [
+                {
+                  text: "OK",
+                  onPress: () => navigate("Custom", { screen: "CreateHabit" }),
+                },
+              ],
+              { cancelable: false }
+            );
+          })
+          .catch((error) => {
+            //loader
+            dispatch({ type: "loader", payload: false });
+            Alert.alert("ERROR!", error.message);
+          });
+      } else {
+        Alert.alert("ERROR!", " Duration must be greater than 1");
+      }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");
     }
@@ -78,8 +83,15 @@ const getCustom = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
           snapshot.forEach((element) => {
-            const { customId, userId, title, description, duration, image } =
-              element.val();
+            const {
+              customId,
+              userId,
+              title,
+              description,
+              duration,
+              image,
+              time,
+            } = element.val();
             //pushValues of Object
             newsArr.push({
               id: customId,
@@ -88,6 +100,7 @@ const getCustom = (dispatch) => {
               description,
               duration,
               image,
+              time,
             });
           });
           dispatch({ type: "customHabit", payload: newsArr });
@@ -114,32 +127,36 @@ const editCustom = (dispatch) => {
   ) => {
     dispatch({ type: "delete", payload: false });
     if (customTitle && customDescription && customDuration) {
-      dispatch({ type: "loader", payload: true });
-      try {
-        await Firebase.database()
-          .ref("UserHabits/" + id)
-          .update({
-            title: customTitle,
-            description: customDescription,
-            duration: customDuration,
-            image: customImage,
-          });
-        dispatch({ type: "loader", payload: false });
-        Alert.alert(
-          "UPDATED!",
-          "Congratulations, Your data has updated...",
-          [
-            {
-              text: "OK",
-              onPress: () => navigate("Custom", { screen: "CreateHabit" }),
-            },
-          ],
-          { cancelable: false }
-        );
-      } catch (error) {
-        //loader
-        dispatch({ type: "loader", payload: false });
-        Alert.alert("ERROR!", error.message);
+      if (customDuration > 1) {
+        dispatch({ type: "loader", payload: true });
+        try {
+          await Firebase.database()
+            .ref("UserHabits/" + id)
+            .update({
+              title: customTitle,
+              description: customDescription,
+              duration: customDuration,
+              image: customImage,
+            });
+          dispatch({ type: "loader", payload: false });
+          Alert.alert(
+            "UPDATED!",
+            "Congratulations, Your data has updated...",
+            [
+              {
+                text: "OK",
+                onPress: () => navigate("Custom", { screen: "CreateHabit" }),
+              },
+            ],
+            { cancelable: false }
+          );
+        } catch (error) {
+          //loader
+          dispatch({ type: "loader", payload: false });
+          Alert.alert("ERROR!", error.message);
+        }
+      } else {
+        Alert.alert("ERROR!", " Duration must be greater than 1");
       }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");

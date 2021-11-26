@@ -13,18 +13,32 @@ import colors from "../../constants/colors";
 import { navigate } from "../../Navigation/NavigationRef";
 
 import { Context as CustomContext } from "../../context/CustomHabitContext";
+import moment from "moment";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const CustomHabitCard = ({ item }) => {
   const { state, deleteCustom, getCustom } = useContext(CustomContext);
-  // const [deleted, setDeleted] = useState(false);
+  const [status, setStatus] = useState("Pending");
+
+  const disable = status == "Completed" ? true : false;
+
+  React.useEffect(() => {
+    const current = moment().format();
+    // console.log("current", current);
+    const habitTime = moment(item.time).add(item.duration, "days").format();
+    // console.log("Completed", habitTime);
+    if (current >= habitTime) {
+      setStatus("Completed");
+    } else {
+      setStatus("Pending");
+    }
+  }, []);
 
   React.useEffect(() => {
     if (state.deleted) {
       getCustom();
-      // setDeleted(false);
     }
   }, [state.deleted]);
 
@@ -42,7 +56,7 @@ export const CustomHabitCard = ({ item }) => {
           borderTopRightRadius: 7,
         }}
         containerStyle={{
-          marginTop: 10,
+          marginTop: 15,
           alignSelf: "center",
         }}
       />
@@ -79,7 +93,7 @@ export const CustomHabitCard = ({ item }) => {
             size={20}
           />
           <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
-            Status : Pending
+            Status : {status}
           </Text>
         </View>
       </View>
@@ -91,6 +105,7 @@ export const CustomHabitCard = ({ item }) => {
         }}
       >
         <Button
+          disabled={disable}
           raised
           type="solid"
           title="Edit"
@@ -142,6 +157,7 @@ export const CustomHabitCard = ({ item }) => {
 const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 3,
+    marginBottom: 5,
     // justifyContent: "flex-end",
     borderRadius: 30,
     marginRight: 7,

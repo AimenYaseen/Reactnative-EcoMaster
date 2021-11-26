@@ -20,10 +20,9 @@ import colors from "../../constants/colors";
 import { Context as PostContext } from "../../context/PostContext";
 
 export const CommunityCard = ({ item }) => {
-  const { getPost } = useContext(PostContext);
+  const { state, deletePost, getPost } = useContext(PostContext);
   const [userData, setUserData] = useState(null);
-  // const fileUri = FileSystem.cacheDirectory + "tmp.jpg";
-  // const imageURL = item ? (item.postImage ? item.postImage : null) : null;
+
   const user = Firebase.auth().currentUser.uid;
   let liked = false;
 
@@ -63,37 +62,11 @@ export const CommunityCard = ({ item }) => {
     getUser();
   }, [item]);
 
-  // const onShare = async () => {
-  //   await Sharing.isAvailableAsync().then(async (available) => {
-  //     if (available) {
-  //       Alert.alert("Congratulations!", "Sharing is available");
-  //       const options = {
-  //         mimeType: "image/jpeg",
-  //         dialogTitle: item.post,
-  //         UTI: "image/jpeg",
-  //       };
-
-  //       await FileSystem.downloadAsync(item.postImage, fileUri)
-  //         .then(({ uri }) => {
-  //           Alert.alert("Image Downloaded \n", uri);
-  //         })
-  //         .catch((error) => {
-  //           Alert.alert("ERROR!", JSON.stringify(error.message));
-  //         });
-
-  //       // Sharing only allows one to share a file.
-  //       await Sharing.shareAsync(fileUri, options)
-  //         .then((data) => {
-  //           Alert.alert("Image Shared \n", data);
-  //         })
-  //         .catch((error) => {
-  //           Alert.alert("ERROR!", JSON.stringify(error.message));
-  //         });
-  //     } else {
-  //       Alert.alert("ERROR!", "Sharing is NOT available");
-  //     }
-  //   });
-  // };
+  useEffect(() => {
+    if (state.deleted) {
+      getPost();
+    }
+  }, [state.deleted]);
 
   const onLike = async () => {
     const uid = await AsyncStorage.getItem("user");
@@ -164,7 +137,7 @@ export const CommunityCard = ({ item }) => {
             {likeText}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.interaction}
           // onPress={onShare}
         >
@@ -175,18 +148,40 @@ export const CommunityCard = ({ item }) => {
             style={{ marginTop: 5 }}
           />
           <Text style={styles.interactionText}>Edit Post</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.interaction}
-          // onPress={onShare}
-        >
-          <Icon
-            name="delete"
-            type="material-icons"
-            size={20}
-            style={{ marginTop: 3 }}
-          />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        {user == item.userId ? (
+          <TouchableOpacity
+            style={styles.interaction}
+            onPress={() => {
+              Alert.alert(
+                "Delete!",
+                "Are You Sure, You want to Delete?",
+                [
+                  {
+                    text: "No",
+                    //onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                      deletePost(item.id);
+                    },
+                  },
+                ],
+                { cancelable: false }
+              );
+            }}
+          >
+            <Icon
+              name="delete"
+              type="material-icons"
+              size={20}
+              style={{ marginTop: 3 }}
+            />
+            <Text style={styles.interactionText}> Delete </Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
     </Card>
   );

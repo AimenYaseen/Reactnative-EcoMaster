@@ -25,17 +25,19 @@ const automaticSignin = (dispatch) => {
     const user = await AsyncStorage.getItem("user");
     const admin = await AsyncStorage.getItem("admin");
 
-    Firebase.auth().onAuthStateChanged((userPresent) => {
-      if (userPresent) {
-        if (userPresent.emailVerified) {
-          replace("AppFlow");
+    if (user) {
+      Firebase.auth().onAuthStateChanged((userPresent) => {
+        if (userPresent) {
+          if (userPresent.emailVerified) {
+            replace("AppFlow");
+          }
         }
-      } else if (admin) {
-        replace("Admin", { screen: "AdminFlow" });
-      } else {
-        replace("AuthFlow", { screen: "Welcome" });
-      }
-    });
+      });
+    } else if (admin) {
+      replace("Admin", { screen: "AdminFlow" });
+    } else {
+      replace("AuthFlow", { screen: "Welcome" });
+    }
   };
 };
 

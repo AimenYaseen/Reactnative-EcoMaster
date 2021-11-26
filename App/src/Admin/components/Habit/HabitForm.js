@@ -125,6 +125,9 @@ const HabitForm = ({
     step3 ? steps.push(step3) : null;
     step4 ? steps.push(step4) : null;
     step5 ? steps.push(step5) : null;
+    if (!steps.length) {
+      steps = [];
+    }
     onPress(steps, title, description, duration, reward, imageUrl, time);
   };
 

@@ -69,7 +69,7 @@ const PostsScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <>
-              <CommunityCard item={item} activeLike={true} />
+              <CommunityCard item={item} />
             </>
           )}
         />

@@ -36,7 +36,7 @@ const addHabit = (dispatch) => {
       habitDuration &&
       habitReward
     ) {
-      if (habitDuration > 1) {
+      if (habitDuration >= 7) {
         dispatch({ type: "loader", payload: true });
         await Firebase.database()
           .ref("Habits/" + time)
@@ -70,7 +70,7 @@ const addHabit = (dispatch) => {
             Alert.alert("ERROR!", error.message);
           });
       } else {
-        Alert.alert("ERROR!", " Duration must be Greater than 1");
+        Alert.alert("ERROR!", " Duration must be Greater than or Equal to 7");
       }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");
@@ -142,7 +142,7 @@ const editHabit = (dispatch) => {
       habitDuration &&
       habitReward
     ) {
-      if (habitDuration > 1) {
+      if (habitDuration >= 7) {
         dispatch({ type: "loader", payload: true });
         try {
           await Firebase.database()
@@ -173,7 +173,7 @@ const editHabit = (dispatch) => {
           Alert.alert("ERROR!", error.message);
         }
       } else {
-        Alert.alert("ERROR!", " Duration must be greater than 1");
+        Alert.alert("ERROR!", " Duration must be greater than or equal to 7");
       }
     } else {
       Alert.alert("ERROR!", " Please Enter All the fields...");

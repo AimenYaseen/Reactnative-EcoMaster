@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { Tile, Icon, Button, Divider } from "react-native-elements";
+import moment from "moment";
 
 import colors from "../../constants/colors";
 
@@ -11,6 +12,7 @@ const screenHeight = Dimensions.get("window").height;
 
 export const ActivityCard = ({ item }) => {
   const [habitData, setHabitData] = useState(null);
+  const [status, setStatus] = useState("Pending");
 
   const getHabit = async () => {
     try {
@@ -32,6 +34,17 @@ export const ActivityCard = ({ item }) => {
   useEffect(() => {
     getHabit();
   }, [item]);
+
+  useEffect(() => {
+    const duration = habitData ? habitData.duration : 1;
+    const current = moment().format();
+    const habitTime = moment(item.id).add(duration, "days").format();
+    if (current >= habitTime) {
+      setStatus("Completed");
+    } else {
+      setStatus("Pending");
+    }
+  }, []);
 
   return (
     <>
@@ -58,13 +71,13 @@ export const ActivityCard = ({ item }) => {
       <View
         style={[
           styles.durationTile,
-          { backgroundColor: colors.secondary, width: screenWidth * 0.95 },
+          { backgroundColor: colors.mustard, width: screenWidth * 0.95 },
         ]}
       >
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Icon type="entypo" name="time-slot" color={colors.white} size={20} />
           <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
-            Duration : Days {habitData ? habitData.duration : null}
+            Duration : {habitData ? habitData.duration : null} Days
           </Text>
         </View>
       </View>
@@ -72,7 +85,7 @@ export const ActivityCard = ({ item }) => {
         style={[
           styles.durationTile,
           {
-            backgroundColor: colors.mauve,
+            backgroundColor: colors.secondary,
             width: screenWidth * 0.955,
             borderBottomLeftRadius: 7,
             borderBottomRightRadius: 7,
@@ -88,7 +101,7 @@ export const ActivityCard = ({ item }) => {
             size={20}
           />
           <Text style={{ paddingHorizontal: 10, color: colors.whiteSmoke }}>
-            Status : Completed
+            Status : {status}
           </Text>
         </View>
       </View>

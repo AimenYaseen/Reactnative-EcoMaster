@@ -39,14 +39,6 @@ const CustomHabitForm = ({
   let time = new Date().getTime();
 
   const disabled = image || customImage ? false : true;
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener("blur", () => {
-  //     setPost("");
-  //     setImage(null);
-  //   });
-
-  //   return unsubscribe;
-  // }, [navigation]);
 
   const uploadImage = async () => {
     if (image == null) {
@@ -211,6 +203,7 @@ const CustomHabitForm = ({
         onChangeText={(text) => setDescription(text)}
       />
       <BlockInput
+        disabled={text === "Edit" ? true : false}
         label="Duration"
         value={duration}
         placeholder="Days"
