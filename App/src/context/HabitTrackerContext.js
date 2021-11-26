@@ -52,6 +52,24 @@ const getHabit = (dispatch) => {
   };
 };
 
+const updateHabit = (dispatch) => {
+  return (habitId, completed) => {
+    try {
+      const userId = Firebase.auth().currentUser.uid;
+      Firebase.database()
+        .ref(`HabitTracker/${userId}/` + habitId)
+        .update({
+          completed: completed,
+        });
+      dispatch({ type: "loader", payload: false });
+    } catch (error) {
+      //loader
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR!", error.message);
+    }
+  };
+};
+
 const setLock = (dispatch) => {
   return (habitId, locked) => {
     try {
@@ -62,16 +80,16 @@ const setLock = (dispatch) => {
           lock: locked,
         });
       dispatch({ type: "loader", payload: false });
-      Alert.alert(
-        "ECO-MASTER!",
-        "Congratulations, Your journey have completed your Habit...",
-        [
-          {
-            text: "OK",
-          },
-        ],
-        { cancelable: false }
-      );
+      // Alert.alert(
+      //   "ECO-MASTER!",
+      //   "Congratulations, Your have completed your Habit, Swipe right to select next habit...",
+      //   [
+      //     {
+      //       text: "OK",
+      //     },
+      //   ],
+      //   { cancelable: false }
+      // );
     } catch (error) {
       //loader
       dispatch({ type: "loader", payload: false });
@@ -91,16 +109,6 @@ const startHabit = (dispatch) => {
           select: selected,
         });
       dispatch({ type: "loader", payload: false });
-      Alert.alert(
-        "ECO-MASTER!",
-        "Congratulations, Your journey has started...",
-        [
-          {
-            text: "OK",
-          },
-        ],
-        { cancelable: false }
-      );
     } catch (error) {
       //loader
       dispatch({ type: "loader", payload: false });
@@ -111,6 +119,6 @@ const startHabit = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   HabitReducer,
-  { getHabit, startHabit },
+  { getHabit, startHabit, updateHabit, setLock },
   { habits: [], loading: false, deleted: false }
 );

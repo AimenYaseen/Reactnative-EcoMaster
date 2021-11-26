@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   headerText: {
     textAlign: "center",
     // marginHorizontal: screenWidth * 0.02,
-    marginBottom: screenHeight * 0.08,
+    marginBottom: screenHeight * 0.07,
     fontSize: 45,
     fontWeight: "bold",
     color: colors.green,

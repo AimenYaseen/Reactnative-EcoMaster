@@ -63,10 +63,10 @@ const HabitTrackerScreen = ({ navigation }) => {
           return item.id.toString();
         }}
         ListEmptyComponent={listEmpty}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <>
-              <HabitCard item={item} />
+              <HabitCard item={item} index={index} />
               {/* <LockCard /> */}
             </>
           );

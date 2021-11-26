@@ -1,9 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Text, View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
+import moment from "moment";
 
-import { navigate } from "../Navigation/NavigationRef";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Firebase } from "../Firebase/config";
 import { Context as ActivityContext } from "../context/ActivityContext";
 import { Context as HabitContext } from "../context/HabitTrackerContext";
@@ -73,12 +79,15 @@ export const TileCard = ({ item }) => {
   );
 };
 
-export const HabitCard = ({ item }) => {
-  const { startHabit } = useContext(HabitContext);
+export const HabitCard = ({ item, index }) => {
+  const { startHabit, updateHabit, getHabit, setLock } =
+    useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
   const [visible, setVisible] = useState(false);
 
-  const getHabit = async () => {
+  const disable = item.selected ? true : false;
+
+  const getHabitData = async () => {
     try {
       await Firebase.database()
         .ref("Habits/" + item.id)
@@ -96,8 +105,27 @@ export const HabitCard = ({ item }) => {
   };
 
   useEffect(() => {
-    getHabit();
+    getHabitData();
   }, [item]);
+
+  useEffect(() => {
+    if (item.completed) {
+      setLock(index + 2, false);
+      getHabit();
+    }
+  }, [item.completed]);
+
+  useEffect(() => {
+    if (item.selected) {
+      const duration = habitData ? habitData.duration : 1;
+      const current = moment().format();
+      const habitTime = moment(item.time).add(duration, "days").format();
+      if (current >= habitTime) {
+        updateHabit(item.id, true);
+        getHabit();
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -182,9 +210,13 @@ export const HabitCard = ({ item }) => {
                 }}
               >
                 <Button
+                  disabled={disable}
                   type="solid"
                   title="Select"
-                  onPress={() => console.log("pressed")}
+                  onPress={async () => {
+                    await startHabit(item.id, true, Date.now());
+                    getHabit();
+                  }}
                   raised
                   buttonStyle={{
                     width: screenWidth * 0.25,
@@ -222,18 +254,20 @@ export const HabitCard = ({ item }) => {
         <View style={styles.lock}>
           <View
             style={{
-              marginTop: screenHeight * 0.4,
+              marginTop: screenHeight * 0.35,
+              marginLeft: screenWidth * 0.3,
             }}
           >
             <Icon
-              type="ionicon"
-              name="lock-closed"
-              color={colors.black}
-              size={60}
+              reverse
+              type="font-awesome5"
+              name="lock"
+              color={colors.mustard}
+              size={50}
             />
-            <Text style={{ alignSelf: "center" }}>
+            {/* <Text style={{ alignSelf: "center", color: colors.mustard }}>
               Complete Previous Habits to unlock this...
-            </Text>
+            </Text> */}
           </View>
         </View>
       ) : null}
