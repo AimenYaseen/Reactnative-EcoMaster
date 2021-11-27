@@ -33,9 +33,9 @@ const addActivity = (dispatch) => {
           let present = false;
           snapshot.forEach((element) => {
             // console.log(element.val());
-            const { customId } = element.val();
+            const { customId, userId } = element.val();
             // Checking
-            if (customId == Id) {
+            if (customId == Id && userId == uid) {
               present = true;
             }
           });

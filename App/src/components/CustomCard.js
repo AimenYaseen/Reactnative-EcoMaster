@@ -84,8 +84,10 @@ export const HabitCard = ({ item, index }) => {
     useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [status, setStatus] = useState("Pending");
 
   const disable = item.selected ? true : false;
+  // console.log(new Date(163738317853));
 
   const getHabitData = async () => {
     try {
@@ -118,9 +120,13 @@ export const HabitCard = ({ item, index }) => {
   useEffect(() => {
     if (item.selected) {
       const duration = habitData ? habitData.duration : 1;
+      // console.log("NOW_____________");
+      // console.log("current: ", moment().format());
       const current = moment().format();
+      // console.log("previous: ", moment(item.time).format());
       const habitTime = moment(item.time).add(duration, "days").format();
       if (current >= habitTime) {
+        setStatus("Completed");
         updateHabit(item.id, true);
         getHabit();
       }
@@ -131,7 +137,17 @@ export const HabitCard = ({ item, index }) => {
     <>
       <View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Card containerStyle={[styles.habitContainer, styles.shadow]}>
+          <Card
+            containerStyle={[
+              styles.habitContainer,
+              styles.shadow,
+              {
+                height: item.selected
+                  ? screenHeight * 0.93
+                  : screenHeight * 0.85,
+              },
+            ]}
+          >
             <ScrollView showsVerticalScrollIndicator={false}>
               <Card.Title
                 style={{
@@ -174,6 +190,23 @@ export const HabitCard = ({ item, index }) => {
                   </Text>
                 </View>
               </View>
+              {item.selected ? (
+                <View style={[styles.duration, styles.shadow]}>
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "center" }}
+                  >
+                    <Icon
+                      type="material-community"
+                      name="progress-clock"
+                      color={colors.secondary}
+                      size={20}
+                    />
+                    <Text style={{ paddingHorizontal: 10 }}>
+                      Status : {status}
+                    </Text>
+                  </View>
+                </View>
+              ) : null}
               <View style={[styles.duration, styles.shadow]}>
                 <View
                   style={{ flexDirection: "row", justifyContent: "center" }}
@@ -278,7 +311,6 @@ export const HabitCard = ({ item, index }) => {
 const styles = StyleSheet.create({
   habitContainer: {
     borderRadius: 10,
-    height: screenHeight * 0.86,
     width: screenWidth * 0.92,
     // alignItems: "center",
   },
