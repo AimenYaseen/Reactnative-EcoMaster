@@ -298,7 +298,7 @@ export const HabitCard = ({ item, index }) => {
               color={colors.mustard}
               size={50}
             />
-            {/* <Text style={{ alignSelf: "center", color: colors.mustard }}>
+            {/* <Text style={{ color: colors.mustard }}>
               Complete Previous Habits to unlock this...
             </Text> */}
           </View>

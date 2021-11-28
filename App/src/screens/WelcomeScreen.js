@@ -51,7 +51,7 @@ const WelcomeScreen = ({ navigation }) => {
           />
         </Spacer>
         <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
-          <Text style={styles.text}>Terms of Services</Text>
+          <Text style={styles.text}></Text>
         </TouchableOpacity>
       </View>
     </View>

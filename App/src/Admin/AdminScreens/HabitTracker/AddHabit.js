@@ -41,7 +41,8 @@ const AddHabit = ({ navigation }) => {
     <View style={styles.container}>
       <CustomHead
         text="Add Habits"
-        color={colors.secondary}
+        color={colors.success}
+        statusColor={colors.success}
         centerColor={colors.white}
         leftIcon={() => (
           <Icon
@@ -59,7 +60,7 @@ const AddHabit = ({ navigation }) => {
         source={require("../../assets/habit_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          {console.log(habitId)}
+          {/* {console.log(habitId)} */}
           <HabitForm
             loading={loading}
             text="Add"

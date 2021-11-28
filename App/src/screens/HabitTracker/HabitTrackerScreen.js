@@ -13,7 +13,6 @@ import { Firebase } from "../../Firebase/config";
 import { HabitCard } from "../../components/CustomCard";
 import { CustomHead } from "../../components/CustomHead";
 import colors from "../../constants/colors";
-import { LockCard } from "../../components/Cards/LockCard";
 import { Context as HabitContext } from "../../context/HabitTrackerContext";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
 
@@ -67,12 +66,10 @@ const HabitTrackerScreen = ({ navigation }) => {
           return (
             <>
               <HabitCard item={item} index={index} />
-              {/* <LockCard /> */}
             </>
           );
         }}
       />
-      <Spinner visible={loading} color={colors.secondary} animation="fade" />
     </View>
   );
 };

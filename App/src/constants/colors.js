@@ -14,7 +14,7 @@ export default {
   like: "#2e64e5",
   select: "#2e64e515",
   green: "#02C38E",
-  dullGreen: "#B1D953",
+  dullGreen: "#8CBD51",
   freshGreen: "#224C03",
   blue: "#528FBF",
   lightBlue: "#8CC0E8",
