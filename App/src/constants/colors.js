@@ -26,4 +26,5 @@ export default {
   cancel: "#D32F2F",
   orange: "#ED6C02",
   niceBlue: "#0288D1",
+  brown: "#AC4C1E",
 };

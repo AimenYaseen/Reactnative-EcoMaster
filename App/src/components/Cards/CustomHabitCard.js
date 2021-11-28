@@ -27,12 +27,16 @@ export const CustomHabitCard = ({ item }) => {
   React.useEffect(() => {
     const current = moment().format();
     // console.log("current", current);
-    const habitTime = moment(item.time).add(item.duration, "days").format();
-    // console.log("Completed", habitTime);
-    if (current >= habitTime) {
-      setStatus("Completed");
-    } else {
-      setStatus("Pending");
+    if (item.duration) {
+      const habitTime = moment(item.time)
+        .add(parseInt(item.duration), "days")
+        .format();
+      // console.log("Completed", habitTime);
+      if (current >= habitTime) {
+        setStatus("Completed");
+      } else {
+        setStatus("Pending");
+      }
     }
   }, []);
 

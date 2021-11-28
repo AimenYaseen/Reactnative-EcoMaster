@@ -106,6 +106,8 @@ export const HabitCard = ({ item, index }) => {
     }
   };
 
+  const duration = habitData ? habitData.duration : 0;
+
   useEffect(() => {
     getHabitData();
   }, [item]);
@@ -119,19 +121,21 @@ export const HabitCard = ({ item, index }) => {
 
   useEffect(() => {
     if (item.selected) {
-      const duration = habitData ? habitData.duration : 1;
+      const timePeriod = parseInt(duration);
       // console.log("NOW_____________");
       // console.log("current: ", moment().format());
       const current = moment().format();
       // console.log("previous: ", moment(item.time).format());
-      const habitTime = moment(item.time).add(duration, "days").format();
-      if (current >= habitTime) {
-        setStatus("Completed");
-        updateHabit(item.id, true);
-        getHabit();
+      if (timePeriod > 0) {
+        const habitTime = moment(item.time).add(timePeriod, "days").format();
+        if (current >= habitTime) {
+          setStatus("Completed");
+          updateHabit(item.id, true);
+          getHabit();
+        }
       }
     }
-  }, []);
+  }, [duration]);
 
   return (
     <>

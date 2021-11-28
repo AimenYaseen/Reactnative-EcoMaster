@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { Text, Icon } from "react-native-elements";
 import Svg, { Circle, Defs, G, Marker, Path } from "react-native-svg";
@@ -44,6 +45,55 @@ const EcoMap = ({ navigation }) => {
     </View>
   );
 
+  const footer = () => (
+    <View
+      style={{
+        borderColor: "red",
+        //borderWidth: 1,
+        height: screenHeight * 0.32,
+        width: 300,
+        //marginBottom: -30,
+      }}
+    >
+      <Text h4 style={{ textAlign: "center", marginBottom: 8 }}>
+        Goal Accomplished
+      </Text>
+      <Svg
+        //style={{ borderWidth: 2 }}
+        height={200}
+        width={300}
+      >
+        <TouchableOpacity onPress={() => console.log("Pressed")}>
+          <View
+            style={[
+              styles.outer,
+              {
+                marginLeft: 120,
+                borderColor: colors.accent,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.inner,
+                {
+                  backgroundColor: colors.accent,
+                },
+              ]}
+            />
+          </View>
+        </TouchableOpacity>
+        <Path
+          d="M 160 30 Q 380 100 200 180 Q 200 180 150 193"
+          stroke={colors.mauve}
+          fill="transparent"
+          strokeWidth="10"
+          strokeDasharray="15"
+        />
+      </Svg>
+    </View>
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <CustomHead
@@ -76,6 +126,7 @@ const EcoMap = ({ navigation }) => {
           inverted
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={header}
+          ListFooterComponent={footer}
           ListHeaderComponentStyle={{
             alignItems: "center",
             marginTop: 20,

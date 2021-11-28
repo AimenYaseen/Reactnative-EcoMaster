@@ -35,6 +35,8 @@ export const ActivityCard = ({ item }) => {
     }
   };
 
+  let duration = habitData ? habitData.duration : 0;
+
   useEffect(() => {
     if (state.deleted) {
       getActivity();
@@ -46,15 +48,20 @@ export const ActivityCard = ({ item }) => {
   }, [item]);
 
   useEffect(() => {
-    const duration = habitData ? habitData.duration : 1;
+    const timePeriod = parseInt(duration);
+    console.log("Duration", duration);
     const current = moment().format();
-    const habitTime = moment(item.id).add(duration, "days").format();
-    if (current >= habitTime) {
-      setStatus("Completed");
-    } else {
-      setStatus("Pending");
+    console.log("Current", current);
+    if (timePeriod > 0) {
+      const habitTime = moment(item.id).add(timePeriod, "days").format();
+      console.log("Addition", habitTime);
+      if (current >= habitTime) {
+        setStatus("Completed");
+      } else {
+        setStatus("Pending");
+      }
     }
-  }, []);
+  }, [duration]);
 
   return (
     <>

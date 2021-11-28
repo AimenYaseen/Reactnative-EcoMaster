@@ -8,8 +8,11 @@ import {
 } from "react-native";
 import { Text } from "react-native-elements";
 import Svg, { Circle, Defs, G, Marker, Path } from "react-native-svg";
+import moment from "moment";
+
 import { Firebase } from "../../Firebase/config";
 
+import { Context as HabitContext } from "../../context/HabitTrackerContext";
 import { CustomHead } from "../../components/CustomHead";
 import colors from "../../constants/colors";
 
@@ -17,7 +20,12 @@ const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
 const CustomMap = ({ item, index }) => {
+  const { startHabit, updateHabit, getHabit, setLock } =
+    useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
+  const [habitColor, setHabitColor] = useState(`${colors.gray}`);
+
+  let reward;
 
   const getHabitData = async () => {
     try {
@@ -36,9 +44,37 @@ const CustomMap = ({ item, index }) => {
     }
   };
 
+  const duration = habitData ? habitData.duration : 0;
+
   useEffect(() => {
     getHabitData();
   }, [item]);
+
+  useEffect(() => {
+    if (item.completed) {
+      setLock(index + 2, false);
+      getHabit();
+    }
+  }, [item.completed]);
+
+  useEffect(() => {
+    if (item.selected) {
+      setHabitColor("#F7D201");
+      const timePeriod = parseInt(duration);
+      // console.log("NOW_____________");
+      // console.log("current: ", moment().format());
+      const current = moment().format();
+      // console.log("previous: ", moment(item.time).format());
+      if (timePeriod > 0) {
+        const habitTime = moment(item.time).add(timePeriod, "days").format();
+        if (current >= habitTime) {
+          setHabitColor(`${colors.dullGreen}`);
+          updateHabit(item.id, true);
+          getHabit();
+        }
+      }
+    }
+  }, [duration]);
 
   return (
     <>
@@ -61,19 +97,27 @@ const CustomMap = ({ item, index }) => {
               style={[
                 styles.outer,
                 {
+                  borderColor: habitColor,
                   marginLeft: 100,
                 },
               ]}
             >
-              <View style={styles.inner} />
+              <View
+                style={[
+                  styles.inner,
+                  {
+                    backgroundColor: habitColor,
+                  },
+                ]}
+              />
             </View>
           </TouchableOpacity>
           <Svg height={200} width={300}>
             <Path
               d="M 100 30 Q -60 120 120 160 Q 180 160 150 200"
-              stroke={colors.secondary}
+              stroke={colors.mauve}
               fill="transparent"
-              strokeWidth="15"
+              strokeWidth="10"
               strokeDasharray="15"
             />
             <Text style={[styles.text, { marginLeft: 155, marginTop: 40 }]}>
@@ -104,24 +148,31 @@ const CustomMap = ({ item, index }) => {
                   styles.outer,
                   {
                     marginLeft: 120,
-                    // , position: "absolute"
+                    borderColor: habitColor,
                   },
                 ]}
               >
-                <View style={styles.inner} />
+                <View
+                  style={[
+                    styles.inner,
+                    {
+                      backgroundColor: habitColor,
+                    },
+                  ]}
+                />
               </View>
             </TouchableOpacity>
             <Path
               d="M 160 30 Q 380 100 200 180 Q 200 180 150 193"
-              stroke={colors.secondary}
+              stroke={colors.mauve}
               fill="transparent"
-              strokeWidth="15"
+              strokeWidth="10"
               strokeDasharray="15"
             />
             <Text
               style={[
                 styles.text,
-                { marginRight: 100, marginTop: 5, marginLeft: 80 },
+                { marginRight: 100, marginTop: 0, marginLeft: 30 },
               ]}
             >
               {habitData ? habitData.title : null}
@@ -153,18 +204,25 @@ const CustomMap = ({ item, index }) => {
                   styles.outer,
                   {
                     marginLeft: 100,
-                    // , position: "absolute"
+                    borderColor: habitColor,
                   },
                 ]}
               >
-                <View style={styles.inner} />
+                <View
+                  style={[
+                    styles.inner,
+                    {
+                      backgroundColor: habitColor,
+                    },
+                  ]}
+                />
               </View>
             </TouchableOpacity>
             <Path
               d="M 100 30 Q -60 140 120 193"
-              stroke={colors.secondary}
+              stroke={colors.mauve}
               fill="transparent"
-              strokeWidth="15"
+              strokeWidth="10"
               strokeDasharray="15"
             />
             <Text style={[styles.text, { marginLeft: 155, marginTop: -15 }]}>
@@ -183,14 +241,12 @@ const styles = StyleSheet.create({
     width: 50,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: colors.secondary2,
     padding: 2,
   },
   inner: {
     height: 42,
     width: 42,
     borderRadius: 21,
-    backgroundColor: colors.secondary2,
   },
   text: {
     fontSize: 16,
