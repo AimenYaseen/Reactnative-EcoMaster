@@ -44,37 +44,29 @@ const CustomMap = ({ item, index }) => {
     }
   };
 
-  const duration = habitData ? habitData.duration : 0;
+  // const duration = habitData ? habitData.duration : 0;
+
+  useEffect(() => {
+    getHabit();
+  }, [item.selected, item.completed]);
 
   useEffect(() => {
     getHabitData();
-  }, [item]);
-
-  useEffect(() => {
-    if (item.completed) {
-      setLock(index + 2, false);
-      getHabit();
-    }
-  }, [item.completed]);
+  }, []);
 
   useEffect(() => {
     if (item.selected) {
+      console.log("Selected", item.selected);
       setHabitColor("#F7D201");
-      const timePeriod = parseInt(duration);
-      // console.log("NOW_____________");
-      // console.log("current: ", moment().format());
-      const current = moment().format();
-      // console.log("previous: ", moment(item.time).format());
-      if (timePeriod > 0) {
-        const habitTime = moment(item.time).add(timePeriod, "days").format();
-        if (current >= habitTime) {
-          setHabitColor(`${colors.dullGreen}`);
-          updateHabit(item.id, true);
-          getHabit();
-        }
+      if (item.completed) {
+        console.log("COMPLETED", item.completed);
+        setHabitColor(`${colors.dullGreen}`);
+        //getHabit();
       }
+    } else {
+      setHabitColor(`${colors.gray}`);
     }
-  }, [duration]);
+  }, [item]);
 
   return (
     <>
@@ -89,16 +81,14 @@ const CustomMap = ({ item, index }) => {
             marginTop: -30,
           }}
         >
-          <TouchableOpacity
-            onPress={() => console.log("Pressed")}
-            style={{ position: "absolute" }}
-          >
+          <TouchableOpacity onPress={() => console.log("Pressed")}>
             <View
               style={[
                 styles.outer,
                 {
                   borderColor: habitColor,
                   marginLeft: 100,
+                  position: "absolute",
                 },
               ]}
             >
@@ -137,33 +127,34 @@ const CustomMap = ({ item, index }) => {
             marginTop: -30,
           }}
         >
+          <TouchableOpacity onPress={() => console.log("Pressed")}>
+            <View
+              style={[
+                styles.outer,
+                {
+                  marginLeft: 120,
+                  borderColor: habitColor,
+                  position: "absolute",
+                },
+              ]}
+            >
+              <View
+                style={[
+                  styles.inner,
+                  {
+                    backgroundColor: habitColor,
+                  },
+                ]}
+              />
+            </View>
+          </TouchableOpacity>
           <Svg
             // style={{ borderWidth: 2 }}
             height={200}
             width={300}
           >
-            <TouchableOpacity onPress={() => console.log("Pressed")}>
-              <View
-                style={[
-                  styles.outer,
-                  {
-                    marginLeft: 120,
-                    borderColor: habitColor,
-                  },
-                ]}
-              >
-                <View
-                  style={[
-                    styles.inner,
-                    {
-                      backgroundColor: habitColor,
-                    },
-                  ]}
-                />
-              </View>
-            </TouchableOpacity>
             <Path
-              d="M 160 30 Q 380 100 200 180 Q 200 180 150 193"
+              d="M 170 32 Q 380 100 200 180 Q 200 180 150 193"
               stroke={colors.mauve}
               fill="transparent"
               strokeWidth="10"
@@ -172,7 +163,7 @@ const CustomMap = ({ item, index }) => {
             <Text
               style={[
                 styles.text,
-                { marginRight: 100, marginTop: 0, marginLeft: 30 },
+                { marginRight: 100, marginTop: 50, marginLeft: 30 },
               ]}
             >
               {habitData ? habitData.title : null}
@@ -193,39 +184,40 @@ const CustomMap = ({ item, index }) => {
             // marginRight: 80,
           }}
         >
+          <TouchableOpacity onPress={() => console.log("Pressed")}>
+            <View
+              style={[
+                styles.outer,
+                {
+                  marginLeft: 100,
+                  borderColor: habitColor,
+                  position: "absolute",
+                },
+              ]}
+            >
+              <View
+                style={[
+                  styles.inner,
+                  {
+                    backgroundColor: habitColor,
+                  },
+                ]}
+              />
+            </View>
+          </TouchableOpacity>
           <Svg
             //style={{ borderWidth: 2 }}
             height={200}
             width={300}
           >
-            <TouchableOpacity onPress={() => console.log("Pressed")}>
-              <View
-                style={[
-                  styles.outer,
-                  {
-                    marginLeft: 100,
-                    borderColor: habitColor,
-                  },
-                ]}
-              >
-                <View
-                  style={[
-                    styles.inner,
-                    {
-                      backgroundColor: habitColor,
-                    },
-                  ]}
-                />
-              </View>
-            </TouchableOpacity>
             <Path
-              d="M 100 30 Q -60 140 120 193"
+              d="M 102 36 Q -60 140 120 193"
               stroke={colors.mauve}
               fill="transparent"
               strokeWidth="10"
               strokeDasharray="15"
             />
-            <Text style={[styles.text, { marginLeft: 155, marginTop: -15 }]}>
+            <Text style={[styles.text, { marginLeft: 155, marginTop: 30 }]}>
               {habitData ? habitData.title : null}
             </Text>
           </Svg>

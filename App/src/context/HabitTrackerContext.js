@@ -20,6 +20,7 @@ const getHabit = (dispatch) => {
   return async () => {
     dispatch({ type: "loader", payload: true });
     const userId = Firebase.auth().currentUser.uid;
+    console.log(userId);
     Firebase.database()
       .ref(`HabitTracker/${userId}/`)
       .orderByKey()

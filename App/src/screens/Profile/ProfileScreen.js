@@ -86,7 +86,7 @@ const ProfileScreen = ({ navigation }) => {
           <Avatar
             rounded
             source={
-              userData.image
+              userData
                 ? { uri: userData.image }
                 : require("../../assets/images/default/default-user.jpeg")
             }
@@ -95,8 +95,8 @@ const ProfileScreen = ({ navigation }) => {
           />
           <View>
             <Text style={[styles.text, { color: "black" }]}>
-              {userData.firstName ? `${userData.firstName} ` : firstName}
-              {userData.lastName ? userData.lastName : lastName}
+              {userData ? `${userData.firstName} ` : firstName}
+              {userData ? userData.lastName : lastName}
             </Text>
             <View
               style={{
@@ -112,13 +112,13 @@ const ProfileScreen = ({ navigation }) => {
                 size={18}
               />
               <Text style={{ padding: 5 }}>
-                {userData.country ? userData.country : country}
+                {userData ? userData.country : country}
               </Text>
             </View>
             <Text
               style={{ textAlign: "center", marginBottom: screenHeight * 0.06 }}
             >
-              {userData.bio ? userData.bio : bio}
+              {userData ? userData.bio : bio}
             </Text>
           </View>
           <View style={[styles.email, styles.shadow]}>
@@ -131,7 +131,7 @@ const ProfileScreen = ({ navigation }) => {
                 size={20}
               />
               <Text style={{ paddingHorizontal: 10 }}>
-                {userData.email ? userData.email : email}
+                {userData ? userData.email : email}
               </Text>
             </View>
           </View>
