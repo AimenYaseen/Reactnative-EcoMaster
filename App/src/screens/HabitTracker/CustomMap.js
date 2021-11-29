@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { Text } from "react-native-elements";
 import Svg, { Circle, Defs, G, Marker, Path } from "react-native-svg";
-import moment from "moment";
 
 import { Firebase } from "../../Firebase/config";
 
@@ -20,12 +19,10 @@ const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
 
 const CustomMap = ({ item, index }) => {
-  const { startHabit, updateHabit, getHabit, setLock } =
-    useContext(HabitContext);
+  const { state, getReward, getHabit } = useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
   const [habitColor, setHabitColor] = useState(`${colors.gray}`);
-
-  let reward;
+  let habitReward;
 
   const getHabitData = async () => {
     try {
@@ -34,8 +31,12 @@ const CustomMap = ({ item, index }) => {
         .once("value", async (snapshot) => {
           if (snapshot.exists) {
             const data = await snapshot.val();
-            // console.log(data);
+            const reward = data.reward;
             setHabitData(data);
+            if (item.selected && item.completed) {
+              habitReward = state.reward + parseInt(reward);
+              getReward(habitReward);
+            }
           }
         });
     } catch (error) {
@@ -55,21 +56,25 @@ const CustomMap = ({ item, index }) => {
   }, []);
 
   useEffect(() => {
-    if (item.selected) {
-      console.log("Selected", item.selected);
-      setHabitColor("#F7D201");
-      if (item.completed) {
-        console.log("COMPLETED", item.completed);
-        setHabitColor(`${colors.dullGreen}`);
-        //getHabit();
+    const task = () => {
+      if (item.selected) {
+        console.log("Selected", item.selected);
+        setHabitColor("#F7D201");
+        if (item.completed) {
+          console.log("COMPLETED", item.completed);
+          setHabitColor(`${colors.dullGreen}`);
+        }
+      } else {
+        setHabitColor(`${colors.gray}`);
       }
-    } else {
-      setHabitColor(`${colors.gray}`);
-    }
+    };
+
+    return () => task();
   }, [item]);
 
   return (
     <>
+      {/* <Text>Reward: {state.reward}</Text> */}
       {index == 0 ? (
         <View
           style={{

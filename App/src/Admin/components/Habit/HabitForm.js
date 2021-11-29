@@ -31,7 +31,7 @@ const HabitForm = ({
   onPress,
   habitId,
 }) => {
-  const [id, setId] = useState(habitId ? habitId : "");
+  const [id, setId] = useState(habitId);
   const [title, setTitle] = useState(habitTitle);
   const [description, setDescription] = useState(habitDescription);
   const [duration, setDuration] = useState(habitDuration);
@@ -377,7 +377,7 @@ HabitForm.defaultProps = () => {
     habitImage: "",
     habitDuration: "",
     habitReward: "",
-    habitId: "",
+    // habitId: "",
   };
 };
 

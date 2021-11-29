@@ -50,6 +50,7 @@ const ProfileScreen = ({ navigation }) => {
     }, [navigation])
   );
 
+  let defaultImage = require("../../assets/images/default/default-user.jpeg");
   return (
     <>
       <CustomHead
@@ -87,8 +88,10 @@ const ProfileScreen = ({ navigation }) => {
             rounded
             source={
               userData
-                ? { uri: userData.image }
-                : require("../../assets/images/default/default-user.jpeg")
+                ? userData.image
+                  ? { uri: userData.image }
+                  : defaultImage
+                : defaultImage
             }
             size={140}
             containerStyle={styles.avatar}
@@ -112,13 +115,17 @@ const ProfileScreen = ({ navigation }) => {
                 size={18}
               />
               <Text style={{ padding: 5 }}>
-                {userData ? userData.country : country}
+                {userData
+                  ? userData.country
+                    ? userData.country
+                    : country
+                  : country}
               </Text>
             </View>
             <Text
               style={{ textAlign: "center", marginBottom: screenHeight * 0.06 }}
             >
-              {userData ? userData.bio : bio}
+              {userData ? (userData.bio ? userData.bio : bio) : bio}
             </Text>
           </View>
           <View style={[styles.email, styles.shadow]}>

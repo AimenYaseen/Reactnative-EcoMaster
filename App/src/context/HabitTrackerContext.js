@@ -11,6 +11,8 @@ const HabitReducer = (state, action) => {
       return { ...state, habits: action.payload };
     case "loader":
       return { ...state, loading: action.payload };
+    case "reward":
+      return { ...state, reward: action.payload };
     default:
       return state;
   }
@@ -71,6 +73,14 @@ const updateHabit = (dispatch) => {
   };
 };
 
+const getReward = (dispatch) => {
+  return (reward) => {
+    if (reward) {
+      dispatch({ type: "reward", payload: reward });
+    }
+  };
+};
+
 const setLock = (dispatch) => {
   return (habitId, locked) => {
     try {
@@ -120,6 +130,6 @@ const startHabit = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   HabitReducer,
-  { getHabit, startHabit, updateHabit, setLock },
-  { habits: [], loading: false, deleted: false }
+  { getHabit, startHabit, updateHabit, setLock, getReward },
+  { habits: [], loading: false, deleted: false, reward: 0 }
 );

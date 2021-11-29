@@ -60,22 +60,13 @@ const AddHabit = ({ navigation }) => {
         source={require("../../assets/habit_back.jpg")}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* {console.log(habitId)} */}
-          <HabitForm
-            loading={loading}
-            text="Add"
-            imageVisible={false}
-            habitId={habitId}
-            onPress={async (
-              habitSteps,
-              habitTitle,
-              habitDescription,
-              habitDuration,
-              habitReward,
-              habitImage,
-              habitId
-            ) => {
-              await addHabit(
+          {habitId ? (
+            <HabitForm
+              loading={loading}
+              text="Add"
+              imageVisible={false}
+              habitId={habitId}
+              onPress={async (
                 habitSteps,
                 habitTitle,
                 habitDescription,
@@ -83,9 +74,19 @@ const AddHabit = ({ navigation }) => {
                 habitReward,
                 habitImage,
                 habitId
-              );
-            }}
-          />
+              ) => {
+                await addHabit(
+                  habitSteps,
+                  habitTitle,
+                  habitDescription,
+                  habitDuration,
+                  habitReward,
+                  habitImage,
+                  habitId
+                );
+              }}
+            />
+          ) : null}
         </ScrollView>
       </ImageBackground>
     </View>
