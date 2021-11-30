@@ -37,19 +37,19 @@ const HabitForm = ({
   const [duration, setDuration] = useState(habitDuration);
   const [reward, setReward] = useState(habitReward);
   const [step1, setStep1] = useState(
-    habitSteps ? (habitSteps[0] ? habitSteps[0] : null) : null
+    habitSteps ? (habitSteps[0] ? habitSteps[0] : "") : ""
   );
   const [step2, setStep2] = useState(
-    habitSteps ? (habitSteps[1] ? habitSteps[1] : null) : null
+    habitSteps ? (habitSteps[1] ? habitSteps[1] : "") : ""
   );
   const [step3, setStep3] = useState(
-    habitSteps ? (habitSteps[2] ? habitSteps[2] : null) : null
+    habitSteps ? (habitSteps[2] ? habitSteps[2] : "") : ""
   );
   const [step4, setStep4] = useState(
-    habitSteps ? (habitSteps[3] ? habitSteps[3] : null) : null
+    habitSteps ? (habitSteps[3] ? habitSteps[3] : "") : ""
   );
   const [step5, setStep5] = useState(
-    habitSteps ? (habitSteps[4] ? habitSteps[4] : null) : null
+    habitSteps ? (habitSteps[4] ? habitSteps[4] : "") : ""
   );
   const [uploading, setUploading] = useState(false);
 
@@ -121,20 +121,30 @@ const HabitForm = ({
     if (imageUrl === null && habitImage) {
       imageUrl = habitImage;
     }
-    step1 ? steps.push(step1) : null;
-    step2 ? steps.push(step2) : null;
-    step3 ? steps.push(step3) : null;
-    step4 ? steps.push(step4) : null;
-    step5 ? steps.push(step5) : null;
-    onPress(
-      steps,
-      title,
-      description,
-      duration,
-      reward,
-      imageUrl,
-      parseInt(id)
-    );
+    if (
+      step1 == "" &&
+      step2 == "" &&
+      step3 == "" &&
+      step4 == "" &&
+      step5 == ""
+    ) {
+      Alert.alert("ERROR!", "Please Enter Atleast one step");
+    } else {
+      step1 ? steps.push(step1) : null;
+      step2 ? steps.push(step2) : null;
+      step3 ? steps.push(step3) : null;
+      step4 ? steps.push(step4) : null;
+      step5 ? steps.push(step5) : null;
+      onPress(
+        steps,
+        title,
+        description,
+        duration,
+        reward,
+        imageUrl,
+        parseInt(id)
+      );
+    }
   };
 
   const list = [
