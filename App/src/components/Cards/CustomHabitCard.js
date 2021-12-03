@@ -25,25 +25,32 @@ export const CustomHabitCard = ({ item }) => {
   const disable = status == "Completed" ? true : false;
 
   React.useEffect(() => {
-    const current = moment().format();
-    // console.log("current", current);
-    if (item.duration) {
-      const habitTime = moment(item.time)
-        .add(parseInt(item.duration), "days")
-        .format();
-      // console.log("Completed", habitTime);
-      if (current >= habitTime) {
-        setStatus("Completed");
-      } else {
-        setStatus("Pending");
+    const task = () => {
+      const current = moment().format();
+      // console.log("current", current);
+      if (item.duration) {
+        const habitTime = moment(item.time)
+          .add(parseInt(item.duration), "days")
+          .format();
+        // console.log("Completed", habitTime);
+        if (current >= habitTime) {
+          setStatus("Completed");
+        } else {
+          setStatus("Pending");
+        }
       }
-    }
+    };
+    return () => task();
   }, []);
 
   React.useEffect(() => {
-    if (state.deleted) {
-      getCustom();
-    }
+    const task = () => {
+      if (state.deleted) {
+        getCustom();
+      }
+    };
+
+    return () => task();
   }, [state.deleted]);
 
   return (

@@ -34,7 +34,11 @@ const AddHabit = ({ navigation }) => {
   };
 
   React.useEffect(() => {
-    getId();
+    const task = () => {
+      getId();
+    };
+
+    return () => task();
   }, [habitId]);
 
   return (

@@ -59,13 +59,21 @@ export const CommunityCard = ({ item }) => {
   };
 
   useEffect(() => {
-    getUser();
+    const task = () => {
+      getUser();
+    };
+
+    return () => task();
   }, [item]);
 
   useEffect(() => {
-    if (state.deleted) {
-      getPost();
-    }
+    const task = () => {
+      if (state.deleted) {
+        getPost();
+      }
+    };
+
+    return () => task();
   }, [state.deleted]);
 
   const onLike = async () => {

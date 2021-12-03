@@ -15,8 +15,12 @@ export const NewsCard = ({ item, title }) => {
     useContext(NewsContext);
 
   React.useEffect(() => {
-    getNewsTips();
-    getNewsInformation();
+    const task = () => {
+      getNewsTips();
+      getNewsInformation();
+    };
+
+    return () => task();
   }, [state.deleted]);
 
   return (

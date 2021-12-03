@@ -23,11 +23,13 @@ export const HabitCard = ({ item, index }) => {
   const { state, deleteHabit, getHabit } = useContext(HabitContext);
 
   React.useEffect(() => {
-    //console.log("Current", index);
-    //console.log("Last", index + 1);
-    if (state.deleted) {
-      getHabit();
-    }
+    const task = () => {
+      if (state.deleted) {
+        getHabit();
+      }
+    };
+
+    return () => task();
   }, [state.deleted]);
 
   return (

@@ -38,29 +38,41 @@ export const ActivityCard = ({ item }) => {
   let duration = habitData ? habitData.duration : 0;
 
   useEffect(() => {
-    if (state.deleted) {
-      getActivity();
-    }
+    const task = () => {
+      if (state.deleted) {
+        getActivity();
+      }
+    };
+
+    return () => task();
   }, [state.deleted]);
 
   useEffect(() => {
-    getHabit();
+    const task = () => {
+      getHabit();
+    };
+
+    return () => task();
   }, [item]);
 
   useEffect(() => {
-    const timePeriod = parseInt(duration);
-    console.log("Duration", duration);
-    const current = moment().format();
-    console.log("Current", current);
-    if (timePeriod > 0) {
-      const habitTime = moment(item.id).add(timePeriod, "days").format();
-      console.log("Addition", habitTime);
-      if (current >= habitTime) {
-        setStatus("Completed");
-      } else {
-        setStatus("Pending");
+    const task = () => {
+      const timePeriod = parseInt(duration);
+      console.log("Duration", duration);
+      const current = moment().format();
+      console.log("Current", current);
+      if (timePeriod > 0) {
+        const habitTime = moment(item.id).add(timePeriod, "days").format();
+        console.log("Addition", habitTime);
+        if (current >= habitTime) {
+          setStatus("Completed");
+        } else {
+          setStatus("Pending");
+        }
       }
-    }
+    };
+
+    return () => task();
   }, [duration]);
 
   return (
@@ -161,7 +173,7 @@ export const ActivityCard = ({ item }) => {
             }}
           />
         ) : null}
-        <Button
+        {/* <Button
           raised
           type="solid"
           title="Share"
@@ -172,7 +184,7 @@ export const ActivityCard = ({ item }) => {
             borderRadius: 30,
             backgroundColor: colors.mauve,
           }}
-        />
+        /> */}
       </View>
     </>
   );

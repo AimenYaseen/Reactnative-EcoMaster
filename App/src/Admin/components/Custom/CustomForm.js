@@ -42,14 +42,6 @@ const CustomForm = ({
   let time = new Date().getTime();
 
   const disabled = image || customImage ? false : true;
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener("blur", () => {
-  //     setPost("");
-  //     setImage(null);
-  //   });
-
-  //   return unsubscribe;
-  // }, [navigation]);
 
   const uploadImage = async () => {
     if (image == null) {

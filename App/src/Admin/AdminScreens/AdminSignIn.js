@@ -13,7 +13,6 @@ import { Context as AdminAuthContext } from "../AdminContext/AdminAuthContext";
 import { Icon } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 
-//import { Context as AuthContext } from "../../context/AuthContext";
 import { GradientButton } from "../../components/GradientButton";
 import { SimpleInput, IconInput } from "../../components/CustomInput";
 import colors from "../../constants/colors";

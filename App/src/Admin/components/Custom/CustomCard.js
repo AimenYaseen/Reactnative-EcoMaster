@@ -13,13 +13,15 @@ const screenHeight = Dimensions.get("window").height;
 
 export const CustomCard = ({ item }) => {
   const { state, deleteCustom, getCustom } = useContext(CustomContext);
-  // const [deleted, setDeleted] = useState(false);
 
   React.useEffect(() => {
-    if (state.deleted) {
-      getCustom();
-      // setDeleted(false);
-    }
+    const task = () => {
+      if (state.deleted) {
+        getCustom();
+      }
+    };
+
+    return () => task();
   }, [state.deleted]);
 
   return (

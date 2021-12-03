@@ -48,11 +48,19 @@ const CustomMap = ({ item, index }) => {
   // const duration = habitData ? habitData.duration : 0;
 
   useEffect(() => {
-    getHabit();
+    const task = () => {
+      getHabit();
+    };
+
+    return () => task();
   }, [item.selected, item.completed]);
 
   useEffect(() => {
-    getHabitData();
+    const task = () => {
+      getHabitData();
+    };
+
+    return () => task();
   }, []);
 
   useEffect(() => {

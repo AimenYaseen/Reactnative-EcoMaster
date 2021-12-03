@@ -22,7 +22,7 @@ export default Habits = ({ navigation }) => {
   } = useContext(CustomContext);
 
   React.useEffect(() => {
-    //getCustom();
+    getCustom();
     const unsubscribe = navigation.addListener("focus", () => {
       getCustom();
     });

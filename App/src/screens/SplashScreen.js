@@ -23,13 +23,17 @@ export default SplashScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    setTimeout(() => {
-      try {
-        automaticSignin();
-      } catch (error) {
-        Alert.alert("Something went wrong", error);
-      }
-    }, 3000);
+    const task = () => {
+      setTimeout(() => {
+        try {
+          automaticSignin();
+        } catch (error) {
+          Alert.alert("Something went wrong", error);
+        }
+      }, 3000);
+    };
+
+    return () => task();
   }, [navigation]);
 
   const startColor = colors.freshGreen;
