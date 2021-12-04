@@ -103,7 +103,21 @@ const CustomForm = ({
     if (imageUrl === null && customImage) {
       imageUrl = customImage;
     }
-    onPress(category, title, description, duration, imageUrl, time);
+    if (
+      category == "Habit" ||
+      category == "Energy" ||
+      category == "Water" ||
+      category == "Waste" ||
+      category == "Transportation" ||
+      category == "Food & Drink"
+    ) {
+      onPress(category, title, description, duration, imageUrl, time);
+    } else {
+      Alert.alert(
+        "ERROR!",
+        "You have entered the wrong Category name, Please Try Again with Habit / Energy / Food & Drink / Transportation / Waste / Water ..."
+      );
+    }
   };
 
   const list = [
@@ -193,7 +207,7 @@ const CustomForm = ({
         disabled={text === "Edit" ? true : false}
         label="Category"
         value={category}
-        placeholder="Habits / Energy / Food & Drink / Transportation / Waste / Water"
+        placeholder="Habit / Energy / Food & Drink / Transportation / Waste / Water"
         multiline={false}
         onChangeText={(text) => setCategory(text)}
       />

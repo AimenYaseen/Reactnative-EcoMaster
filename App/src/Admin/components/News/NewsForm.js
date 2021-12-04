@@ -101,7 +101,14 @@ const NewsForm = ({
     if (imageUrl === null && newsImage) {
       imageUrl = newsImage;
     }
-    onPress(category, caption, imageUrl, time);
+    if (category == "Information" || category == "Tips") {
+      onPress(category, caption, imageUrl, time);
+    } else {
+      Alert.alert(
+        "ERROR!",
+        "You have entered the wrong Category name, Please Try Again with Information/Tips..."
+      );
+    }
   };
 
   const list = [
@@ -203,9 +210,9 @@ const NewsForm = ({
         onChangeText={(text) => setTitle(text)}
       /> */}
       <BlockInput
-        label="Caption"
+        label="Description"
         value={caption}
-        placeholder="News Caption"
+        placeholder="News Description"
         multiline={true}
         onChangeText={(text) => setCaption(text)}
       />
