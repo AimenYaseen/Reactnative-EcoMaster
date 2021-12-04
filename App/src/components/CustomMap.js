@@ -22,7 +22,6 @@ const CustomMap = ({ item, index }) => {
   const { state, getReward, getHabit } = useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
   const [habitColor, setHabitColor] = useState(`${colors.gray}`);
-  let habitReward;
 
   const getHabitData = async () => {
     try {
@@ -31,12 +30,7 @@ const CustomMap = ({ item, index }) => {
         .once("value", async (snapshot) => {
           if (snapshot.exists) {
             const data = await snapshot.val();
-            const reward = data.reward;
             setHabitData(data);
-            if (item.selected && item.completed) {
-              habitReward = state.reward + parseInt(reward);
-              getReward(habitReward);
-            }
           }
         });
     } catch (error) {
@@ -50,6 +44,7 @@ const CustomMap = ({ item, index }) => {
   useEffect(() => {
     const task = () => {
       getHabit();
+      getReward();
     };
 
     return task();
@@ -58,6 +53,7 @@ const CustomMap = ({ item, index }) => {
   useEffect(() => {
     const task = () => {
       getHabitData();
+      getReward();
     };
 
     return task();
@@ -82,7 +78,7 @@ const CustomMap = ({ item, index }) => {
 
   return (
     <>
-      {/* <Text>Reward: {state.reward}</Text> */}
+      <Text>Reward: {state.reward}</Text>
       {index == 0 ? (
         <View
           style={{

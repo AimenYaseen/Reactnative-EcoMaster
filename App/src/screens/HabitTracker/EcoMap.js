@@ -23,15 +23,22 @@ const EcoMap = ({ navigation }) => {
   const {
     state: { habits, loading },
     getHabit,
+    getReward,
+    clearReward,
   } = useContext(HabitContext);
 
   React.useEffect(() => {
     getHabit();
-    const unsubscribe = navigation.addListener("focus", () => {
+    const subscribe = navigation.addListener("focus", () => {
+      getReward();
       getHabit();
     });
 
-    return unsubscribe;
+    const unsubscribe = navigation.addListener("blur", () => {
+      clearReward();
+    });
+
+    return subscribe;
   }, []);
 
   const listEmpty = () => <View style={styles.container}></View>;
@@ -142,7 +149,13 @@ const EcoMap = ({ navigation }) => {
             return <CustomMap item={item} index={index} />;
           }}
         />
-        <Spinner visible={loading} color={colors.secondary} animation="fade" />
+        <Spinner
+          size="large"
+          visible={loading}
+          color={colors.secondary}
+          animation="fade"
+          overlayColor={colors.Blue}
+        />
       </ImageBackground>
     </View>
   );

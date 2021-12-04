@@ -74,10 +74,50 @@ const updateHabit = (dispatch) => {
 };
 
 const getReward = (dispatch) => {
-  return (reward) => {
-    if (reward) {
-      dispatch({ type: "reward", payload: reward });
-    }
+  return async () => {
+    dispatch({ type: "loader", payload: true });
+    const userId = Firebase.auth().currentUser.uid;
+    // console.log(userId);
+    Firebase.database()
+      .ref(`HabitTracker/${userId}/`)
+      .orderByKey()
+      .once("value", (snapshot) => {
+        let reward = 0;
+        if (snapshot.exists()) {
+          dispatch({ type: "loader", payload: false });
+          snapshot.forEach((element) => {
+            const { habitId, completed, select, time, lock } = element.val();
+            if (completed) {
+              Firebase.database()
+                .ref("Habits/" + habitId)
+                .once("value", async (snapshot) => {
+                  if (snapshot.exists) {
+                    const data = await snapshot.val();
+                    //console.log(data.reward);
+                    reward = reward + parseInt(data.reward);
+                    //console.log(reward);
+                    dispatch({ type: "reward", payload: reward });
+                  }
+                });
+            }
+          });
+          dispatch({ type: "loader", payload: false });
+        } else {
+          // dispatch({ type: "reward", payload: reward });
+          dispatch({ type: "loader", payload: false });
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: "loader", payload: false });
+        console.error(error);
+      });
+  };
+};
+
+const clearReward = (dispatch) => {
+  return () => {
+    dispatch({ type: "reward", payload: 0 });
   };
 };
 
@@ -130,6 +170,6 @@ const startHabit = (dispatch) => {
 
 export const { Context, Provider } = createDataContext(
   HabitReducer,
-  { getHabit, startHabit, updateHabit, setLock, getReward },
+  { getHabit, startHabit, updateHabit, setLock, getReward, clearReward },
   { habits: [], loading: false, deleted: false, reward: 0 }
 );
