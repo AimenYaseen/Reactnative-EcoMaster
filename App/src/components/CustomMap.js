@@ -9,11 +9,11 @@ import {
 import { Text } from "react-native-elements";
 import Svg, { Circle, Defs, G, Marker, Path } from "react-native-svg";
 
-import { Firebase } from "../../Firebase/config";
+import { Firebase } from "../Firebase/config";
 
-import { Context as HabitContext } from "../../context/HabitTrackerContext";
-import { CustomHead } from "../../components/CustomHead";
-import colors from "../../constants/colors";
+import { Context as HabitContext } from "../context/HabitTrackerContext";
+import { CustomHead } from "./CustomHead";
+import colors from "../constants/colors";
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
@@ -52,7 +52,7 @@ const CustomMap = ({ item, index }) => {
       getHabit();
     };
 
-    return () => task();
+    return task();
   }, [item.selected, item.completed]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const CustomMap = ({ item, index }) => {
       getHabitData();
     };
 
-    return () => task();
+    return task();
   }, []);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const CustomMap = ({ item, index }) => {
       }
     };
 
-    return () => task();
+    return task();
   }, [item]);
 
   return (

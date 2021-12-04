@@ -13,7 +13,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 
 import { CustomHead } from "../../components/CustomHead";
 import { Context as HabitContext } from "../../context/HabitTrackerContext";
-import CustomMap from "./CustomMap";
+import CustomMap from "../../components/CustomMap";
 import colors from "../../constants/colors";
 
 const screenHeight = Dimensions.get("screen").height;

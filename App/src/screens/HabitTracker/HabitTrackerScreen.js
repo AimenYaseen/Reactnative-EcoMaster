@@ -10,7 +10,7 @@ import { Icon } from "react-native-elements";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Firebase } from "../../Firebase/config";
 
-import { HabitCard } from "../../components/CustomCard";
+import HabitCard from "../../components/CustomCard";
 import { CustomHead } from "../../components/CustomHead";
 import colors from "../../constants/colors";
 import { Context as HabitContext } from "../../context/HabitTrackerContext";

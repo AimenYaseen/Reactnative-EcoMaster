@@ -29,7 +29,7 @@ export const HabitCard = ({ item, index }) => {
       }
     };
 
-    return () => task();
+    return task();
   }, [state.deleted]);
 
   return (

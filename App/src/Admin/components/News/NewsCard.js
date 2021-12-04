@@ -20,7 +20,7 @@ export const NewsCard = ({ item, title }) => {
       getNewsInformation();
     };
 
-    return () => task();
+    return task();
   }, [state.deleted]);
 
   return (

@@ -21,7 +21,7 @@ export const CustomCard = ({ item }) => {
       }
     };
 
-    return () => task();
+    return task();
   }, [state.deleted]);
 
   return (

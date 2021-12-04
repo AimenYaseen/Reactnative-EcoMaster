@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   Dimensions,
+  ImageBackground,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
@@ -184,120 +185,125 @@ const AddPost = ({ navigation }) => {
   return (
     <>
       {/* {console.log(userData)} */}
-      <CustomHead
-        text="Create Post"
-        color={colors.whiteSmoke}
-        centerColor={colors.secondary}
-        leftIcon={() => (
-          <Icon
-            name="chevron-left"
-            type="entypo"
-            size={30}
-            onPress={() => navigation.navigate("Post")}
-            color={colors.secondary}
-          />
-        )}
-        rightIcon={null}
-      />
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: 10,
-          backgroundColor: colors.whiteSmoke,
-        }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="always"
+      <ImageBackground
+        style={styles.background}
+        source={require("../../Admin/assets/white.jpg")}
+        //blurRadius={2}
       >
-        <View style={styles.container}>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              alignItems: "center",
-              paddingLeft: 10,
-              //borderWidth: 1,
-            }}
-          >
-            <Avatar
-              rounded
-              source={userData.image ? { uri: userData.image } : defaultImage}
-              size={50}
-              containerStyle={styles.avatar}
+        <CustomHead
+          text="Create Post"
+          color="transparent"
+          centerColor={colors.secondary}
+          leftIcon={() => (
+            <Icon
+              name="chevron-left"
+              type="entypo"
+              size={30}
+              onPress={() => navigation.navigate("Post")}
+              color={colors.secondary}
             />
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {userData.firstName} {userData.lastName}
-            </Text>
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="What's On Your Mind?"
-            multiline
-            onChangeText={(text) => setPost(text)}
-          />
-          {image ? (
-            <Image source={{ uri: image }} style={styles.image} />
-          ) : null}
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: 10,
-            }}
-          >
-            <Button
-              raised
-              type="solid"
-              title="Choose an Image"
-              onPress={() => setVisible(true)}
-              containerStyle={styles.buttonContainer}
-              buttonStyle={{
-                width: screenWidth * 0.5,
-                borderRadius: 30,
-                backgroundColor: colors.blue,
+          )}
+          rightIcon={null}
+        />
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: 10,
+          }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+        >
+          <View style={styles.container}>
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+                paddingLeft: 10,
+                //borderWidth: 1,
               }}
+            >
+              <Avatar
+                rounded
+                source={userData.image ? { uri: userData.image } : defaultImage}
+                size={50}
+                containerStyle={styles.avatar}
+              />
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                {userData.firstName} {userData.lastName}
+              </Text>
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="What's On Your Mind?"
+              multiline
+              onChangeText={(text) => setPost(text)}
             />
-            <Button
-              raised
-              type="solid"
-              title="Add Post"
-              onPress={onSubmitHandle}
-              containerStyle={styles.buttonContainer}
-              buttonStyle={{
-                width: screenWidth * 0.25,
-                borderRadius: 30,
-                backgroundColor: colors.blue,
+            {image ? (
+              <Image source={{ uri: image }} style={styles.image} />
+            ) : null}
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 10,
               }}
+            >
+              <Button
+                raised
+                type="solid"
+                title="Choose an Image"
+                onPress={() => setVisible(true)}
+                containerStyle={styles.buttonContainer}
+                buttonStyle={{
+                  width: screenWidth * 0.46,
+                  borderRadius: 30,
+                  backgroundColor: colors.mauve,
+                }}
+              />
+              <Button
+                raised
+                type="solid"
+                title="Add Post"
+                onPress={onSubmitHandle}
+                containerStyle={styles.buttonContainer}
+                buttonStyle={{
+                  width: screenWidth * 0.3,
+                  borderRadius: 30,
+                  backgroundColor: colors.success,
+                }}
+              />
+            </View>
+            <BottomSheet
+              isVisible={visible}
+              containerStyle={{
+                backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
+                // borderTopRightRadius: 20,
+                //borderTopLeftRadius: 20,
+                //paddingTop: 10,
+              }}
+            >
+              {list.map((l, i) => (
+                <ListItem
+                  key={i}
+                  containerStyle={l.containerStyle}
+                  onPress={l.onPress}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={l.titleStyle}>
+                      {l.title}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </BottomSheet>
+            <Spinner
+              visible={uploading}
+              color={colors.secondary}
+              animation="fade"
             />
           </View>
-          <BottomSheet
-            isVisible={visible}
-            containerStyle={{
-              backgroundColor: "rgba(0.5, 0.25, 0, 0.2)",
-              // borderTopRightRadius: 20,
-              //borderTopLeftRadius: 20,
-              //paddingTop: 10,
-            }}
-          >
-            {list.map((l, i) => (
-              <ListItem
-                key={i}
-                containerStyle={l.containerStyle}
-                onPress={l.onPress}
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={l.titleStyle}>
-                    {l.title}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </BottomSheet>
-          <Spinner
-            visible={uploading}
-            color={colors.secondary}
-            animation="fade"
-          />
-        </View>
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      </ImageBackground>
     </>
   );
 };
@@ -307,7 +313,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 20,
-    backgroundColor: colors.whiteSmoke,
+    // backgroundColor: colors.whiteSmoke,
+  },
+  background: {
+    flex: 1,
+    justifyContent: "center",
+    resizeMode: "contain",
   },
   buttonContainer: {
     marginTop: 20,
@@ -336,7 +347,7 @@ const styles = StyleSheet.create({
     height: "auto",
     borderRadius: 10,
     fontSize: 24,
-    backgroundColor: colors.whiteSmoke,
+    backgroundColor: "transparent",
     borderColor: colors.blue,
   },
   avatar: {

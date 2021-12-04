@@ -21,14 +21,13 @@ const NewsReducer = (state, action) => {
 };
 
 const addNews = (dispatch) => {
-  return async (newsCategory, newsTitle, newsCaption, newsImage, time) => {
-    if (newsCategory && newsTitle && newsCaption) {
+  return async (newsCategory, newsCaption, newsImage, time) => {
+    if (newsCategory && newsCaption) {
       dispatch({ type: "loader", payload: true });
       await Firebase.database()
         .ref(`News/${newsCategory}/` + time)
         .set({
           newsId: time,
-          title: newsTitle,
           caption: newsCaption,
           image: newsImage,
         })
@@ -70,11 +69,10 @@ const getNewsTips = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
           snapshot.forEach((element) => {
-            const { newsId, title, caption, image } = element.val();
+            const { newsId, caption, image } = element.val();
             //pushValues of Object
             newsArr.push({
               id: newsId,
-              title,
               caption,
               image,
             });
@@ -104,11 +102,10 @@ const getNewsInformation = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           const newsArr = [];
           snapshot.forEach((element) => {
-            const { newsId, title, caption, image } = element.val();
+            const { newsId, caption, image } = element.val();
             //pushValues of Object
             newsArr.push({
               id: newsId,
-              title,
               caption,
               image,
             });
@@ -128,14 +125,13 @@ const getNewsInformation = (dispatch) => {
 };
 
 const editNews = (dispatch) => {
-  return async (id, newsCategory, newsTitle, newsCaption, newsImage) => {
-    if (newsCategory && newsCaption && newsTitle) {
+  return async (id, newsCategory, newsCaption, newsImage) => {
+    if (newsCategory && newsCaption) {
       dispatch({ type: "loader", payload: true });
       try {
         await Firebase.database()
           .ref(`News/${newsCategory}/` + id)
           .update({
-            title: newsTitle,
             caption: newsCaption,
             image: newsImage,
           });

@@ -128,7 +128,7 @@ const HabitForm = ({
       step4 == "" &&
       step5 == ""
     ) {
-      Alert.alert("ERROR!", "Please Enter Atleast one step");
+      Alert.alert("ERROR!", "Please enter atleast one step");
     } else {
       step1 ? steps.push(step1) : null;
       step2 ? steps.push(step2) : null;

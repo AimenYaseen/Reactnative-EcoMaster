@@ -38,7 +38,7 @@ const AddHabit = ({ navigation }) => {
       getId();
     };
 
-    return () => task();
+    return task();
   }, [habitId]);
 
   return (

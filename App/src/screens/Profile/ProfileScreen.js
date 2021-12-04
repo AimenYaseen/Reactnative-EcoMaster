@@ -1,5 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ImageBackground,
+} from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFocusEffect } from "@react-navigation/native";
@@ -76,121 +82,137 @@ const ProfileScreen = ({ navigation }) => {
           />
         )}
       />
-      <KeyboardAwareScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="always"
+      <ImageBackground
+        style={styles.background}
+        source={require("../../Admin/assets/white.jpg")}
+        //blurRadius={2}
       >
-        <View style={styles.container}>
-          <Avatar
-            rounded
-            source={
-              userData
-                ? userData.image
-                  ? { uri: userData.image }
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+        >
+          <View style={styles.container}>
+            <Avatar
+              rounded
+              source={
+                userData
+                  ? userData.image
+                    ? { uri: userData.image }
+                    : defaultImage
                   : defaultImage
-                : defaultImage
-            }
-            size={140}
-            containerStyle={styles.avatar}
-          />
-          <View>
-            <Text style={[styles.text, { color: "black" }]}>
-              {userData ? `${userData.firstName} ` : firstName}
-              {userData ? userData.lastName : lastName}
-            </Text>
+              }
+              size={140}
+              containerStyle={styles.avatar}
+            />
+            <View>
+              <Text style={[styles.text, { color: "black" }]}>
+                {userData ? `${userData.firstName} ` : firstName}
+                {userData ? userData.lastName : lastName}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Icon
+                  type="entypo"
+                  name="location-pin"
+                  color={colors.secondary}
+                  size={18}
+                />
+                <Text style={{ padding: 5 }}>
+                  {userData
+                    ? userData.country
+                      ? userData.country
+                      : country
+                    : country}
+                </Text>
+              </View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  marginBottom: screenHeight * 0.06,
+                }}
+              >
+                {userData ? (userData.bio ? userData.bio : bio) : bio}
+              </Text>
+            </View>
+            <View style={[styles.email, styles.shadow]}>
+              <Text style={{ fontWeight: "bold", fontSize: 16 }}>Email</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Icon
+                  type="material-icons"
+                  name="email"
+                  color={colors.secondary}
+                  size={20}
+                />
+                <Text style={{ paddingHorizontal: 10 }}>
+                  {userData ? userData.email : email}
+                </Text>
+              </View>
+            </View>
             <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              style={[
+                styles.email,
+                styles.shadow,
+                {
+                  height: screenHeight * 0.07,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                },
+              ]}
             >
+              <Text>Change Password?</Text>
               <Icon
                 type="entypo"
-                name="location-pin"
+                name="chevron-right"
                 color={colors.secondary}
-                size={18}
+                size={26}
+                onPress={() => setPVisible(true)}
               />
-              <Text style={{ padding: 5 }}>
-                {userData
-                  ? userData.country
-                    ? userData.country
-                    : country
-                  : country}
-              </Text>
             </View>
-            <Text
-              style={{ textAlign: "center", marginBottom: screenHeight * 0.06 }}
-            >
-              {userData ? (userData.bio ? userData.bio : bio) : bio}
-            </Text>
-          </View>
-          <View style={[styles.email, styles.shadow]}>
-            <Text style={{ fontWeight: "bold", fontSize: 16 }}>Email</Text>
-            <View style={{ flexDirection: "row" }}>
-              <Icon
-                type="material-icons"
-                name="email"
-                color={colors.secondary}
-                size={20}
+            <PasswordOverlay
+              visible={pVisible}
+              onBackdropPress={() => setPVisible(false)}
+              text="Change Password"
+              onPress={() => {
+                changePassword({ current, newPassword: newP });
+                // setPVisible(false);
+              }}
+              label1="Current"
+              onChangeText1={(text) => setCurrent(text)}
+              label2="New"
+              onChangeText2={(text) => setNewP(text)}
+            />
+            <View style={styles.button}>
+              <GradientButton
+                text="Sign Out"
+                onPress={() => setConfirm(true)}
               />
-              <Text style={{ paddingHorizontal: 10 }}>
-                {userData ? userData.email : email}
-              </Text>
             </View>
-          </View>
-          <View
-            style={[
-              styles.email,
-              styles.shadow,
-              {
-                height: screenHeight * 0.07,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <Text>Change Password?</Text>
-            <Icon
-              type="entypo"
-              name="chevron-right"
-              color={colors.secondary}
-              size={26}
-              onPress={() => setPVisible(true)}
+            <ConfirmationOverlay
+              visible={confirm}
+              onBackdropPress={() => setConfirm(false)}
+              onPress={() => {
+                signout();
+              }}
+              onPressCancel={() => setConfirm(false)}
+              msg="Are you sure?"
             />
           </View>
-          <PasswordOverlay
-            visible={pVisible}
-            onBackdropPress={() => setPVisible(false)}
-            text="Change Password"
-            onPress={() => {
-              changePassword({ current, newPassword: newP });
-              // setPVisible(false);
-            }}
-            label1="Current"
-            onChangeText1={(text) => setCurrent(text)}
-            label2="New"
-            onChangeText2={(text) => setNewP(text)}
+          <Spinner
+            visible={loading}
+            color={colors.secondary}
+            animation="fade"
           />
-          <View style={styles.button}>
-            <GradientButton text="Sign Out" onPress={() => setConfirm(true)} />
-          </View>
-          <ConfirmationOverlay
-            visible={confirm}
-            onBackdropPress={() => setConfirm(false)}
-            onPress={() => {
-              signout();
-            }}
-            onPressCancel={() => setConfirm(false)}
-            msg="Are you sure?"
-          />
-        </View>
-        <Spinner visible={loading} color={colors.secondary} animation="fade" />
-      </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      </ImageBackground>
     </>
   );
 };
@@ -198,7 +220,7 @@ const ProfileScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    //backgroundColor: colors.white,
     justifyContent: "center",
     //alignItems: "center",
   },

@@ -50,7 +50,9 @@ export const TileCard = ({ item }) => {
           alignSelf: "center",
         }}
       />
-      <View style={styles.durationTile}>
+      <View
+        style={[styles.durationTile, { backgroundColor: colors.whiteSmoke }]}
+      >
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Icon
             type="entypo"
@@ -58,7 +60,7 @@ export const TileCard = ({ item }) => {
             color={colors.secondary}
             size={20}
           />
-          <Text style={{ paddingHorizontal: 10 }}>
+          <Text style={{ paddingHorizontal: 10, color: colors.secondary }}>
             Duration : {item.duration} Days
           </Text>
         </View>
@@ -79,7 +81,7 @@ export const TileCard = ({ item }) => {
   );
 };
 
-export const HabitCard = ({ item, index }) => {
+const HabitCard = ({ item, index }) => {
   const { startHabit, updateHabit, getHabit, setLock } =
     useContext(HabitContext);
   const [habitData, setHabitData] = useState(null);
@@ -109,32 +111,41 @@ export const HabitCard = ({ item, index }) => {
   const duration = habitData ? habitData.duration : 0;
 
   useEffect(() => {
-    getHabitData();
+    const task = () => {
+      getHabitData();
+    };
+    return task();
   }, [item]);
 
   useEffect(() => {
-    if (item.completed) {
-      setLock(index + 2, false);
-      getHabit();
-    }
+    const task = () => {
+      if (item.completed) {
+        setLock(index + 2, false);
+        getHabit();
+      }
+    };
+    return task();
   }, [item.completed]);
 
   useEffect(() => {
-    if (item.selected) {
-      const timePeriod = parseInt(duration);
-      // console.log("NOW_____________");
-      // console.log("current: ", moment().format());
-      const current = moment().format();
-      // console.log("previous: ", moment(item.time).format());
-      if (timePeriod > 0) {
-        const habitTime = moment(item.time).add(timePeriod, "days").format();
-        if (current >= habitTime) {
-          setStatus("Completed");
-          updateHabit(item.id, true);
-          getHabit();
+    const task = () => {
+      if (item.selected) {
+        const timePeriod = parseInt(duration);
+        // console.log("NOW_____________");
+        // console.log("current: ", moment().format());
+        const current = moment().format();
+        // console.log("previous: ", moment(item.time).format());
+        if (timePeriod > 0) {
+          const habitTime = moment(item.time).add(timePeriod, "days").format();
+          if (current >= habitTime) {
+            setStatus("Completed");
+            updateHabit(item.id, true);
+            getHabit();
+          }
         }
       }
-    }
+    };
+    return task();
   }, [duration]);
 
   return (
@@ -379,3 +390,5 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 });
+
+export default HabitCard;

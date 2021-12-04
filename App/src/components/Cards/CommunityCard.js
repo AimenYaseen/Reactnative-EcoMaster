@@ -63,7 +63,7 @@ export const CommunityCard = ({ item }) => {
       getUser();
     };
 
-    return () => task();
+    return task();
   }, [item]);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export const CommunityCard = ({ item }) => {
       }
     };
 
-    return () => task();
+    return task();
   }, [state.deleted]);
 
   const onLike = async () => {

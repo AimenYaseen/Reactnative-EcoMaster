@@ -51,14 +51,14 @@ const AddNews = ({ navigation }) => {
             imageVisible={false}
             onPress={async (
               newsCategory,
-              newsTitle,
+              // newsTitle,
               newsCaption,
               newsImage,
               time
             ) =>
               await addNews(
                 newsCategory,
-                newsTitle,
+                // newsTitle,
                 newsCaption,
                 newsImage,
                 time

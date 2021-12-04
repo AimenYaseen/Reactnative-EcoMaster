@@ -50,14 +50,14 @@ const EditNews = ({ navigation, route }) => {
           <NewsForm
             loading={loading}
             text="Edit"
-            newsTitle={item.title}
+            // newsTitle={item.title}
             newsCaption={item.caption}
             newsCategory={title}
             newsImage={item.image}
             imageVisible={true}
             onPress={async (
               newsCategory,
-              newsTitle,
+              // newsTitle,
               newsCaption,
               newsImage,
               time
@@ -65,7 +65,7 @@ const EditNews = ({ navigation, route }) => {
               await editNews(
                 item.id,
                 newsCategory,
-                newsTitle,
+                // newsTitle,
                 newsCaption,
                 newsImage
               )

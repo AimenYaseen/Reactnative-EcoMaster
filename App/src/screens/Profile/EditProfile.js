@@ -197,8 +197,8 @@ const EditScreen = ({ navigation }) => {
       {/* {console.log(image)} */}
       <ImageBackground
         style={styles.background}
-        // source={require("../../assets/images/edit2.jpeg")}
-        blurRadius={2}
+        source={require("../../Admin/assets/white.jpg")}
+        //blurRadius={2}
       >
         <CustomHead
           // text="Profile"

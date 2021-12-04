@@ -33,7 +33,7 @@ export default SplashScreen = ({ navigation }) => {
       }, 3000);
     };
 
-    return () => task();
+    return task();
   }, [navigation]);
 
   const startColor = colors.freshGreen;

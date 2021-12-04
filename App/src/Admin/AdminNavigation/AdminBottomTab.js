@@ -12,7 +12,7 @@ import { Icon } from "react-native-elements";
 import { AdminSuggestionTopTabScreen } from "./AdminTopTab";
 import AdminHabitTracker from "../AdminScreens/HabitTracker/AdminHabitTracker";
 import AdminCreateHabit from "../AdminScreens/CustomHabit/AdminCreateHabit";
-import AdminEcoMap from "../AdminScreens/HabitTracker/AdminEcoMap";
+//import AdminEcoMap from "../AdminScreens/HabitTracker/AdminEcoMap";
 
 import colors from "../../constants/colors";
 
@@ -38,7 +38,7 @@ export const AdminHabitTabScreen = () => {
       shifting={true}
       // labeled={false}
     >
-      <AdminHabitTab.Screen
+      {/* <AdminHabitTab.Screen
         name="AdminEcoMap"
         component={AdminEcoMap}
         options={{
@@ -51,7 +51,7 @@ export const AdminHabitTabScreen = () => {
             />
           ),
         }}
-      />
+      /> */}
       <AdminHabitTab.Screen
         name="AdminHabitTracker"
         component={AdminHabitTracker}

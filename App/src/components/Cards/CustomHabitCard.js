@@ -40,7 +40,7 @@ export const CustomHabitCard = ({ item }) => {
         }
       }
     };
-    return () => task();
+    return task();
   }, []);
 
   React.useEffect(() => {
@@ -50,7 +50,7 @@ export const CustomHabitCard = ({ item }) => {
       }
     };
 
-    return () => task();
+    return task();
   }, [state.deleted]);
 
   return (

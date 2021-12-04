@@ -20,7 +20,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const NewsForm = ({
-  newsTitle,
+  // newsTitle,
   newsCaption,
   text,
   newsCategory,
@@ -29,7 +29,7 @@ const NewsForm = ({
   onPress,
   loading,
 }) => {
-  const [title, setTitle] = useState(newsTitle);
+  // const [title, setTitle] = useState(newsTitle);
   const [caption, setCaption] = useState(newsCaption);
   const [category, setCategory] = useState(newsCategory);
   const [uploading, setUploading] = useState(false);
@@ -40,14 +40,6 @@ const NewsForm = ({
   let time = new Date().getTime();
 
   const disabled = image || newsImage ? false : true;
-  // React.useEffect(() => {
-  //   const unsubscribe = navigation.addListener("blur", () => {
-  //     setPost("");
-  //     setImage(null);
-  //   });
-
-  //   return unsubscribe;
-  // }, [navigation]);
 
   const uploadImage = async () => {
     if (image == null) {
@@ -109,7 +101,7 @@ const NewsForm = ({
     if (imageUrl === null && newsImage) {
       imageUrl = newsImage;
     }
-    onPress(category, title, caption, imageUrl, time);
+    onPress(category, caption, imageUrl, time);
   };
 
   const list = [
@@ -203,13 +195,13 @@ const NewsForm = ({
         multiline={false}
         onChangeText={(text) => setCategory(text)}
       />
-      <BlockInput
+      {/* <BlockInput
         label="Title"
         value={title}
         placeholder="News Title"
         multiline={false}
         onChangeText={(text) => setTitle(text)}
-      />
+      /> */}
       <BlockInput
         label="Caption"
         value={caption}
