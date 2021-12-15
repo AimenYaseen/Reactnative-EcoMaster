@@ -154,7 +154,7 @@ const EcoMap = ({ navigation }) => {
           visible={loading}
           color={colors.secondary}
           animation="fade"
-          overlayColor={colors.Blue}
+          // overlayColor={colors.Blue}
         />
       </ImageBackground>
     </View>
