@@ -84,7 +84,6 @@ const getReward = (dispatch) => {
       .once("value", (snapshot) => {
         let reward = 0;
         if (snapshot.exists()) {
-          dispatch({ type: "loader", payload: false });
           snapshot.forEach((element) => {
             const { habitId, completed, select, time, lock } = element.val();
             if (completed) {
@@ -107,6 +106,9 @@ const getReward = (dispatch) => {
           dispatch({ type: "loader", payload: false });
           console.log("No data available");
         }
+        // if (reward == 0) {
+        //   dispatch({ type: "reward", payload: reward });
+        // }
       })
       .catch((error) => {
         dispatch({ type: "loader", payload: false });
@@ -118,6 +120,7 @@ const getReward = (dispatch) => {
 const clearReward = (dispatch) => {
   return () => {
     dispatch({ type: "reward", payload: 0 });
+    dispatch({ type: "habits", payload: [] });
   };
 };
 

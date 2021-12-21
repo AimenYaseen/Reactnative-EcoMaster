@@ -38,6 +38,7 @@ const admin_signin = (dispatch) => {
               dispatch({ type: "loader", payload: false });
               replace("AdminFlow");
             } else {
+              dispatch({ type: "loader", payload: false });
               Alert.alert(
                 "ERROR!",
                 "Admin Credentials are invalid, Try Again..."

@@ -20,6 +20,7 @@ import {
 import colors from "../../constants/colors";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as UserContext } from "../../context/UserContext";
+import { Context as HabitContext } from "../../context/HabitTrackerContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -31,6 +32,10 @@ const ProfileScreen = ({ navigation }) => {
     getUser,
     changePassword,
   } = useContext(UserContext);
+  const {
+    //  state: { loading },
+    clearReward,
+  } = useContext(HabitContext);
 
   const [pVisible, setPVisible] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -177,6 +182,27 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={() => setPVisible(true)}
               />
             </View>
+            <View
+              style={[
+                styles.email,
+                styles.shadow,
+                {
+                  height: screenHeight * 0.07,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                },
+              ]}
+            >
+              <Text>Invite Friends</Text>
+              <Icon
+                type="entypo"
+                name="chevron-right"
+                color={colors.secondary}
+                size={26}
+                onPress={() => setPVisible(true)}
+              />
+            </View>
             <PasswordOverlay
               visible={pVisible}
               onBackdropPress={() => setPVisible(false)}
@@ -199,7 +225,8 @@ const ProfileScreen = ({ navigation }) => {
             <ConfirmationOverlay
               visible={confirm}
               onBackdropPress={() => setConfirm(false)}
-              onPress={() => {
+              onPress={async () => {
+                await clearReward();
                 signout();
               }}
               onPressCancel={() => setConfirm(false)}
@@ -264,7 +291,7 @@ const styles = StyleSheet.create({
     //paddingLeft: 2,
   },
   button: {
-    paddingVertical: screenWidth * 0.12,
+    paddingVertical: screenWidth * 0.09,
     paddingHorizontal: screenWidth * 0.3,
   },
 });

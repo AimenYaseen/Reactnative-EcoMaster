@@ -21,22 +21,23 @@ const screenWidth = Dimensions.get("screen").width;
 
 const EcoMap = ({ navigation }) => {
   const {
-    state: { habits, loading },
+    state: { habits, loading, reward },
     getHabit,
     getReward,
     clearReward,
   } = useContext(HabitContext);
 
   React.useEffect(() => {
+    getReward();
     getHabit();
     const subscribe = navigation.addListener("focus", () => {
       getReward();
       getHabit();
     });
 
-    const unsubscribe = navigation.addListener("blur", () => {
-      clearReward();
-    });
+    // const unsubscribe = navigation.addListener("blur", () => {
+    //   clearReward();
+    // });
 
     return subscribe;
   }, []);
@@ -122,6 +123,7 @@ const EcoMap = ({ navigation }) => {
         style={styles.background}
         source={require("../../Admin/assets/habit_back2.jpg")}
       >
+        <Text style={styles.reward}>Reward: {reward}</Text>
         <FlatList
           contentContainerStyle={{
             //borderWidth: 1,
@@ -193,6 +195,14 @@ const styles = StyleSheet.create({
     width: 42,
     borderRadius: 21,
     backgroundColor: colors.success,
+  },
+  reward: {
+    backgroundColor: colors.mustard,
+    //color: colors.whiteSmoke,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+    padding: 5,
   },
 });
 

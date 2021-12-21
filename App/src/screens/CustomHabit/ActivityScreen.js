@@ -56,7 +56,7 @@ const ActivityScreen = ({ navigation }) => {
         source={require("../../Admin/assets/gray-abstract.jpg")}
       >
         <CustomHead
-          text="Activity"
+          text="Active Habits"
           color="transparent"
           centerColor={colors.secondary}
           leftIcon={() => (

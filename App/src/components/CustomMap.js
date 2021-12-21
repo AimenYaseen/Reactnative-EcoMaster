@@ -52,8 +52,16 @@ const CustomMap = ({ item, index }) => {
 
   useEffect(() => {
     const task = () => {
-      getHabitData();
       getReward();
+    };
+
+    return task();
+  }, [item.completed]);
+
+  useEffect(() => {
+    const task = () => {
+      getHabitData();
+      // getReward();
     };
 
     return task();
@@ -78,7 +86,7 @@ const CustomMap = ({ item, index }) => {
 
   return (
     <>
-      <Text>Reward: {state.reward}</Text>
+      {/* <Text>Reward: {state.reward}</Text> */}
       {index == 0 ? (
         <View
           style={{
