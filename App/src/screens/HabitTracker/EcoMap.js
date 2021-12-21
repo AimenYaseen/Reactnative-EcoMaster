@@ -123,7 +123,24 @@ const EcoMap = ({ navigation }) => {
         style={styles.background}
         source={require("../../Admin/assets/habit_back2.jpg")}
       >
-        <Text style={styles.reward}>Reward: {reward}</Text>
+        <View style={[styles.duration, styles.shadow]}>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Icon
+              type="font-awesome-5"
+              name="coins"
+              color="#F3D539"
+              size={25}
+            />
+            <Text
+              h4
+              h4Style={{ fontSize: 15 }}
+              style={{ paddingHorizontal: 10, paddingTop: 3 }}
+            >
+              Reward : {reward} points
+            </Text>
+          </View>
+        </View>
+        {/* <Text style={styles.reward}>Reward: {reward}</Text> */}
         <FlatList
           contentContainerStyle={{
             //borderWidth: 1,
@@ -203,6 +220,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     padding: 5,
+  },
+  duration: {
+    //marginHorizontal: screenWidth * 0.03,
+    marginTop: screenHeight * 0.01,
+    height: screenHeight * 0.06,
+    width: screenWidth * 0.55,
+    backgroundColor: "white",
+    borderColor: "transparent",
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignSelf: "center",
+  },
+  shadow: {
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 3.5,
+    elevation: 5,
   },
 });
 
