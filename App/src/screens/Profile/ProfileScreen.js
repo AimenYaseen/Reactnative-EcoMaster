@@ -175,12 +175,12 @@ const ProfileScreen = ({ navigation }) => {
             >
               <View style={{ flexDirection: "row" }}>
                 <Icon
-                  type="font-awesome5"
+                  type="entypo"
                   name="key"
                   color={colors.secondary}
                   size={20}
                 />
-                <Text>Change Password?</Text>
+                <Text style={{ paddingHorizontal: 10 }}>Change Password?</Text>
               </View>
               <Icon
                 type="entypo"
@@ -204,12 +204,12 @@ const ProfileScreen = ({ navigation }) => {
             >
               <View style={{ flexDirection: "row" }}>
                 <Icon
-                  type="material-icons"
-                  name="email"
+                  type="ionicon"
+                  name="md-rocket-sharp"
                   color={colors.secondary}
                   size={20}
                 />
-                <Text>Invite Friends</Text>
+                <Text style={{ paddingHorizontal: 10 }}>Invite Friends</Text>
               </View>
               <Icon
                 type="entypo"

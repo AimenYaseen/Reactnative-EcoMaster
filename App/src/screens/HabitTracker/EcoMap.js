@@ -123,21 +123,32 @@ const EcoMap = ({ navigation }) => {
         style={styles.background}
         source={require("../../Admin/assets/habit_back2.jpg")}
       >
-        <View style={[styles.duration, styles.shadow]}>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Icon
-              type="font-awesome-5"
-              name="coins"
-              color="#F3D539"
-              size={25}
-            />
-            <Text
-              h4
-              h4Style={{ fontSize: 15 }}
-              style={{ paddingHorizontal: 10, paddingTop: 3 }}
-            >
-              Reward : {reward} points
-            </Text>
+        <View style={{ backgroundColor: "#F3D539" }}>
+          <View
+            style={[
+              styles.duration,
+              styles.shadow,
+              {
+                // marginTop: 35,
+                marginBottom: 10,
+              },
+            ]}
+          >
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Icon
+                type="font-awesome-5"
+                name="coins"
+                color="#F3D539"
+                size={20}
+              />
+              <Text
+                h4
+                h4Style={{ fontSize: 13 }}
+                style={{ paddingHorizontal: 10, paddingTop: 3 }}
+              >
+                Reward : {reward} points
+              </Text>
+            </View>
           </View>
         </View>
         {/* <Text style={styles.reward}>Reward: {reward}</Text> */}
@@ -224,8 +235,8 @@ const styles = StyleSheet.create({
   duration: {
     //marginHorizontal: screenWidth * 0.03,
     marginTop: screenHeight * 0.01,
-    height: screenHeight * 0.06,
-    width: screenWidth * 0.55,
+    height: screenHeight * 0.05,
+    width: screenWidth * 0.85,
     backgroundColor: "white",
     borderColor: "transparent",
     borderWidth: 1,
