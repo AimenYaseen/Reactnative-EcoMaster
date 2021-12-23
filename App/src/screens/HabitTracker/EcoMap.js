@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     //marginHorizontal: screenWidth * 0.03,
     marginTop: screenHeight * 0.01,
     height: screenHeight * 0.05,
-    width: screenWidth * 0.85,
+    width: screenWidth * 0.9,
     backgroundColor: "white",
     borderColor: "transparent",
     borderWidth: 1,
