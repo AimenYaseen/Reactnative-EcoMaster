@@ -61,6 +61,7 @@ const CustomMap = ({ item, index }) => {
   useEffect(() => {
     const task = () => {
       getHabitData();
+      getHabitData();
       // getReward();
     };
 

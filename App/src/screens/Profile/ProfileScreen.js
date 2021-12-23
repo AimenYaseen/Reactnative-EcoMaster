@@ -173,7 +173,15 @@ const ProfileScreen = ({ navigation }) => {
                 },
               ]}
             >
-              <Text>Change Password?</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Icon
+                  type="font-awesome5"
+                  name="key"
+                  color={colors.secondary}
+                  size={20}
+                />
+                <Text>Change Password?</Text>
+              </View>
               <Icon
                 type="entypo"
                 name="chevron-right"
@@ -194,7 +202,15 @@ const ProfileScreen = ({ navigation }) => {
                 },
               ]}
             >
-              <Text>Invite Friends</Text>
+              <View style={{ flexDirection: "row" }}>
+                <Icon
+                  type="material-icons"
+                  name="email"
+                  color={colors.secondary}
+                  size={20}
+                />
+                <Text>Invite Friends</Text>
+              </View>
               <Icon
                 type="entypo"
                 name="chevron-right"
