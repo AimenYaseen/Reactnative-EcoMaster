@@ -123,7 +123,7 @@ const EcoMap = ({ navigation }) => {
         style={styles.background}
         source={require("../../Admin/assets/habit_back2.jpg")}
       >
-        <View style={{ backgroundColor: "#F3D539" }}>
+        <View style={{ backgroundColor: colors.mustard }}>
           <View
             style={[
               styles.duration,
@@ -138,7 +138,7 @@ const EcoMap = ({ navigation }) => {
               <Icon
                 type="font-awesome-5"
                 name="coins"
-                color="#F3D539"
+                color="#F7D201"
                 size={20}
               />
               <Text

@@ -7,6 +7,8 @@ import {
   ImageBackground,
 } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
+import RNFetchBlob from "rn-fetch-blob";
+import Share from "react-native-share";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFocusEffect } from "@react-navigation/native";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -60,6 +62,46 @@ const ProfileScreen = ({ navigation }) => {
       };
     }, [navigation])
   );
+
+  const invite = async () => {
+    const fs = RNFetchBlob.fs;
+    let imagePath = null;
+    RNFetchBlob.config({
+      fileCache: true,
+    })
+      .fetch(
+        "GET",
+        "https://firebasestorage.googleapis.com/v0/b/ecomaster-74319.appspot.com/o/customImages%2Fea624f68-d44c-41a2-93c4-a1dfc36020511640411394058.jpg?alt=media&token=a98e54db-3dbf-4896-9b0a-169dd172891b"
+      )
+      // the image is now dowloaded to device's storage
+      .then((resp) => {
+        // the image path you can use it directly with Image component
+        imagePath = resp.path();
+        return resp.readFile("base64");
+      })
+      .then((base64Data) => {
+        // here's base64 encoded image
+        console.log(base64Data);
+        const image = "data:image/jpeg;base64," + base64Data;
+        const shareOptions = {
+          title: "Invite Friends",
+          message:
+            "Join Eco-Master" +
+            "\nhttps://github.com/AimenYaseen/Reactnative-EcoMaster",
+          url: image,
+        };
+
+        Share.open(shareOptions)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            err && console.log(err);
+          });
+        // remove the file from storage
+        return fs.unlink(imagePath);
+      });
+  };
 
   let defaultImage = require("../../assets/images/default/default-user.jpeg");
   return (
@@ -216,7 +258,7 @@ const ProfileScreen = ({ navigation }) => {
                 name="chevron-right"
                 color={colors.secondary}
                 size={26}
-                onPress={() => setPVisible(true)}
+                onPress={() => invite()}
               />
             </View>
             <PasswordOverlay

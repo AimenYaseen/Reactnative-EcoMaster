@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text, View, StyleSheet, Dimensions, Alert } from "react-native";
+import RNFetchBlob from "rn-fetch-blob";
+import Share from "react-native-share";
 import { Tile, Icon, Button, Divider } from "react-native-elements";
 import moment from "moment";
 
@@ -64,6 +66,11 @@ export const ActivityCard = ({ item }) => {
       if (timePeriod > 0) {
         const habitTime = moment(item.id).add(timePeriod, "days").format();
         // console.log("Previous", moment(item.id).format());
+        var a = moment([2007, 0, 29]);
+        var b = moment([2007, 0, 28]);
+        // console.log(moment([2007, 0, 29]));
+        //console.log(a.diff(b, "days"));
+        //  console.log("Difference : ", habitTime.diff(current, "days"));
         console.log("Addition", habitTime);
         if (current >= habitTime) {
           setStatus("Completed");
@@ -75,6 +82,46 @@ export const ActivityCard = ({ item }) => {
 
     return task();
   }, [duration]);
+
+  const share = (stat, data) => {
+    console.log(data);
+    const fs = RNFetchBlob.fs;
+    let imagePath = null;
+    RNFetchBlob.config({
+      fileCache: true,
+    })
+      .fetch("GET", data.image)
+      // the image is now dowloaded to device's storage
+      .then((resp) => {
+        // the image path you can use it directly with Image component
+        imagePath = resp.path();
+        return resp.readFile("base64");
+      })
+      .then((base64Data) => {
+        // here's base64 encoded image
+        console.log(base64Data);
+        const image = "data:image/jpeg;base64," + base64Data;
+        const shareOptions = {
+          title: data.title,
+          message:
+            `That's my Eco-Master progress for the ${data.title} \n` +
+            // data.description +
+            `Stage: ${data.duration} days (${status})` +
+            "\nCheck out the app at: https://github.com/AimenYaseen/Reactnative-EcoMaster",
+          url: image,
+        };
+
+        Share.open(shareOptions)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            err && console.log(err);
+          });
+        // remove the file from storage
+        return fs.unlink(imagePath);
+      });
+  };
 
   return (
     <>
@@ -174,18 +221,18 @@ export const ActivityCard = ({ item }) => {
             }}
           />
         ) : null}
-        {/* <Button
+        <Button
           raised
           type="solid"
           title="Share"
-          // onPress={() => navigate("EditCustomHabit", { item })}
+          onPress={() => share(status, habitData)}
           containerStyle={styles.buttonContainer}
           buttonStyle={{
             width: screenWidth * 0.3,
             borderRadius: 30,
             backgroundColor: colors.mauve,
           }}
-        /> */}
+        />
       </View>
     </>
   );

@@ -71,10 +71,10 @@ const CustomMap = ({ item, index }) => {
   useEffect(() => {
     const task = () => {
       if (item.selected) {
-        console.log("Selected", item.selected);
+        // console.log("Selected", item.selected);
         setHabitColor("#F7D201");
         if (item.completed) {
-          console.log("COMPLETED", item.completed);
+          //   console.log("COMPLETED", item.completed);
           setHabitColor(`${colors.dullGreen}`);
         }
       } else {

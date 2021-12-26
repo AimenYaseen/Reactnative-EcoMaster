@@ -8,6 +8,8 @@ import {
   Alert,
 } from "react-native";
 import { Tile, Card, Icon, Button, Divider } from "react-native-elements";
+import RNFetchBlob from "rn-fetch-blob";
+import Share from "react-native-share";
 import moment from "moment";
 
 import { Firebase } from "../Firebase/config";
@@ -38,7 +40,7 @@ export const TileCard = ({ item }) => {
         featured
         caption={item.description}
         activeOpacity={0.8}
-        //captionStyle={{ fontWeight: "bold" }}
+        captionStyle={{ fontWeight: "bold" }}
         width={screenWidth * 0.95}
         height={screenHeight * 0.27}
         imageContainerStyle={{
@@ -150,6 +152,46 @@ const HabitCard = ({ item, index }) => {
     return task();
   }, [duration]);
 
+  const share = (stat, data) => {
+    console.log(data);
+    const fs = RNFetchBlob.fs;
+    let imagePath = null;
+    RNFetchBlob.config({
+      fileCache: true,
+    })
+      .fetch("GET", data.image)
+      // the image is now dowloaded to device's storage
+      .then((resp) => {
+        // the image path you can use it directly with Image component
+        imagePath = resp.path();
+        return resp.readFile("base64");
+      })
+      .then((base64Data) => {
+        // here's base64 encoded image
+        console.log(base64Data);
+        const image = "data:image/jpeg;base64," + base64Data;
+        const shareOptions = {
+          title: data.title,
+          message:
+            `That's my Eco-Master progress for the ${data.title} \n` +
+            // data.description +
+            `Stage: ${data.duration} days (${stat})` +
+            "\nCheck out the app at: https://github.com/AimenYaseen/Reactnative-EcoMaster",
+          url: image,
+        };
+
+        Share.open(shareOptions)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            err && console.log(err);
+          });
+        // remove the file from storage
+        return fs.unlink(imagePath);
+      });
+  };
+
   return (
     <>
       <View>
@@ -203,7 +245,7 @@ const HabitCard = ({ item, index }) => {
                     size={20}
                   />
                   <Text style={{ paddingHorizontal: 10 }}>
-                    Duration : {habitData ? habitData.duration : null} Days
+                    Duration : 7/{habitData ? habitData.duration : null} Days
                   </Text>
                 </View>
               </View>
@@ -282,6 +324,7 @@ const HabitCard = ({ item, index }) => {
                 <Button
                   type="solid"
                   title="Share"
+                  onPress={() => share(status, habitData)}
                   raised
                   buttonStyle={{
                     width: screenWidth * 0.25,
