@@ -37,6 +37,8 @@ export const TileCard = ({ item }) => {
         title={item.title}
         featured
         caption={item.description}
+        activeOpacity={0.8}
+        //captionStyle={{ fontWeight: "bold" }}
         width={screenWidth * 0.95}
         height={screenHeight * 0.27}
         imageContainerStyle={{
@@ -260,7 +262,7 @@ const HabitCard = ({ item, index }) => {
                 <Button
                   disabled={disable}
                   type="solid"
-                  title="Select"
+                  title="Start"
                   onPress={async () => {
                     await startHabit(item.id, true, Date.now());
                     getHabit();
