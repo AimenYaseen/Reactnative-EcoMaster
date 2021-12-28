@@ -47,31 +47,59 @@ const addActivity = (dispatch) => {
             );
           } else {
             Firebase.database()
-              .ref("Activity/" + time)
-              .set({
-                activityId: time,
-                userId: uid,
-                customId: Id,
-              })
-              .then(() => {
-                //loader
-                dispatch({ type: "loader", payload: false });
-                Alert.alert(
-                  " Habit Uploaded!",
-                  "Your Habit has successfully Uploaded",
-                  [
-                    {
-                      text: "OK",
-                      onPress: () => navigate("Custom", { screen: "Activity" }),
-                    },
-                  ],
-                  { cancelable: false }
-                );
-              })
-              .catch((error) => {
-                //loader
-                dispatch({ type: "loader", payload: false });
-                Alert.alert("ERROR!", error.message);
+              .ref("Activity/")
+              .orderByKey()
+              .once("value", (snapshot) => {
+                if (snapshot.exists()) {
+                  let pending = false;
+                  snapshot.forEach((element) => {
+                    // console.log(element.val());
+                    const { customId, userId, completed } = element.val();
+                    // Checking
+                    if (userId == uid) {
+                      if (completed == false) {
+                        pending = true;
+                      }
+                    }
+                  });
+                  if (pending) {
+                    dispatch({ type: "loader", payload: false });
+                    Alert.alert(
+                      "ERROR",
+                      "You already Have an incomplete Habit, Please complete that first to select another..."
+                    );
+                  } else {
+                    Firebase.database()
+                      .ref("Activity/" + time)
+                      .set({
+                        activityId: time,
+                        userId: uid,
+                        customId: Id,
+                        completed: false,
+                      })
+                      .then(() => {
+                        //loader
+                        dispatch({ type: "loader", payload: false });
+                        Alert.alert(
+                          " Habit Uploaded!",
+                          "Your Habit has successfully Uploaded",
+                          [
+                            {
+                              text: "OK",
+                              onPress: () =>
+                                navigate("Custom", { screen: "Activity" }),
+                            },
+                          ],
+                          { cancelable: false }
+                        );
+                      })
+                      .catch((error) => {
+                        //loader
+                        dispatch({ type: "loader", payload: false });
+                        Alert.alert("ERROR!", error.message);
+                      });
+                  }
+                }
               });
           }
         } else {
@@ -142,8 +170,26 @@ const deleteActivity = (dispatch) => {
   };
 };
 
+const updateActivity = (dispatch) => {
+  return (habitId, completed) => {
+    try {
+      const userId = Firebase.auth().currentUser.uid;
+      Firebase.database()
+        .ref("Activity/" + habitId)
+        .update({
+          completed: completed,
+        });
+      dispatch({ type: "loader", payload: false });
+    } catch (error) {
+      //loader
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR!", error.message);
+    }
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   ActivityReducer,
-  { addActivity, getActivity, deleteActivity },
+  { addActivity, getActivity, deleteActivity, updateActivity },
   { activity: [], loading: false, deleted: false }
 );

@@ -19,7 +19,8 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const CustomHabitCard = ({ item }) => {
-  const { state, deleteCustom, getCustom } = useContext(CustomContext);
+  const { state, deleteCustom, getCustom, updateCustom } =
+    useContext(CustomContext);
   const [status, setStatus] = useState("Pending");
 
   const disable = status == "Completed" ? true : false;
@@ -35,6 +36,8 @@ export const CustomHabitCard = ({ item }) => {
         // console.log("Completed", habitTime);
         if (current >= habitTime) {
           setStatus("Completed");
+          updateCustom(item.id, true);
+          getCustom();
         } else {
           setStatus("Pending");
         }

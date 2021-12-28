@@ -31,36 +31,72 @@ const addCustom = (dispatch) => {
       if (customDuration > 1) {
         dispatch({ type: "loader", payload: true });
         const uid = await AsyncStorage.getItem("user");
-        await Firebase.database()
-          .ref("UserHabits/" + time)
-          .set({
-            customId: time,
-            userId: uid,
-            title: customTitle,
-            description: customDescription,
-            duration: customDuration,
-            time: Date.now(),
-            image: customImage,
-          })
-          .then(() => {
-            //loader
-            dispatch({ type: "loader", payload: false });
-            Alert.alert(
-              " Habit Uploaded!",
-              "Your Habit has successfully Uploaded",
-              [
-                {
-                  text: "OK",
-                  onPress: () => navigate("Custom", { screen: "CreateHabit" }),
-                },
-              ],
-              { cancelable: false }
-            );
-          })
-          .catch((error) => {
-            //loader
-            dispatch({ type: "loader", payload: false });
-            Alert.alert("ERROR!", error.message);
+        Firebase.database()
+          .ref("UserHabits/")
+          .orderByKey()
+          .once("value", (snapshot) => {
+            if (snapshot.exists()) {
+              let pending = false;
+              snapshot.forEach((element) => {
+                // console.log(element.val());
+                const { customId, userId, completed } = element.val();
+                // Checking
+                if (userId == uid) {
+                  if (completed == false) {
+                    pending = true;
+                  }
+                }
+              });
+              if (pending) {
+                dispatch({ type: "loader", payload: false });
+                Alert.alert(
+                  "ERROR",
+                  "You already Have an incomplete Habit, Please complete that first to create another...",
+                  [
+                    {
+                      text: "OK",
+                      onPress: () =>
+                        navigate("Custom", { screen: "CreateHabit" }),
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              } else {
+                Firebase.database()
+                  .ref("UserHabits/" + time)
+                  .set({
+                    customId: time,
+                    userId: uid,
+                    title: customTitle,
+                    description: customDescription,
+                    duration: customDuration,
+                    time: Date.now(),
+                    image: customImage,
+                    completed: false,
+                  })
+                  .then(() => {
+                    //loader
+                    dispatch({ type: "loader", payload: false });
+                    Alert.alert(
+                      " Habit Uploaded!",
+                      "Your Habit has successfully Uploaded",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () =>
+                            navigate("Custom", { screen: "CreateHabit" }),
+                        },
+                      ],
+                      { cancelable: false }
+                    );
+                  })
+                  .catch((error) => {
+                    //loader
+                    dispatch({ type: "loader", payload: false });
+                    Alert.alert("ERROR!", error.message);
+                  });
+              }
+            }
           });
       } else {
         Alert.alert("ERROR!", " Duration must be greater than 1");
@@ -211,8 +247,26 @@ const deleteCustom = (dispatch) => {
   };
 };
 
+const updateCustom = (dispatch) => {
+  return (habitId, completed) => {
+    try {
+      const userId = Firebase.auth().currentUser.uid;
+      Firebase.database()
+        .ref("UserHabits/" + habitId)
+        .update({
+          completed: completed,
+        });
+      dispatch({ type: "loader", payload: false });
+    } catch (error) {
+      //loader
+      dispatch({ type: "loader", payload: false });
+      Alert.alert("ERROR!", error.message);
+    }
+  };
+};
+
 export const { Context, Provider } = createDataContext(
   CustomReducer,
-  { addCustom, getCustom, editCustom, deleteCustom },
+  { addCustom, getCustom, editCustom, deleteCustom, updateCustom },
   { customHabit: [], loading: false, deleted: false }
 );

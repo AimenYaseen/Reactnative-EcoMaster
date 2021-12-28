@@ -14,7 +14,8 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 export const ActivityCard = ({ item }) => {
-  const { state, getActivity, deleteActivity } = useContext(ActivityContext);
+  const { state, getActivity, deleteActivity, updateActivity } =
+    useContext(ActivityContext);
   const [habitData, setHabitData] = useState(null);
   const [status, setStatus] = useState("Pending");
 
@@ -74,6 +75,8 @@ export const ActivityCard = ({ item }) => {
         console.log("Addition", habitTime);
         if (current >= habitTime) {
           setStatus("Completed");
+          updateActivity(item.id, true);
+          getActivity();
         } else {
           setStatus("Pending");
         }
