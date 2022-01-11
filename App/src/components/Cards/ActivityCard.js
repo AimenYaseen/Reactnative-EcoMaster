@@ -69,10 +69,10 @@ export const ActivityCard = ({ item }) => {
         // console.log("Previous", moment(item.id).format());
         var a = moment([2007, 0, 29]);
         var b = moment([2007, 0, 28]);
-        // console.log(moment([2007, 0, 29]));
-        //console.log(a.diff(b, "days"));
-        //  console.log("Difference : ", habitTime.diff(current, "days"));
-        console.log("Addition", habitTime);
+        console.log(moment([2007, 0, 29]));
+        console.log(a.diff(b, "days"));
+        // console.log("Difference : ", habitTime.diff(current, "days"));
+        // console.log("Addition", habitTime);
         if (current >= habitTime) {
           setStatus("Completed");
           updateActivity(item.id, true);

@@ -5,18 +5,26 @@ import {
   StyleSheet,
   Dimensions,
   ImageBackground,
-  InteractionManager,
   Alert,
+  TouchableOpacity,
 } from "react-native";
-import { Avatar, Icon, ListItem, BottomSheet } from "react-native-elements";
+import {
+  Avatar,
+  Icon,
+  ListItem,
+  BottomSheet,
+  Input,
+} from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useFocusEffect } from "@react-navigation/native";
+// import { useFocusEffect } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import CountryPicker from "react-native-country-picker-modal";
+//import CountryPicker from "react-native-region-country-picker";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Firebase } from "../../Firebase/config";
 
 import { CustomHead } from "../../components/CustomHead";
-import { SimpleInput, IconInput } from "../../components/CustomInput";
+import { SimpleInput } from "../../components/CustomInput";
 import colors from "../../constants/colors";
 import { Context as UserContext } from "../../context/UserContext";
 
@@ -37,7 +45,9 @@ const EditScreen = ({ navigation }) => {
 
   const [image, setImage] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [visible2, setVisible2] = useState(false);
   const [uploading, setUploading] = useState(false);
+  let countryPickerRef = undefined;
 
   const uploadImage = async () => {
     if (image == null) {
@@ -271,10 +281,91 @@ const EditScreen = ({ navigation }) => {
               <SimpleInput
                 label="Country"
                 placeholder="Pakistan, Sahiwal"
+                // value={JSON.stringify(country, null, 2)}
+                isEditable={false}
                 value={country}
-                onChangeText={(text) => setCountry(text)}
+                rightIcon={
+                  <Icon
+                    name="circledown"
+                    type="ant-design"
+                    size={25}
+                    color={colors.secondary}
+                    onPress={() => {
+                      //countryPickerRef.open();
+                      setVisible2(true);
+                    }}
+                  />
+                }
               />
             </View>
+            {/* <CountryPicker
+              countryPickerRef={(ref) => {
+                countryPickerRef = ref;
+              }}
+              enable={true}
+              darkMode={false}
+              countryCode={"US"}
+              containerConfig={{
+                showFlag: true,
+                showCallingCode: true,
+                showCountryName: true,
+                showCountryCode: true,
+              }}
+              modalConfig={{
+                showFlag: true,
+                showCallingCode: true,
+                showCountryName: true,
+                showCountryCode: true,
+              }}
+              onSelectCountry={(data) => {
+                console.log("DATA", data);
+              }}
+              onInit={(data) => {
+                console.log("DATA", data);
+              }}
+              onOpen={() => {
+                console.log("Open");
+              }}
+              onClose={() => {
+                console.log("Close");
+                countryPickerRef.close();
+              }}
+              // containerStyle={{
+              //   container: {},
+              //   flagStyle: {},
+              //   callingCodeStyle: {},
+              //   countryCodeStyle: {},
+              //   countryNameStyle: {},
+              // }}
+              // modalStyle={{
+              //   container: {},
+              //   searchStyle: {},
+              //   tileStyle: {},
+              //   itemStyle: {
+              //     itemContainer: {},
+              //     flagStyle: {},
+              //     countryCodeStyle: {},
+              //     countryNameStyle: {},
+              //     callingNameStyle: {},
+              //   },
+              // }}
+              title={"Country"}
+              searchPlaceholder={"Search"}
+              showCloseButton={true}
+              showModalTitle={true}
+            /> */}
+            <CountryPicker
+              placeholder=""
+              withEmoji={true}
+              onSelect={(country) => setCountry(country.name)}
+              visible={visible2}
+              onClose={() => setVisible2(false)}
+              containerButtonStyle={{ color: "#3h3h3h" }}
+              withAlphaFilter
+              withFilter
+              withFlag
+            />
+
             <BottomSheet
               isVisible={visible}
               containerStyle={{

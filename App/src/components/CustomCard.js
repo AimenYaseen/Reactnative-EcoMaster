@@ -70,6 +70,7 @@ export const TileCard = ({ item }) => {
         </View>
       </View>
       <Button
+        //NOTIFICATION
         title="Select"
         buttonStyle={{
           backgroundColor: colors.secondary,
@@ -305,6 +306,7 @@ const HabitCard = ({ item, index }) => {
                   disabled={disable}
                   type="solid"
                   title="Start"
+                  // NOTIFICATION
                   onPress={async () => {
                     await startHabit(item.id, true, Date.now());
                     getHabit();

@@ -61,6 +61,8 @@ export const SimpleInput = ({
   placeholder,
   onChangeText,
   value,
+  isEditable,
+  rightIcon,
   maxLength,
 }) => {
   const [focus, setFocus] = useState(false);
@@ -71,6 +73,7 @@ export const SimpleInput = ({
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         label={label}
+        editable={isEditable}
         labelStyle={{ color: colors.black }}
         placeholder={placeholder}
         placeholderTextColor={colors.gray}
@@ -81,6 +84,7 @@ export const SimpleInput = ({
           borderBottomWidth: focus ? 2 : 1,
           paddingHorizontal: 3,
         }}
+        rightIcon={rightIcon}
         onChangeText={onChangeText}
         autoCorrect={false}
         autoCapitalize="none"
@@ -116,7 +120,7 @@ export const IconInput = ({
           name={name}
           type={type}
           color={secure ? colors.gray : colors.secondary}
-          size={15}
+          size={18}
           onPress={() => (secure ? setSecure(false) : setSecure(true))}
         />
       }

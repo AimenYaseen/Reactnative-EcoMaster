@@ -252,6 +252,7 @@ const CustomHabitForm = ({
         raised
         disabled={disabled}
         type="solid"
+        //NOTIFICATION text
         title={`${text} Habit`}
         onPress={onSubmitHandle}
         containerStyle={styles.buttonContainer}

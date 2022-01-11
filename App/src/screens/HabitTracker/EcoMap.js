@@ -28,11 +28,11 @@ const EcoMap = ({ navigation }) => {
   } = useContext(HabitContext);
 
   React.useEffect(() => {
-    getReward();
     getHabit();
+    getReward();
     const subscribe = navigation.addListener("focus", () => {
-      getReward();
       getHabit();
+      getReward();
     });
 
     // const unsubscribe = navigation.addListener("blur", () => {
