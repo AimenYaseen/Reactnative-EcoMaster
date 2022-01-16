@@ -108,8 +108,8 @@ export const CustomTabScreen = () => {
             <Icon
               reverse
               raised
-              name="plus"
-              type="font-awesome-5"
+              name="workspaces-filled"
+              type="material-icon"
               color={focused ? colors.secondary : colors.gray2}
               size={20}
               containerStyle={{

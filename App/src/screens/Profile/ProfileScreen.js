@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   ImageBackground,
+  // ActivityIndicator,
 } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import RNFetchBlob from "rn-fetch-blob";
@@ -44,7 +45,7 @@ const ProfileScreen = ({ navigation }) => {
   const email = "abc@example.com";
   const firstName = "";
   const lastName = "";
-  const country = "Country, City";
+  const country = "Country";
   const bio = "Your Short Info HERE...";
 
   const [current, setCurrent] = useState("");
@@ -291,11 +292,31 @@ const ProfileScreen = ({ navigation }) => {
               msg="Are you sure?"
             />
           </View>
-          <Spinner
-            visible={loading}
-            color={colors.secondary}
-            animation="fade"
-          />
+          {loading ? (
+            <View style={styles.loading}>
+              <Spinner
+                visible={loading}
+                color={colors.secondary}
+                //  overlayColor={"rgba(0,0,0, 0.50)"}
+                textContent={"Loading..."}
+                textStyle={{
+                  fontSize: 18,
+                  // marginTop: -130,
+                  marginLeft: 15,
+                  //  textAlign: "center",
+                  color: colors.secondary,
+                }}
+                animation="fade"
+                // indicatorStyle={{
+                //   backgroundColor: "white",
+                //   // marginTop: screenHeight * 0.48,
+                //   // marginBottom: screenHeight * 0.45,
+                //   // marginHorizontal: screenWidth * 0.25,
+                //   // borderRadius: 25,
+                // }}
+              />
+            </View>
+          ) : null}
         </KeyboardAwareScrollView>
       </ImageBackground>
     </>
@@ -351,6 +372,15 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: screenWidth * 0.09,
     paddingHorizontal: screenWidth * 0.3,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
