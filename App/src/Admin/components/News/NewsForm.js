@@ -289,6 +289,15 @@ const NewsForm = ({
         visible={loading || uploading}
         color={colors.secondary}
         animation="fade"
+        overlayColor={"rgba(0,0,0, 0.50)"}
+        textContent={"Loading..."}
+        textStyle={{
+          fontSize: 18,
+          // marginTop: -130,
+          marginLeft: 15,
+          //  textAlign: "center",
+          color: colors.secondary,
+        }}
       />
     </KeyboardAwareScrollView>
   );
