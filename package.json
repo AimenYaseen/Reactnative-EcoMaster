@@ -55,7 +55,7 @@
     "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.8"
+    "@babel/core": "^7.9.0"
   },
   "private": true,
   "name": "reactnative-ecomaster",
